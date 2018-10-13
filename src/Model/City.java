@@ -1,4 +1,4 @@
-package com.company;
+package Model;
 //This is one part of the model
 
 public class City {

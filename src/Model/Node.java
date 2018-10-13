@@ -1,4 +1,5 @@
-package com.company;
+package Model;
+
 import java.util.LinkedList;
 
 //This is one part of the model
@@ -9,6 +10,16 @@ public class Node {
     //----------------------------------Attributes and Properties-------------------------------------------
 
     private boolean occupied;
+    private boolean taxi;
+    private boolean bus;
+    private boolean accident;
+    private int speed_limit;
+    private int row;
+    private int column;
+    private LinkedList<Node> neighbors;
+    private Traffic_ligth my_traffic_ligth;
+
+
 
     public boolean isBus() {
         return bus;
@@ -17,7 +28,6 @@ public class Node {
         this.bus = bus;
     }
 
-    private boolean bus;
 
     public boolean isOccupied() {
         return occupied;
@@ -26,7 +36,7 @@ public class Node {
         this.occupied = occupied;
     }
 
-    private boolean taxi;
+
 
     public boolean isTaxi() {
         return taxi;
@@ -35,7 +45,6 @@ public class Node {
         this.taxi = taxi;
     }
 
-    private boolean accident;
 
     public boolean isAccident() {
         return accident;
@@ -44,7 +53,7 @@ public class Node {
         this.accident = accident;
     }
 
-    private int speed_limit;
+
 
     public int getSpeed_limit() {
         return speed_limit;
@@ -53,7 +62,7 @@ public class Node {
         this.speed_limit = speed_limit;
     }
 
-    private int row;
+
 
     public int getRow() {
         return row;
@@ -62,7 +71,7 @@ public class Node {
         this.row = row;
     }
 
-    private int column;
+
 
     public int getColumn() {
         return column;
@@ -71,16 +80,15 @@ public class Node {
         this.column = column;
     }
 
-    private LinkedList<Node>neighbors;
 
-    public LinkedList<Node> getNeighbors() {
+
+    private LinkedList<Node> getNeighbors() {
         return neighbors;
     }
     public void setNeighbors(LinkedList<Node> neighbors) {
         this.neighbors = neighbors;
     }
 
-    private Traffic_ligth my_traffic_ligth;
 
     public Traffic_ligth getMy_traffic_ligth() {
         return my_traffic_ligth;
