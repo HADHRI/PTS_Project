@@ -103,7 +103,7 @@ public class Node {
 
     //This is the constructor for buildings nodes)
     public Node(int i, int j){
-        this.occupied=true;
+        this.occupied=false;
         this.bus=false;
         this.taxi=false;
         this.accident=false;
