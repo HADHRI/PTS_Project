@@ -114,18 +114,7 @@ public class Node {
         this.my_traffic_ligth=null;
     }
 
-    //This is the constructor for nodes
-    public Node(boolean isbus, boolean istaxi,boolean isaccidents,int speed,int i, int j, Traffic_ligth value){
-        this.occupied=false;
-        this.bus=isbus;
-        this.taxi=istaxi;
-        this.accident=isaccidents;
-        this.speed_limit=speed;
-        this.row=i;
-        this.column=j;
-        this.neighbors=null;
-        this.my_traffic_ligth=value;
-    }
+
 
     //---------------------------------------------Methods---------------------------------------------------
 

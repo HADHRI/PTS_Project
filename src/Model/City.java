@@ -38,10 +38,10 @@ public class City {
 
     //---------------------------------------------Constructor---------------------------------------------------
 
-    public City(int nb_rows, int nb_columns){
+    public City(int nbRows, int nbColumns){
 
-        this.height=nb_columns;
-        this.width=nb_rows;
+        this.height=nbRows;
+        this.width=nbColumns;
 
         this.matrice=new Node[height][width];
 
