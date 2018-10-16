@@ -5,7 +5,7 @@ import java.util.LinkedList;
 //This is one part of the model
 public class Node {
 
-    enum Traffic_ligth{ROUGE,VERT};
+    public enum Traffic_ligth{RED,GREEN};
 
     //----------------------------------Attributes and Properties-------------------------------------------
 

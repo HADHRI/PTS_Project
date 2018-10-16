@@ -81,29 +81,10 @@ public class City {
 
     //---------------------------------------------Methods---------------------------------------------------
 
-    //JUST TO TEST I HAVE ADDED A MAIN HERE
-    public static void main(String []args)
-    {
-        // TEST OF CITY WITH 100 * 100 , 20% BUILDINGS SO COMP (variable ) is 2000
-        City city=new City(100,100);
-        int comp=0;
-
-        for(int i=0;i<city.getHeight();i++)
-        {
-            for(int j=0;j<city.getWidth();j++)
-            {
-                if(city.matrice[i][j].isOccupied())
-                {
-                    comp+=1;
-                }
-                System.out.println(city.matrice[i][j].isOccupied());
-
-            }
-            System.out.println(comp);
-        }
 
 
-    }
+
+    
 
 
 
