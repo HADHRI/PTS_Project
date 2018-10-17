@@ -10,14 +10,12 @@ import java.util.Random;
 public class CityController {
 
 
-    public static void setTrafficligth(City city)
+    public static void setTrafficligth(City city, double randomRedProportion, double randomGreenProportion)
     {
 
         //Random Object
         Random random = new Random();
 
-        //Random red traffic ligth proportion
-        double randomRedProportion=random.nextDouble();
 
         int maxTrafficligth = (int) ( city.getHeight()*city.getWidth()*randomRedProportion);
         int numTrafficligth=0;
@@ -34,8 +32,6 @@ public class CityController {
             }
         }
 
-        //Random green traffic ligth proportion
-        double randomGreenProportion=random.nextDouble();
 
         maxTrafficligth = (int) ( city.getHeight()*city.getWidth()*randomGreenProportion);
         numTrafficligth=0;
@@ -59,9 +55,10 @@ public class CityController {
 
         City city = new City (100,100);
 
-        setTrafficligth(city);
+        setTrafficligth(city, 0.1,0.2);
 
-        int comp=0;
+        int comp1=0;
+        int comp2=0;
 
         for(int i=0;i<city.getHeight();i++)
         {
@@ -69,14 +66,19 @@ public class CityController {
             {
                 if(city.getMatrice()[i][j].getMy_traffic_ligth()== Node.Traffic_ligth.GREEN)//or with RED
                 {
-                    comp+=1;
+                    comp1+=1;
                 }
 
-
+                if(city.getMatrice()[i][j].getMy_traffic_ligth()== Node.Traffic_ligth.RED)//or with RED
+                {
+                    comp2+=1;
+                }
             }
 
         }
-        System.out.println(comp);
+        System.out.println(comp1);
+        System.out.println(comp2);
+
         System.out.println("HELLO WORLD !!");
 
 
