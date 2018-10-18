@@ -142,9 +142,13 @@ public class CityController {
         }
     }
 
-    public static void setCity(City city)
+    public static void setCity(City city,double RedProportion, double GreenProportion,double BusProportion,double TaxiProportion,double AccidentProportion)
     {
-
+        setTrafficligth(city, RedProportion, GreenProportion);
+        setBus(city, BusProportion);
+        setTaxi(city,TaxiProportion);
+        setAccident(city,AccidentProportion);
+        setSpeedlimit(city);
     }
 
     //Just to test the set methods
@@ -152,20 +156,16 @@ public class CityController {
 
         City city = new City (100,100);
 
-        setTrafficligth(city, 0.1,0.2);
-        setBus(city,0.2);
-        setTaxi(city, 0.3);
-        setAccident(city, 0.1);
-        setSpeedlimit(city);
 
 
+        setCity(city,0.1,0.1,0.1,0.1,0.1);
 
-        int comp1=0;
-        int comp2=0;
-        int comp3=0;
-        int comp4=0;
-        int comp5=0;
-
+        int compGreenligth=0;
+        int compRedligth=0;
+        int compBus=0;
+        int compTaxi=0;
+        int compAccident=0;
+        int compEmptyNode=0;
 
         for(int i=0;i<city.getHeight();i++)
         {
@@ -173,32 +173,37 @@ public class CityController {
             {
                 if(city.getMatrice()[i][j].getMy_traffic_ligth()== Node.Traffic_ligth.RED)//or with RED
                 {
-                    comp2+=1;
+                    compRedligth+=1;
                 }
                 if(city.getMatrice()[i][j].getMy_traffic_ligth()== Node.Traffic_ligth.GREEN)//or with RED
                 {
-                    comp1+=1;
+                    compGreenligth+=1;
                 }
                 if(city.getMatrice()[i][j].isBus())//or with RED
                 {
-                    comp3+=1;
+                    compBus+=1;
                 }
                 if(city.getMatrice()[i][j].isTaxi())//or with RED
                 {
-                    comp4+=1;
+                    compTaxi+=1;
                 }
                 if(city.getMatrice()[i][j].isAccident())//or with RED
                 {
-                    comp5+=1;
+                    compAccident+=1;
+                }
+                if(!city.getMatrice()[i][j].isAccident() &&  !city.getMatrice()[i][j].isBus() && !city.getMatrice()[i][j].isTaxi() && city.getMatrice()[i][j].getMy_traffic_ligth()==null)//or with RED
+                {
+                    compEmptyNode+=1;
                 }
             }
 
         }
-        System.out.println(comp1);
-        System.out.println(comp2);
-        System.out.println(comp3);
-        System.out.println(comp4);
-        System.out.println(comp5);
+        System.out.println(compGreenligth);
+        System.out.println(compRedligth);
+        System.out.println(compBus);
+        System.out.println(compTaxi);
+        System.out.println(compAccident);
+        System.out.println(compEmptyNode);
 
         System.out.println("HELLO WORLD !!");
 
