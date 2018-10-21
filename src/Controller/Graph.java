@@ -39,7 +39,7 @@ public class Graph {
     }
 
     //In this methode we will store all relations between nodes ( means we will store edges )
-    // At the begining we will consider our graph unweighted .
+    // At the begining we will consider our graph unweighted 
     public void setAdjacencyMatrixt()
     {
         for(int i=0;i<city.getHeight();i++)
