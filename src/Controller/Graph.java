@@ -21,6 +21,27 @@ public class Graph {
 
     }
 
-    
+    public  void setListOfAllNodes()
+    {
+        for(int i=0;i<city.getHeight();i++)
+        {
+            for(int j=0;j<city.getWidth();j++)
+            {// IF It's not a building then we add it in out GRAPH
+                if (!city.getMatrice()[i][j].isOccupied())
+                    listOfAllNodes.add(city.getMatrice()[i][j]);
+            }
+
+        }
+    }
+
+    //Main to test
+    public static void main(String []args )
+    {
+        Graph graph=new Graph();
+        // size should be number of nodes in the matrix without buildings 
+        System.out.println(graph.listOfAllNodes.size());
+    }
+
+
 
 }
