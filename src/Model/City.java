@@ -53,7 +53,7 @@ public class City {
             {
                 Node node=new Node(i,j);
                 matrice[i][j]=node;
-              System.out.println(node.isOccupied());
+             // System.out.println(node.isOccupied());
 
             }
 
