@@ -38,6 +38,18 @@ public class City {
 
     //---------------------------------------------Constructor---------------------------------------------------
 
+
+    public  void printCityMatrix(){
+        for(int i=0;i<height;i++)
+        {
+            for(int j=0;j<height;j++)
+            {
+                System.out.print(matrice[i][j].isOccupied()+" ");
+            }
+            System.out.println();
+        }
+
+    }
     public City(int nbRows, int nbColumns){
 
         this.height=nbRows;
