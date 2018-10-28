@@ -4,6 +4,8 @@ package Controller;
 import Model.City;
 import Model.Node;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -151,6 +153,87 @@ public class CityController {
         setSpeedlimit(city);
     }
 
+    /**
+     * This algorithm is used to find the shortest path of any two points in the undirected graph
+     * @param
+     * @param start start point
+     * @param end end point
+     * @return a array of path point
+     */
+    public static int[] dijkstra(int [][] adjacencyMatrix,int start,int end){
+        //int[][] adjacencyMatrix = graph.getAdjacencyMatrix().clone();
+
+        int n = adjacencyMatrix.length;
+        //Store the shortest path from start to other points
+        int [] shortest = new int[n];
+        // Mark whether the shortest path of the current vertex has been found, true means that it has been found
+        boolean[] visited = new boolean[n];
+
+        shortest[start] = 0;
+        visited[start] = true;
+
+
+        //List path = new ArrayList();
+        String[] path = new String[n];
+        for(int i = 0; i < n; i++){
+            path[i] = new String(start + "--->" + i);
+        }
+        for(int count = 0; count != n-1; count ++)
+        {
+
+            int index = 0;
+            int min = 0;
+            for(int i =0; i< n ; i++)
+            {
+                if( !visited[i] && adjacencyMatrix[start][i] != 0)
+                {
+                    if(min == 0 || min > adjacencyMatrix[start][i])
+                    {
+                        min = adjacencyMatrix[start][i];
+                        index = i;
+                    }
+                }
+            }
+
+            if(index == 0)
+            {
+                System.out.println("//the input map matrix is wrong!");
+
+            }
+            shortest[index] = min;
+            visited[index] = true;
+
+            for (int i = 0; i < n; i++)
+            {
+                if (!visited[i] && adjacencyMatrix[index][i] != 0)
+                {
+                    int distance = min + adjacencyMatrix[index][i];
+                    if (adjacencyMatrix[start][i] == 0 || adjacencyMatrix[start][i] > distance)
+                    {
+                        adjacencyMatrix[start][i] = distance;
+                        //here i dont know how to insert data in the specified position of the array and all the subsequent datas should postpone one position
+                        //that's why i use String
+                        path[i] = path[index] + "--->" + i;
+                    }
+                }
+            }
+        }
+
+        //can use next line code to test this function
+        //System.out.println("From point " + start + " to point "+end+" is : " +path[end] + " The shortest distance is "+shortest[end]);
+
+        String[] str = path[end].split("--->");
+        int[] paths = new int[str.length];
+        for (int i=0;i<paths.length;i++) {
+             paths[i] = Integer.valueOf(str[i]);
+        }
+
+
+        //return shortest[end];
+        return  paths;
+    }
+
+
     //Just to test the set methods
     public static void main(String[] args) {
 
@@ -198,14 +281,31 @@ public class CityController {
             }
 
         }
+        /*
         System.out.println(compGreenligth);
         System.out.println(compRedligth);
         System.out.println(compBus);
         System.out.println(compTaxi);
         System.out.println(compAccident);
         System.out.println(compEmptyNode);
+        */
 
         System.out.println("HELLO WORLD !!");
+
+
+
+        int[][] testAdjacencyMatrix = {
+                { 0, 1, 1, 1, 0 },
+                { 1, 0, 0, 1, 0 },
+                { 1, 0, 0, 1, 1 },
+                { 1, 1, 1, 0, 0 },
+                { 0, 0, 1, 0, 0 } };
+        int[] shortPath = dijkstra(testAdjacencyMatrix,0,4);
+        for (int i:shortPath
+             ) {
+            System.out.print(i+"\t");
+        }
+
 
 
     }
