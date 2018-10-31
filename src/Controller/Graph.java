@@ -4,6 +4,7 @@ import Model.City;
 import Model.Node;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -14,11 +15,20 @@ public class Graph {
     private List<Node> listOfAllNodes=new ArrayList<Node>();
     private int [][] adjacencyMatrix;
 
+    public List<Node> getListOfAllNodes() {
+        return listOfAllNodes;
+    }
+    public void setListOfAllNodes(List<Node> listOfAllNodes) {
+        this.listOfAllNodes = listOfAllNodes;
+    }
+
+
+
 
     public Graph()
     {
         //Contsruct our City
-        this.city=new City(2,2);
+        this.city=new City(4,4);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
 
 
@@ -203,6 +213,24 @@ public class Graph {
         }
 
 
+    }
+
+    //method to get all the neighbors of a node
+    public LinkedList<Node> getNeighbors(Node node)
+    {
+        LinkedList<Node>neighbors=new LinkedList<Node>();
+        int row=listOfAllNodes.indexOf(node);// the row i need to choose in the adjency matrix
+
+
+        for(int i=0; i<adjacencyMatrix.length; i++)
+        {
+            if(adjacencyMatrix[row][i]!=0)
+            {
+               neighbors.add(listOfAllNodes.get(i));
+            }
+        }
+
+        return neighbors;
     }
 
     //Main to test

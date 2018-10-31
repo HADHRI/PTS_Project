@@ -82,7 +82,7 @@ public class Node {
 
 
 
-    private LinkedList<Node> getNeighbors() {
+    public LinkedList<Node> getNeighbors() {
         return neighbors;
     }
     public void setNeighbors(LinkedList<Node> neighbors) {
