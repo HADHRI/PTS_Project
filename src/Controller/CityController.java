@@ -4,9 +4,10 @@ package Controller;
 import Model.City;
 import Model.Node;
 
+
 import java.util.*;
 
-import static java.lang.Thread.sleep;
+
 
 
 public class CityController {
@@ -250,6 +251,7 @@ public class CityController {
 
     public void printDjikistraPath(int sourceIndex,int targetIndex) throws InterruptedException {
         int pathAndDistance[][] = djikistraShortPath(sourceIndex);
+        ArrayList<Integer>path=new ArrayList<>(); //To hold the final path
 
         // I will use stack to stock the PATH
         Stack<Integer> stackHoldingPath = new Stack<>();
@@ -274,10 +276,99 @@ public class CityController {
         System.out.println("Stack => " + stackHoldingPath);
        while (!(stackHoldingPath.isEmpty()))
         {
+            path.add(stackHoldingPath.peek());
             System.out.println(stackHoldingPath.pop());
 
         }
+
+        printInformationAboutPath(path,sourceIndex,targetIndex);
+       System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
+
+
     }
+
+    private void printInformationAboutPath(ArrayList<Integer>path,int sourceIndex,int targetIndex)
+    {
+        //Current position
+       int currentPositionRow= graph.getListOfAllNodes().get(sourceIndex).getRow();
+       int currentPositionColumn= graph.getListOfAllNodes().get(sourceIndex).getColumn();
+
+        for (int i=1;i<path.size();i++)
+        {
+            int nextPositionRow=graph.getListOfAllNodes().get(path.get(i)).getRow();
+            int nextPositionColumn=graph.getListOfAllNodes().get(path.get(i)).getColumn();
+
+            // next position is at RIGTH
+            if(nextPositionRow==currentPositionRow && nextPositionColumn==currentPositionColumn+1)
+            {
+                System.out.print("MOVE RIGTH ----");
+
+            }
+            else
+                // next position is LEFT
+                if(nextPositionRow==currentPositionRow && nextPositionColumn==currentPositionColumn-1)
+                {
+                    System.out.println("MOVE LEFT  ----");
+                }
+            else
+                //NEXT POSITION UP
+                if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow-1 )
+                {
+                    System.out.println("MOVE UP  ----");
+
+                }
+            else
+                //NEXT POSITION DOWNN
+                if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow +1 )
+                {
+                    System.out.println("MOVE DOWN  ----");
+
+                }
+
+            else
+                // Next position UP RIGTH
+                if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow -1 )
+                {
+                    System.out.println("MOVE UP RIGTH ----");
+
+                }
+            else
+                    // Next position UP LEFT
+                    if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow -1 )
+                    {
+                        System.out.println("MOVE UP LEFT  ----");
+
+                    }
+            else
+                // next position is DOWN RIGTH
+                    if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow + 1 )
+                    {
+                        System.out.println("MOVE DOWN RIGTH  ----");
+
+                    }
+            else
+                //NEXT position is DOWN LEFT
+                    if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow + 1 )
+                    {
+                        System.out.println("MOVE DOWN LEFT  ----");
+
+                    }
+
+                    currentPositionColumn=nextPositionColumn;
+                    currentPositionRow=nextPositionRow;
+
+
+
+
+
+
+
+
+
+        }
+
+    }
+
 
 
 
@@ -336,7 +427,7 @@ public class CityController {
         //Printing the Path
         System.out.println();
         System.out.println("Printing the path ");
-       cityController.printDjikistraPath(0,7);
+       cityController.printDjikistraPath(0,12);
 
 
 
