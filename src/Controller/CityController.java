@@ -4,10 +4,9 @@ package Controller;
 import Model.City;
 import Model.Node;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Random;
+import java.util.*;
+
+import static java.lang.Thread.sleep;
 
 
 public class CityController {
@@ -249,6 +248,39 @@ public class CityController {
 
 
 
+    public void printDjikistraPath(int sourceIndex,int targetIndex) throws InterruptedException {
+        int pathAndDistance[][] = djikistraShortPath(sourceIndex);
+
+        // I will use stack to stock the PATH
+        Stack<Integer> stackHoldingPath = new Stack<>();
+        stackHoldingPath.push(targetIndex);
+        int index = targetIndex;
+
+        for(int i=0;i<graph.getListOfAllNodes().size();i++)
+        {
+            System.out.print(pathAndDistance[1][i] + "  ");
+
+        }
+        System.out.println(index);
+       while (index != sourceIndex)
+        {
+            System.out.println(index);
+            index=pathAndDistance[1][index];
+            stackHoldingPath.push(index);
+
+
+        }
+        //Printing the path
+        System.out.println("Stack => " + stackHoldingPath);
+       while (!(stackHoldingPath.isEmpty()))
+        {
+            System.out.println(stackHoldingPath.pop());
+
+        }
+    }
+
+
+
 
 
 
@@ -261,7 +293,7 @@ public class CityController {
 
 
     //Just to test the set methods
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         CityController cityController=new CityController();
 
@@ -279,7 +311,7 @@ public class CityController {
 
         System.out.println("this is the end of City Matrix ");
         System.out.println("this is the adjacency matrix ");
-        cityController.graph.printAdjacencyMatrix();
+     //   cityController.graph.printAdjacencyMatrix();
         System.out.println("This is the end of adjacency matrix ");
 
         int pathAndDistances[][]=cityController.djikistraShortPath(7);
@@ -287,10 +319,8 @@ public class CityController {
         System.out.println("Show paths from Source ( A) to all others ");
 
 
-
         for(int i=0;i<cityController.graph.getListOfAllNodes().size();i++)
         {
-
             System.out.print(pathAndDistances[1][i] + "  ");
 
         }
@@ -302,6 +332,16 @@ public class CityController {
             System.out.print(pathAndDistances[0][i] + "  ");
 
         }
+
+        //Printing the Path
+        System.out.println();
+        System.out.println("Printing the path ");
+       cityController.printDjikistraPath(0,7);
+
+
+
+
+
 
 
 
