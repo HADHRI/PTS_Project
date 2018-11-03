@@ -14,11 +14,22 @@ public class Graph {
     private List<Node> listOfAllNodes=new ArrayList<Node>();
     private int [][] adjacencyMatrix;
 
+    public City getCity() {
+        return city;
+    }
+
+    public List<Node> getListOfAllNodes() {
+        return listOfAllNodes;
+    }
+
+    public int[][] getAdjacencyMatrix() {
+        return adjacencyMatrix;
+    }
 
     public Graph()
     {
         //Contsruct our City
-        this.city=new City(2,2);
+        this.city=new City(6,6);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
 
 
@@ -129,12 +140,8 @@ public class Graph {
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
                             // System.out.println(index);
                             adjacencyMatrix[currentIndex][index] = 1;
-
-
+                        } 
                         }
-
-
-                    }
                     //checking down
                     if (i + 1 < city.getHeight()) {
                         if (!city.getMatrice()[i + 1][j].isOccupied()) {
@@ -215,21 +222,15 @@ public class Graph {
         // size should be number of nodes in the matrix without buildings
        // System.out.println(graph.listOfAllNodes.size());
         //The matrix before Setting adjacency Matrix ( initialized with 0 values)
-
-        //
-
-
-
-
-     //   graph.printAdjacencyMatrix();
-
-       // System.out.println(graph.listOfAllNodes.indexOf(graph.city.getMatrice()[0][2]));
-
+        //   graph.printAdjacencyMatrix();
+        // System.out.println(graph.listOfAllNodes.indexOf(graph.city.getMatrice()[0][2]));
         // printing the city with batiments ( to visualise the city with buildings)
         graph.city.printCityMatrix();
         System.out.println("AFTER INSERTING EDGES ");
         graph.setAdjacencyMatrixt();
         graph.printAdjacencyMatrix();
+
+
 
 
 

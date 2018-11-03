@@ -4,10 +4,22 @@ package Controller;
 import Model.City;
 import Model.Node;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 
 public class CityController {
+   public  Graph graph;
+
+
+    public CityController(){
+        graph=new Graph();
+        graph.setListOfAllNodes();
+        graph.setAdjacencyMatrixt();
+
+    }
 
 
     public static void setTrafficligth(City city, double RedProportion, double GreenProportion)
@@ -151,10 +163,152 @@ public class CityController {
         setSpeedlimit(city);
     }
 
+
+    //this function returns a int table containing 2 lines
+    // first line represents the distance from the source vertix to the current vertix
+    // second line represents the index of the previous vertix to reach the current vertix
+
+
+   public int [][] djikistraShortPath(int sourceIndex)
+    {
+        int numberOfVertices=graph.getListOfAllNodes().size();
+        int pathHoldingDistances [][]=new int[2][numberOfVertices];
+
+
+       boolean  visitedNodes[]=new boolean[numberOfVertices];
+
+
+        // intializing source distance as 0 and others as INFINITY
+        // initializing previous vertix as undifined ( I will note undifined as -1 )
+        pathHoldingDistances[0][sourceIndex]=0;
+        for( int i=0;i<numberOfVertices;i++)
+        {
+            if(i != sourceIndex)
+            pathHoldingDistances[0][i]=Integer.MAX_VALUE; // Infinity
+            pathHoldingDistances[1][i]=-1 ; // -1 For undifined Previous
+
+        }
+        while (!weHaveVisitedAllVertices(visitedNodes))
+        {
+            //vertex  with min value
+            int indexOfMinimumVertice=getMinimumDist(visitedNodes,pathHoldingDistances[0]);
+            visitedNodes[indexOfMinimumVertice]=true; // mark this node as visited
+
+            //For each neighbour of this Min Vertice
+            for (int j=0;j< numberOfVertices;j++)
+            {
+                //To verify that the neighbour is still not visited
+                if (graph.getAdjacencyMatrix()[indexOfMinimumVertice][j]!=0 && visitedNodes[j]==false)
+                {
+                  int distanceBetweenTwoVertices =graph.getAdjacencyMatrix()[indexOfMinimumVertice][j];
+                    int alt=pathHoldingDistances[0][indexOfMinimumVertice]+distanceBetweenTwoVertices;
+                    if (alt < pathHoldingDistances[0][j])
+                    {
+                        pathHoldingDistances[0][j]=alt;
+                        pathHoldingDistances[1][j]=indexOfMinimumVertice; // to put the index of previous
+                    }
+
+
+                }
+            }
+
+
+        }
+        return pathHoldingDistances;
+
+    }
+
+    // this methode returns minimum index of vertice with minimum distance
+    private int getMinimumDist(boolean[] vistedNodes,int[] distances)
+    {
+        int max=Integer.MAX_VALUE;
+        int indexOfMinimum=-1;
+        for (int i=0;i<distances.length;i++)
+        {
+            if(!vistedNodes[i] && distances[i] < max )
+            {
+                indexOfMinimum=i;
+                max=distances[i];
+
+
+            }
+        }
+        return  indexOfMinimum;
+
+    }
+    //To verify if we have visited all vertices
+    private boolean weHaveVisitedAllVertices(boolean[] tab){
+        for (int i=0;i<tab.length;i++)
+        {
+            if (tab[i]==false)
+                return false;
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //Just to test the set methods
     public static void main(String[] args) {
 
-        City city = new City (100,100);
+        CityController cityController=new CityController();
+
+        System.out.println("This is the city matrix ");
+        cityController.graph.getCity().printCityMatrix();
+
+
+
+
+
+
+
+
+
+
+        System.out.println("this is the end of City Matrix ");
+        System.out.println("this is the adjacency matrix ");
+        cityController.graph.printAdjacencyMatrix();
+        System.out.println("This is the end of adjacency matrix ");
+
+        int pathAndDistances[][]=cityController.djikistraShortPath(7);
+
+        System.out.println("Show paths from Source ( A) to all others ");
+
+
+
+        for(int i=0;i<cityController.graph.getListOfAllNodes().size();i++)
+        {
+
+            System.out.print(pathAndDistances[1][i] + "  ");
+
+        }
+        System.out.println();
+        System.out.println("Show distances from Source ( A) to all others ");
+        for(int i=0;i<cityController.graph.getListOfAllNodes().size();i++)
+        {
+
+            System.out.print(pathAndDistances[0][i] + "  ");
+
+        }
+
+
+
+
+
+
+     /*   City city = new City (100,100);
 
 
 
@@ -205,7 +359,8 @@ public class CityController {
         System.out.println(compAccident);
         System.out.println(compEmptyNode);
 
-        System.out.println("HELLO WORLD !!");
+        System.out.println("HELLO WORLD !!");*/
+
 
 
     }
