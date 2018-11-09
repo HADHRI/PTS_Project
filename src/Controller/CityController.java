@@ -188,11 +188,13 @@ public class CityController {
             pathHoldingDistances[1][i]=-1 ; // -1 For undifined Previous
 
         }
-        while (!weHaveVisitedAllVertices(visitedNodes))
+        int weHaveVisitedAllVertices=0;
+        while (weHaveVisitedAllVertices<numberOfVertices-1)
         {
             //vertex  with min value
             int indexOfMinimumVertice=getMinimumDist(visitedNodes,pathHoldingDistances[0]);
             visitedNodes[indexOfMinimumVertice]=true; // mark this node as visited
+            weHaveVisitedAllVertices++;
 
             //For each neighbour of this Min Vertice
             for (int j=0;j< numberOfVertices;j++)
@@ -217,6 +219,7 @@ public class CityController {
         return pathHoldingDistances;
 
     }
+
 
     // this methode returns minimum index of vertice with minimum distance
     private int getMinimumDist(boolean[] vistedNodes,int[] distances)
