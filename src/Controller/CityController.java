@@ -239,16 +239,7 @@ public class CityController {
         return  indexOfMinimum;
 
     }
-    //To verify if we have visited all vertices
-    private boolean weHaveVisitedAllVertices(boolean[] tab){
-        for (int i=0;i<tab.length;i++)
-        {
-            if (tab[i]==false)
-                return false;
-        }
 
-        return true;
-    }
 
 
 
@@ -260,32 +251,41 @@ public class CityController {
         Stack<Integer> stackHoldingPath = new Stack<>();
         stackHoldingPath.push(targetIndex);
         int index = targetIndex;
-
-        for(int i=0;i<graph.getListOfAllNodes().size();i++)
+        // CHECK IF THE TARGET INDEX IS REACHABLE
+        if (pathAndDistance[1][targetIndex]==-1)
         {
-            System.out.print(pathAndDistance[1][i] + "  ");
-
+            System.out.println("You can't reach this road from your position with car ");
         }
-        System.out.println(index);
-       while (index != sourceIndex)
-        {
+        else{
+            for(int i=0;i<graph.getListOfAllNodes().size();i++)
+            {
+                System.out.print(pathAndDistance[1][i] + "  ");
+
+            }
             System.out.println(index);
-            index=pathAndDistance[1][index];
-            stackHoldingPath.push(index);
+            while (index != sourceIndex)
+            {
+                System.out.println(index);
+                index=pathAndDistance[1][index];
+                stackHoldingPath.push(index);
+
+
+            }
+            //Printing the path
+            System.out.println("Stack => " + stackHoldingPath);
+            while (!(stackHoldingPath.isEmpty()))
+            {
+                path.add(stackHoldingPath.peek());
+                System.out.println(stackHoldingPath.pop());
+
+            }
+
+            printInformationAboutPath(path,sourceIndex,targetIndex);
+            System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
 
 
         }
-        //Printing the path
-        System.out.println("Stack => " + stackHoldingPath);
-       while (!(stackHoldingPath.isEmpty()))
-        {
-            path.add(stackHoldingPath.peek());
-            System.out.println(stackHoldingPath.pop());
 
-        }
-
-        printInformationAboutPath(path,sourceIndex,targetIndex);
-       System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
 
 
     }

@@ -64,7 +64,6 @@ public class Graph {
         {
             // IF It's not a building then we add it in out GRAPH
             if (!city.getMatrice()[i][j].isOccupied())
-
                 listOfAllNodes.add(city.getMatrice()[i][j]);
         }
 
