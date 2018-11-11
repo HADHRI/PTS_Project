@@ -18,6 +18,7 @@ public class CityController {
         graph=new Graph();
         graph.setListOfAllNodes();
         graph.setAdjacencyMatrixt();
+        graph.refrechAdjacencyMatirx();
 
     }
 
@@ -402,13 +403,12 @@ public class CityController {
 
 
 
-
         System.out.println("this is the end of City Matrix ");
         System.out.println("this is the adjacency matrix ");
      //   cityController.graph.printAdjacencyMatrix();
         System.out.println("This is the end of adjacency matrix ");
 
-        int pathAndDistances[][]=cityController.djikistraShortPath(7);
+        int pathAndDistances[][]=cityController.djikistraShortPath(0);
 
         System.out.println("Show paths from Source ( A) to all others ");
 
@@ -430,7 +430,14 @@ public class CityController {
         //Printing the Path
         System.out.println();
         System.out.println("Printing the path ");
-       cityController.printDjikistraPath(0,12);
+       cityController.printDjikistraPath(0,19);
+
+
+
+        System.out.println("//////////////////");
+        cityController.graph.printAdjacencyMatrix();
+
+
 
 
 

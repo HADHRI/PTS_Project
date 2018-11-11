@@ -5,6 +5,7 @@ import Model.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 //This class will be a graph which represent our City without buildings
@@ -29,7 +30,7 @@ public class Graph {
     public Graph()
     {
         //Contsruct our City
-        this.city=new City(8,8);
+        this.city=new City(5,5);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
 
 
@@ -41,6 +42,39 @@ public class Graph {
                 adjacencyMatrix[i][j]=0;
             }
         }
+
+    }
+
+    //The goal of this method is to change Dynamically the state of a Road
+    // Maybe when the algorithm is looking for the ideal path , An accident will happen in a particular Road
+    // So the algorithm must include this to have the ideal PATH
+    public void refrechAdjacencyMatirx(){
+        int tailleGraphMatrix=adjacencyMatrix[0].length;
+        //Adjacency matrix is Symetric Matrix
+        int indexSymetricMatrix=0;
+        for(int i=0;i<tailleGraphMatrix;i++)
+        {
+
+            for(int j=indexSymetricMatrix;j<tailleGraphMatrix;j++)
+            {
+              if ( adjacencyMatrix[i][j]==1)
+              {
+                  // we generate random number between 1 and 5
+                  Random random = new Random();
+                  int randomNumber=random.nextInt(5) + 1;
+                  adjacencyMatrix[i][j]= randomNumber;
+                  //Undirected graph so
+                  adjacencyMatrix[j][i]= randomNumber;
+
+
+              }
+
+            }
+            indexSymetricMatrix++;
+
+        }
+
+
 
     }
 
