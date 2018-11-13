@@ -3,7 +3,7 @@ package Controller;
 
 import Model.City;
 import Model.Node;
-
+import Ressources.IndexMinPQ;
 
 import java.util.*;
 
@@ -221,6 +221,59 @@ public class CityController {
 
     }
 
+    public int [][] djikistraShortPathIndexMinPQ(int sourceIndex)
+    {
+        int numberOfVertices=graph.getListOfAllNodes().size();
+        int pathHoldingDistances [][]=new int[2][numberOfVertices];
+        IndexMinPQ<Integer> indexMPQ=new IndexMinPQ<Integer>(numberOfVertices);
+        boolean  visitedNodes[]=new boolean[numberOfVertices];
+
+
+        // intializing source distance as 0 and others as INFINITY
+        // initializing previous vertix as undifined ( I will note undifined as -1 )
+        pathHoldingDistances[0][sourceIndex]=0;
+        for( int i=0;i<numberOfVertices;i++)
+        {
+            if(i != sourceIndex)
+                pathHoldingDistances[0][i]=Integer.MAX_VALUE; // Infinity
+            pathHoldingDistances[1][i]=-1 ; // -1 For undifined Previous
+            indexMPQ.insert(i,pathHoldingDistances[0][i]);
+        }
+
+        while (!indexMPQ.isEmpty())
+        {
+            //vertex  with min value
+            int indexOfMinimumVertice=indexMPQ.minIndex();
+            indexMPQ.delMin();
+            visitedNodes[indexOfMinimumVertice]=true; // mark this node as visited
+
+
+            //For each neighbour of this Min Vertice
+            for (int j=0;j< numberOfVertices;j++)
+            {
+                //To verify that the neighbour is still not visited
+                if (graph.getAdjacencyMatrix()[indexOfMinimumVertice][j]!=0 && visitedNodes[j]==false)
+                {
+                    int distanceBetweenTwoVertices =graph.getAdjacencyMatrix()[indexOfMinimumVertice][j];
+                    int alt=pathHoldingDistances[0][indexOfMinimumVertice]+distanceBetweenTwoVertices;
+                    if (alt < pathHoldingDistances[0][j])
+                    {
+                        pathHoldingDistances[0][j]=alt;
+                        pathHoldingDistances[1][j]=indexOfMinimumVertice; // to put the index of previous
+
+                        indexMPQ.changeKey(j,alt);
+                    }
+
+
+                }
+            }
+
+
+        }
+        return pathHoldingDistances;
+
+    }
+
 
     // this methode returns minimum index of vertice with minimum distance
     private int getMinimumDist(boolean[] vistedNodes,int[] distances)
@@ -287,6 +340,44 @@ public class CityController {
 
         }
 
+
+
+    }
+
+    public void printDjikistraPathIndexMinPQ(int sourceIndex,int targetIndex) throws InterruptedException {
+        int pathAndDistance[][] = djikistraShortPathIndexMinPQ(sourceIndex);
+        ArrayList<Integer>path=new ArrayList<>(); //To hold the final path
+
+        // I will use stack to stock the PATH
+        Stack<Integer> stackHoldingPath = new Stack<>();
+        stackHoldingPath.push(targetIndex);
+        int index = targetIndex;
+
+        for(int i=0;i<graph.getListOfAllNodes().size();i++)
+        {
+            System.out.print(pathAndDistance[1][i] + "  ");
+
+        }
+        System.out.println(index);
+        while (index != sourceIndex)
+        {
+            System.out.println(index);
+            index=pathAndDistance[1][index];
+            stackHoldingPath.push(index);
+
+
+        }
+        //Printing the path
+        System.out.println("Stack => " + stackHoldingPath);
+        while (!(stackHoldingPath.isEmpty()))
+        {
+            path.add(stackHoldingPath.peek());
+            System.out.println(stackHoldingPath.pop());
+
+        }
+
+        printInformationAboutPath(path,sourceIndex,targetIndex);
+        System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
 
 
     }
@@ -397,13 +488,7 @@ public class CityController {
 
 
 
-
-
-
-
-
-
-        System.out.println("this is the end of City Matrix ");
+        /*System.out.println("this is the end of City Matrix ");
         System.out.println("this is the adjacency matrix ");
      //   cityController.graph.printAdjacencyMatrix();
         System.out.println("This is the end of adjacency matrix ");
@@ -425,7 +510,7 @@ public class CityController {
 
             System.out.print(pathAndDistances[0][i] + "  ");
 
-        }
+        }*/
 
         //Printing the Path
         System.out.println();
@@ -433,6 +518,10 @@ public class CityController {
        cityController.printDjikistraPath(0,19);
 
 
+        //Printing the Path
+        System.out.println();
+        System.out.println("Printing the path with Index Min Priority Queue");
+        cityController.printDjikistraPathIndexMinPQ(0,19);
 
         System.out.println("//////////////////");
         cityController.graph.printAdjacencyMatrix();
