@@ -7,9 +7,6 @@ import Ressources.IndexMinPQ;
 
 import java.util.*;
 
-
-
-
 public class CityController {
    public  Graph graph;
 
@@ -294,6 +291,100 @@ public class CityController {
 
     }
 
+    /** this method is when we want to run Dynamic Djikistra , means that instead of taking the static path
+     of djikistra algorithm , An incident will happen ( like an accident , or bus or taxi that changes the cost
+     in our graph ) , so our road could change
+     positionOnStaticDjikistraPath reporesents the position in the previous Path . this position becomes
+     our new source and our target stills the same . So we could have another road in the case of changing the adjacency Matrix
+     * **/
+    public void printDynamicDjikistra(int sourceIndex,int targetIndex,int  positionOnStaticDjikistraPath) throws InterruptedException {
+        int pathAndDistance[][] = djikistraShortPath(sourceIndex);
+
+        ArrayList<Integer>staticDjikistraPath=new ArrayList<>(); //To hold the final path
+        ArrayList<Integer>DynamicDjikistraPath=new ArrayList<>();
+
+        // I will use stack to stock the PATH
+        Stack<Integer> stackHoldingPath = new Stack<>();
+        stackHoldingPath.push(targetIndex);
+        int index = targetIndex;
+        // CHECK IF THE TARGET INDEX IS REACHABLE
+        if (pathAndDistance[1][targetIndex]==-1)
+        {
+            System.out.println("You can't reach this road from your position with car ");
+        }
+        else{
+            for(int i=0;i<graph.getListOfAllNodes().size();i++)
+            {
+               // System.out.print(pathAndDistance[1][i] + "  ");
+
+            }
+          //  System.out.println(index);
+            while (index != sourceIndex)
+            {
+               // System.out.println(index);
+                index=pathAndDistance[1][index];
+                stackHoldingPath.push(index);
+            }
+          //  System.out.println("Stack => " + stackHoldingPath);
+            //Pop  the elements of the stack and put it into an Array list that contains
+            while (!stackHoldingPath.isEmpty())
+            {
+               staticDjikistraPath.add(stackHoldingPath.pop());
+
+            }
+
+            /**  positionOnStaticDjikistraPath should be between 0 and the the length of the static path -1
+             * Simple example : admit that static Djikistra Path is A B C D E
+             *  If  positionOnStaticDjikistraPath=1 then when changing the adjacency matrix , the path will take another
+             *  value that could be A ...E
+             *  Hope that my example is clear
+             * **/
+            /**  Print the static path  **/
+            System.out.println("STATIC PATH");
+            printInformationAboutPath(staticDjikistraPath,sourceIndex,targetIndex);
+            /** Print the static path distance **/
+            System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
+            System.out.println("END OF STATIC PATH");
+            if (positionOnStaticDjikistraPath >0 && positionOnStaticDjikistraPath <staticDjikistraPath.size()-1)
+            {
+
+                /** in this case the we have to store the newSource **/
+                int newSource=staticDjikistraPath.get(positionOnStaticDjikistraPath-1);
+
+                /**     Printing the first part of the Dynamic Path , from the source to the currentPosition  **/
+                System.out.println("BEGINING OF THE DYNAMIC PATH --- ");
+                for (int i=0;i<positionOnStaticDjikistraPath;i++)
+                {
+                    DynamicDjikistraPath.add(staticDjikistraPath.get(i));
+                }
+             /**   System.out.println("printing dynamic table");
+                for (int i=0;i<positionOnStaticDjikistraPath;i++)
+                {
+                    System.out.println(DynamicDjikistraPath.get(i));
+                }**/
+
+
+                printInformationAboutPath(DynamicDjikistraPath,sourceIndex,newSource);
+
+                /**    changing the  adjacency Matrix **/
+                graph.refrechAdjacencyMatirx();
+
+                /** printing the continuty of the Dynamic Djikistra Path **/
+                printDjikistraPath(newSource,targetIndex);
+
+
+
+            }
+
+            }
+
+
+
+
+
+
+    }
+
 
 
 
@@ -313,24 +404,27 @@ public class CityController {
         else{
             for(int i=0;i<graph.getListOfAllNodes().size();i++)
             {
-                System.out.print(pathAndDistance[1][i] + "  ");
+                /** print la distance **/
+              //  System.out.print(pathAndDistance[1][i] + "  ");
 
             }
-            System.out.println(index);
+          //  System.out.println(index);
             while (index != sourceIndex)
             {
-                System.out.println(index);
+               // System.out.println(index);
                 index=pathAndDistance[1][index];
                 stackHoldingPath.push(index);
 
 
             }
             //Printing the path
-            System.out.println("Stack => " + stackHoldingPath);
+            /** to see the path on the stack **/
+          //  System.out.println("Stack => " + stackHoldingPath);
             while (!(stackHoldingPath.isEmpty()))
             {
                 path.add(stackHoldingPath.peek());
-                System.out.println(stackHoldingPath.pop());
+               // System.out.println(stackHoldingPath.pop());
+                stackHoldingPath.pop();
 
             }
 
@@ -343,6 +437,7 @@ public class CityController {
 
 
     }
+
 
     public void printDjikistraPathIndexMinPQ(int sourceIndex,int targetIndex) throws InterruptedException {
         int pathAndDistance[][] = djikistraShortPathIndexMinPQ(sourceIndex);
@@ -513,18 +608,20 @@ public class CityController {
         }*/
 
         //Printing the Path
-        System.out.println();
+    /*    System.out.println();
         System.out.println("Printing the path ");
-       cityController.printDjikistraPath(0,19);
+       cityController.printDjikistraPath(0,19);*/
 
 
-        //Printing the Path
+    /*    //Printing the Path
         System.out.println();
         System.out.println("Printing the path with Index Min Priority Queue");
-        cityController.printDjikistraPathIndexMinPQ(0,19);
+        cityController.printDjikistraPathIndexMinPQ(0,19); 
+        */
 
-        System.out.println("//////////////////");
-        cityController.graph.printAdjacencyMatrix();
+
+        cityController.printDynamicDjikistra(0,17,3);
+
 
 
 
