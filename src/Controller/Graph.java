@@ -5,6 +5,7 @@ import Model.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 //This class will be a graph which represent our City without buildings
@@ -14,11 +15,22 @@ public class Graph {
     private List<Node> listOfAllNodes=new ArrayList<Node>();
     private int [][] adjacencyMatrix;
 
+    public City getCity() {
+        return city;
+    }
+
+    public List<Node> getListOfAllNodes() {
+        return listOfAllNodes;
+    }
+
+    public int[][] getAdjacencyMatrix() {
+        return adjacencyMatrix;
+    }
 
     public Graph()
     {
         //Contsruct our City
-        this.city=new City(2,2);
+        this.city=new City(5,5);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
 
 
@@ -30,6 +42,39 @@ public class Graph {
                 adjacencyMatrix[i][j]=0;
             }
         }
+
+    }
+
+    //The goal of this method is to change Dynamically the state of a Road
+    // Maybe when the algorithm is looking for the ideal path , An accident will happen in a particular Road
+    // So the algorithm must include this to have the ideal PATH
+    public void refrechAdjacencyMatirx(){
+        int tailleGraphMatrix=adjacencyMatrix[0].length;
+        //Adjacency matrix is Symetric Matrix
+        int indexSymetricMatrix=0;
+        for(int i=0;i<tailleGraphMatrix;i++)
+        {
+
+            for(int j=indexSymetricMatrix;j<tailleGraphMatrix;j++)
+            {
+              if ( adjacencyMatrix[i][j]==1)
+              {
+                  // we generate random number between 1 and 5
+                  Random random = new Random();
+                  int randomNumber=random.nextInt(5) + 1;
+                  adjacencyMatrix[i][j]= randomNumber;
+                  //Undirected graph so
+                  adjacencyMatrix[j][i]= randomNumber;
+
+
+              }
+
+            }
+            indexSymetricMatrix++;
+
+        }
+
+
 
     }
 
@@ -53,7 +98,6 @@ public class Graph {
         {
             // IF It's not a building then we add it in out GRAPH
             if (!city.getMatrice()[i][j].isOccupied())
-
                 listOfAllNodes.add(city.getMatrice()[i][j]);
         }
 
@@ -129,12 +173,8 @@ public class Graph {
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
                             // System.out.println(index);
                             adjacencyMatrix[currentIndex][index] = 1;
-
-
+                        } 
                         }
-
-
-                    }
                     //checking down
                     if (i + 1 < city.getHeight()) {
                         if (!city.getMatrice()[i + 1][j].isOccupied()) {
@@ -215,21 +255,15 @@ public class Graph {
         // size should be number of nodes in the matrix without buildings
        // System.out.println(graph.listOfAllNodes.size());
         //The matrix before Setting adjacency Matrix ( initialized with 0 values)
-
-        //
-
-
-
-
-     //   graph.printAdjacencyMatrix();
-
-       // System.out.println(graph.listOfAllNodes.indexOf(graph.city.getMatrice()[0][2]));
-
+        //   graph.printAdjacencyMatrix();
+        // System.out.println(graph.listOfAllNodes.indexOf(graph.city.getMatrice()[0][2]));
         // printing the city with batiments ( to visualise the city with buildings)
         graph.city.printCityMatrix();
         System.out.println("AFTER INSERTING EDGES ");
         graph.setAdjacencyMatrixt();
         graph.printAdjacencyMatrix();
+
+
 
 
 

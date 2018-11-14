@@ -4,12 +4,23 @@ package Controller;
 import Model.City;
 import Model.Node;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+
+import java.util.*;
+
+
 
 
 public class CityController {
+   public  Graph graph;
+
+
+    public CityController(){
+        graph=new Graph();
+        graph.setListOfAllNodes();
+        graph.setAdjacencyMatrixt();
+        graph.refrechAdjacencyMatirx();
+
+    }
 
 
     public static void setTrafficligth(City city, double RedProportion, double GreenProportion)
@@ -153,91 +164,292 @@ public class CityController {
         setSpeedlimit(city);
     }
 
-    /**
-     * This algorithm is used to find the shortest path of any two points in the undirected graph
-     * @param
-     * @param start start point
-     * @param end end point
-     * @return a array of path point
-     */
-    public static int[] dijkstra(int [][] adjacencyMatrix,int start,int end){
-        //int[][] adjacencyMatrix = graph.getAdjacencyMatrix().clone();
 
-        int n = adjacencyMatrix.length;
-        //Store the shortest path from start to other points
-        int [] shortest = new int[n];
-        // Mark whether the shortest path of the current vertex has been found, true means that it has been found
-        boolean[] visited = new boolean[n];
-
-        shortest[start] = 0;
-        visited[start] = true;
+    //this function returns a int table containing 2 lines
+    // first line represents the distance from the source vertix to the current vertix
+    // second line represents the index of the previous vertix to reach the current vertix
 
 
-        //List path = new ArrayList();
-        String[] path = new String[n];
-        for(int i = 0; i < n; i++){
-            path[i] = new String(start + "--->" + i);
-        }
-        for(int count = 0; count != n-1; count ++)
+   public int [][] djikistraShortPath(int sourceIndex)
+    {
+        int numberOfVertices=graph.getListOfAllNodes().size();
+        int pathHoldingDistances [][]=new int[2][numberOfVertices];
+
+
+       boolean  visitedNodes[]=new boolean[numberOfVertices];
+
+
+        // intializing source distance as 0 and others as INFINITY
+        // initializing previous vertix as undifined ( I will note undifined as -1 )
+        pathHoldingDistances[0][sourceIndex]=0;
+        for( int i=0;i<numberOfVertices;i++)
         {
+            if(i != sourceIndex)
+            pathHoldingDistances[0][i]=Integer.MAX_VALUE; // Infinity
+            pathHoldingDistances[1][i]=-1 ; // -1 For undifined Previous
 
-            int index = 0;
-            int min = 0;
-            for(int i =0; i< n ; i++)
+        }
+        int weHaveVisitedAllVertices=0;
+        while (weHaveVisitedAllVertices<numberOfVertices-1)
+        {
+            //vertex  with min value
+            int indexOfMinimumVertice=getMinimumDist(visitedNodes,pathHoldingDistances[0]);
+            visitedNodes[indexOfMinimumVertice]=true; // mark this node as visited
+            weHaveVisitedAllVertices++;
+
+            //For each neighbour of this Min Vertice
+            for (int j=0;j< numberOfVertices;j++)
             {
-                if( !visited[i] && adjacencyMatrix[start][i] != 0)
+                //To verify that the neighbour is still not visited
+                if (graph.getAdjacencyMatrix()[indexOfMinimumVertice][j]!=0 && visitedNodes[j]==false)
                 {
-                    if(min == 0 || min > adjacencyMatrix[start][i])
+                  int distanceBetweenTwoVertices =graph.getAdjacencyMatrix()[indexOfMinimumVertice][j];
+                    int alt=pathHoldingDistances[0][indexOfMinimumVertice]+distanceBetweenTwoVertices;
+                    if (alt < pathHoldingDistances[0][j])
                     {
-                        min = adjacencyMatrix[start][i];
-                        index = i;
+                        pathHoldingDistances[0][j]=alt;
+                        pathHoldingDistances[1][j]=indexOfMinimumVertice; // to put the index of previous
                     }
+
+
                 }
             }
 
-            if(index == 0)
-            {
-                System.out.println("//the input map matrix is wrong!");
 
-            }
-            shortest[index] = min;
-            visited[index] = true;
-
-            for (int i = 0; i < n; i++)
-            {
-                if (!visited[i] && adjacencyMatrix[index][i] != 0)
-                {
-                    int distance = min + adjacencyMatrix[index][i];
-                    if (adjacencyMatrix[start][i] == 0 || adjacencyMatrix[start][i] > distance)
-                    {
-                        adjacencyMatrix[start][i] = distance;
-                        //here i dont know how to insert data in the specified position of the array and all the subsequent datas should postpone one position
-                        //that's why i use String
-                        path[i] = path[index] + "--->" + i;
-                    }
-                }
-            }
         }
+        return pathHoldingDistances;
 
-        //can use next line code to test this function
-        //System.out.println("From point " + start + " to point "+end+" is : " +path[end] + " The shortest distance is "+shortest[end]);
-
-        String[] str = path[end].split("--->");
-        int[] paths = new int[str.length];
-        for (int i=0;i<paths.length;i++) {
-             paths[i] = Integer.valueOf(str[i]);
-        }
-
-
-        //return shortest[end];
-        return  paths;
     }
 
 
-    //Just to test the set methods
-    public static void main(String[] args) {
+    // this methode returns minimum index of vertice with minimum distance
+    private int getMinimumDist(boolean[] vistedNodes,int[] distances)
+    {
+        int max=Integer.MAX_VALUE;
+        int indexOfMinimum=-1;
+        for (int i=0;i<distances.length;i++)
+        {
+            if(!vistedNodes[i] && distances[i] < max )
+            {
+                indexOfMinimum=i;
+                max=distances[i];
 
-        City city = new City (100,100);
+
+            }
+        }
+        return  indexOfMinimum;
+
+    }
+
+
+
+
+    public void printDjikistraPath(int sourceIndex,int targetIndex) throws InterruptedException {
+        int pathAndDistance[][] = djikistraShortPath(sourceIndex);
+        ArrayList<Integer>path=new ArrayList<>(); //To hold the final path
+
+        // I will use stack to stock the PATH
+        Stack<Integer> stackHoldingPath = new Stack<>();
+        stackHoldingPath.push(targetIndex);
+        int index = targetIndex;
+        // CHECK IF THE TARGET INDEX IS REACHABLE
+        if (pathAndDistance[1][targetIndex]==-1)
+        {
+            System.out.println("You can't reach this road from your position with car ");
+        }
+        else{
+            for(int i=0;i<graph.getListOfAllNodes().size();i++)
+            {
+                System.out.print(pathAndDistance[1][i] + "  ");
+
+            }
+            System.out.println(index);
+            while (index != sourceIndex)
+            {
+                System.out.println(index);
+                index=pathAndDistance[1][index];
+                stackHoldingPath.push(index);
+
+
+            }
+            //Printing the path
+            System.out.println("Stack => " + stackHoldingPath);
+            while (!(stackHoldingPath.isEmpty()))
+            {
+                path.add(stackHoldingPath.peek());
+                System.out.println(stackHoldingPath.pop());
+
+            }
+
+            printInformationAboutPath(path,sourceIndex,targetIndex);
+            System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
+
+
+        }
+
+
+
+    }
+
+    private void printInformationAboutPath(ArrayList<Integer>path,int sourceIndex,int targetIndex)
+    {
+        //Current position
+       int currentPositionRow= graph.getListOfAllNodes().get(sourceIndex).getRow();
+       int currentPositionColumn= graph.getListOfAllNodes().get(sourceIndex).getColumn();
+
+        for (int i=1;i<path.size();i++)
+        {
+            int nextPositionRow=graph.getListOfAllNodes().get(path.get(i)).getRow();
+            int nextPositionColumn=graph.getListOfAllNodes().get(path.get(i)).getColumn();
+
+            // next position is at RIGTH
+            if(nextPositionRow==currentPositionRow && nextPositionColumn==currentPositionColumn+1)
+            {
+                System.out.print("MOVE RIGTH ----");
+
+            }
+            else
+                // next position is LEFT
+                if(nextPositionRow==currentPositionRow && nextPositionColumn==currentPositionColumn-1)
+                {
+                    System.out.println("MOVE LEFT  ----");
+                }
+            else
+                //NEXT POSITION UP
+                if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow-1 )
+                {
+                    System.out.println("MOVE UP  ----");
+
+                }
+            else
+                //NEXT POSITION DOWNN
+                if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow +1 )
+                {
+                    System.out.println("MOVE DOWN  ----");
+
+                }
+
+            else
+                // Next position UP RIGTH
+                if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow -1 )
+                {
+                    System.out.println("MOVE UP RIGTH ----");
+
+                }
+            else
+                    // Next position UP LEFT
+                    if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow -1 )
+                    {
+                        System.out.println("MOVE UP LEFT  ----");
+
+                    }
+            else
+                // next position is DOWN RIGTH
+                    if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow + 1 )
+                    {
+                        System.out.println("MOVE DOWN RIGTH  ----");
+
+                    }
+            else
+                //NEXT position is DOWN LEFT
+                    if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow + 1 )
+                    {
+                        System.out.println("MOVE DOWN LEFT  ----");
+
+                    }
+
+                    currentPositionColumn=nextPositionColumn;
+                    currentPositionRow=nextPositionRow;
+
+
+
+
+
+
+
+
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //Just to test the set methods
+    public static void main(String[] args) throws InterruptedException {
+
+        CityController cityController=new CityController();
+
+        System.out.println("This is the city matrix ");
+        cityController.graph.getCity().printCityMatrix();
+
+
+
+
+
+
+
+
+
+        System.out.println("this is the end of City Matrix ");
+        System.out.println("this is the adjacency matrix ");
+     //   cityController.graph.printAdjacencyMatrix();
+        System.out.println("This is the end of adjacency matrix ");
+
+        int pathAndDistances[][]=cityController.djikistraShortPath(0);
+
+        System.out.println("Show paths from Source ( A) to all others ");
+
+
+        for(int i=0;i<cityController.graph.getListOfAllNodes().size();i++)
+        {
+            System.out.print(pathAndDistances[1][i] + "  ");
+
+        }
+        System.out.println();
+        System.out.println("Show distances from Source ( A) to all others ");
+        for(int i=0;i<cityController.graph.getListOfAllNodes().size();i++)
+        {
+
+            System.out.print(pathAndDistances[0][i] + "  ");
+
+        }
+
+        //Printing the Path
+        System.out.println();
+        System.out.println("Printing the path ");
+       cityController.printDjikistraPath(0,19);
+
+
+
+        System.out.println("//////////////////");
+        cityController.graph.printAdjacencyMatrix();
+
+
+
+
+
+
+
+
+
+
+
+
+
+     /*   City city = new City (100,100);
 
 
 
@@ -281,30 +493,14 @@ public class CityController {
             }
 
         }
-        /*
         System.out.println(compGreenligth);
         System.out.println(compRedligth);
         System.out.println(compBus);
         System.out.println(compTaxi);
         System.out.println(compAccident);
         System.out.println(compEmptyNode);
-        */
 
-        System.out.println("HELLO WORLD !!");
-
-
-
-        int[][] testAdjacencyMatrix = {
-                { 0, 1, 1, 1, 0 },
-                { 1, 0, 0, 1, 0 },
-                { 1, 0, 0, 1, 1 },
-                { 1, 1, 1, 0, 0 },
-                { 0, 0, 1, 0, 0 } };
-        int[] shortPath = dijkstra(testAdjacencyMatrix,0,4);
-        for (int i:shortPath
-             ) {
-            System.out.print(i+"\t");
-        }
+        System.out.println("HELLO WORLD !!");*/
 
 
 
