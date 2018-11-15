@@ -11,6 +11,7 @@ public class City {
     private int height;
     private Node[][] matrice;
 
+
     public int getWidth() {
         return width;
     }

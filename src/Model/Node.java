@@ -3,7 +3,7 @@ package Model;
 import java.util.LinkedList;
 
 //This is one part of the model
-public class Node {
+public class Node implements Comparable<Node>{
 
     public enum Traffic_ligth{RED,GREEN};
 
@@ -19,8 +19,30 @@ public class Node {
     private LinkedList<Node> neighbors;
     private Traffic_ligth my_traffic_ligth;
 
+    public void setSample(char sample) {
+        this.sample = sample;
+    }
+
+    public char getSample() {
+        return sample;
+    }
+
+    public char sample;
 
 
+
+    public Node parent;
+    public int g;
+    public int h;
+    public int f;
+
+    @Override
+    public int compareTo(Node o) {
+        return f - o.f;
+    }
+
+
+    public boolean getOccupied(){return  this.occupied;}
     public boolean isBus() {
         return bus;
     }
@@ -112,6 +134,7 @@ public class Node {
         this.column=j;
         this.neighbors=null;
         this.my_traffic_ligth=null;
+
     }
 
 
