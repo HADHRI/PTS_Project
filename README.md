@@ -31,14 +31,17 @@ What is already done:
 - Implementation of Dijkistra Algorithm
 - Adaptation of Dijkistra Algorithm to our environment
 - Implementation of the view classe
+- Implementation of the Indexed Min Priority Queue classe
+- Implementation of Dijkistra Algorithm with an Indexed Min Priority Queue
+- Implementation of a dynamic Dijkistra Algorithm 
+- Implementation of a method to refresh the adjency matrix
 
 What we are actually doing:
 
-- Implementation of Dijkistra Algorithm with an Indexed Min Priority Queue
-- Implementation of a dynamic Dijkistra Algorithm 
+- Implementation of A* Algorithm
 
 What we are planning to do:
 
 - Create a short Video that present our project
-- Implementation of A* Algorithm
+
 
