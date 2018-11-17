@@ -8,7 +8,7 @@ import Ressources.IndexMinPQ;
 import java.util.*;
 
 public class CityController {
-   public  Graph graph;
+    public  Graph graph;
 
 
     public CityController(){
@@ -152,6 +152,8 @@ public class CityController {
         }
     }
 
+    /**this function is used to generated randomly in the city traffic lights, bus, taxi, accident and speed limit*/
+
     public static void setCity(City city,double RedProportion, double GreenProportion,double BusProportion,double TaxiProportion,double AccidentProportion)
     {
         setTrafficligth(city, RedProportion, GreenProportion);
@@ -162,18 +164,18 @@ public class CityController {
     }
 
 
-    //this function returns a int table containing 2 lines
-    // first line represents the distance from the source vertix to the current vertix
-    // second line represents the index of the previous vertix to reach the current vertix
+    /**this function returns a int table containing 2 lines
+     first line represents the distance from the source vertix to the current vertix
+     second line represents the index of the previous vertix to reach the current vertix*/
 
 
-   public int [][] djikistraShortPath(int sourceIndex)
+    public int [][] djikistraShortPath(int sourceIndex)
     {
         int numberOfVertices=graph.getListOfAllNodes().size();
         int pathHoldingDistances [][]=new int[2][numberOfVertices];
 
 
-       boolean  visitedNodes[]=new boolean[numberOfVertices];
+        boolean  visitedNodes[]=new boolean[numberOfVertices];
 
 
         // intializing source distance as 0 and others as INFINITY
@@ -182,7 +184,7 @@ public class CityController {
         for( int i=0;i<numberOfVertices;i++)
         {
             if(i != sourceIndex)
-            pathHoldingDistances[0][i]=Integer.MAX_VALUE; // Infinity
+                pathHoldingDistances[0][i]=Integer.MAX_VALUE; // Infinity
             pathHoldingDistances[1][i]=-1 ; // -1 For undifined Previous
 
         }
@@ -190,7 +192,7 @@ public class CityController {
         while (weHaveVisitedAllVertices<numberOfVertices-1)
         {
             //vertex  with min value
-            int indexOfMinimumVertice=getMinimumDist(visitedNodes,pathHoldingDistances[0]);
+            int indexOfMinimumVertice=getMinimumDist(visitedNodes,pathHoldingDistances[0]);//return the index in the array of the minimum distance for the nodes that are not visited
             visitedNodes[indexOfMinimumVertice]=true; // mark this node as visited
             weHaveVisitedAllVertices++;
 
@@ -200,11 +202,11 @@ public class CityController {
                 //To verify that the neighbour is still not visited
                 if (graph.getAdjacencyMatrix()[indexOfMinimumVertice][j]!=0 && visitedNodes[j]==false)
                 {
-                  int distanceBetweenTwoVertices =graph.getAdjacencyMatrix()[indexOfMinimumVertice][j];
-                    int alt=pathHoldingDistances[0][indexOfMinimumVertice]+distanceBetweenTwoVertices;
-                    if (alt < pathHoldingDistances[0][j])
+                    int distanceBetweenTwoVertices =graph.getAdjacencyMatrix()[indexOfMinimumVertice][j];//distance between the minimum choose and it's neighbor j
+                    int alt=pathHoldingDistances[0][indexOfMinimumVertice]+distanceBetweenTwoVertices;//distance between the neighbor j and the source
+                    if (alt < pathHoldingDistances[0][j])//if the distance for the neighbor j is not defined
                     {
-                        pathHoldingDistances[0][j]=alt;
+                        pathHoldingDistances[0][j]=alt;//to change the distance for the neighbor j in the array of distances
                         pathHoldingDistances[1][j]=indexOfMinimumVertice; // to put the index of previous
                     }
 
@@ -217,6 +219,10 @@ public class CityController {
         return pathHoldingDistances;
 
     }
+
+    /**this function returns a int table containing 2 lines using an Index minimum priority Queue
+     first line represents the distance from the source vertix to the current vertix
+     second line represents the index of the previous vertix to reach the current vertix*/
 
     public int [][] djikistraShortPathIndexMinPQ(int sourceIndex)
     {
@@ -237,11 +243,11 @@ public class CityController {
             indexMPQ.insert(i,pathHoldingDistances[0][i]);
         }
 
-        while (!indexMPQ.isEmpty())
+        while (!indexMPQ.isEmpty())//
         {
-            //vertex  with min value
-            int indexOfMinimumVertice=indexMPQ.minIndex();
-            indexMPQ.delMin();
+
+            int indexOfMinimumVertice=indexMPQ.delMin();//remove the minimum distance and return it's associated index
+
             visitedNodes[indexOfMinimumVertice]=true; // mark this node as visited
 
 
@@ -251,14 +257,15 @@ public class CityController {
                 //To verify that the neighbour is still not visited
                 if (graph.getAdjacencyMatrix()[indexOfMinimumVertice][j]!=0 && visitedNodes[j]==false)
                 {
-                    int distanceBetweenTwoVertices =graph.getAdjacencyMatrix()[indexOfMinimumVertice][j];
-                    int alt=pathHoldingDistances[0][indexOfMinimumVertice]+distanceBetweenTwoVertices;
-                    if (alt < pathHoldingDistances[0][j])
+
+                    int distanceBetweenTwoVertices =graph.getAdjacencyMatrix()[indexOfMinimumVertice][j];//distance between the minimum choose and it's neighbor j
+                    int alt=pathHoldingDistances[0][indexOfMinimumVertice]+distanceBetweenTwoVertices;//distance between the neighbor j and the source
+                    if (alt < pathHoldingDistances[0][j])//if the distance for the neighbor j is not defined
                     {
-                        pathHoldingDistances[0][j]=alt;
+                        pathHoldingDistances[0][j]=alt;//to change the distance for the neighbor j in the array of distances
                         pathHoldingDistances[1][j]=indexOfMinimumVertice; // to put the index of previous
 
-                        indexMPQ.changeKey(j,alt);
+                        indexMPQ.changeKey(j,alt);//to change the distance for the neighbor j in the indexed min priority queue
                     }
 
 
@@ -271,8 +278,8 @@ public class CityController {
 
     }
 
+    /** this methode returns the index of vertice with minimum distance*/
 
-    // this methode returns minimum index of vertice with minimum distance
     private int getMinimumDist(boolean[] vistedNodes,int[] distances)
     {
         int max=Integer.MAX_VALUE;
@@ -297,6 +304,7 @@ public class CityController {
      positionOnStaticDjikistraPath reporesents the position in the previous Path . this position becomes
      our new source and our target stills the same . So we could have another road in the case of changing the adjacency Matrix
      * **/
+
     public void printDynamicDjikistra(int sourceIndex,int targetIndex,int  positionOnStaticDjikistraPath) throws InterruptedException {
         int pathAndDistance[][] = djikistraShortPath(sourceIndex);
 
@@ -315,21 +323,21 @@ public class CityController {
         else{
             for(int i=0;i<graph.getListOfAllNodes().size();i++)
             {
-               // System.out.print(pathAndDistance[1][i] + "  ");
+                // System.out.print(pathAndDistance[1][i] + "  ");
 
             }
-          //  System.out.println(index);
+            //  System.out.println(index);
             while (index != sourceIndex)
             {
-               // System.out.println(index);
+                // System.out.println(index);
                 index=pathAndDistance[1][index];
                 stackHoldingPath.push(index);
             }
-          //  System.out.println("Stack => " + stackHoldingPath);
+            //  System.out.println("Stack => " + stackHoldingPath);
             //Pop  the elements of the stack and put it into an Array list that contains
             while (!stackHoldingPath.isEmpty())
             {
-               staticDjikistraPath.add(stackHoldingPath.pop());
+                staticDjikistraPath.add(stackHoldingPath.pop());
 
             }
 
@@ -357,11 +365,11 @@ public class CityController {
                 {
                     DynamicDjikistraPath.add(staticDjikistraPath.get(i));
                 }
-             /**   System.out.println("printing dynamic table");
-                for (int i=0;i<positionOnStaticDjikistraPath;i++)
-                {
-                    System.out.println(DynamicDjikistraPath.get(i));
-                }**/
+                /**   System.out.println("printing dynamic table");
+                 for (int i=0;i<positionOnStaticDjikistraPath;i++)
+                 {
+                 System.out.println(DynamicDjikistraPath.get(i));
+                 }**/
 
 
                 printInformationAboutPath(DynamicDjikistraPath,sourceIndex,newSource);
@@ -376,7 +384,7 @@ public class CityController {
 
             }
 
-            }
+        }
 
 
 
@@ -385,8 +393,9 @@ public class CityController {
 
     }
 
-
-
+    /** this method is used to print the shortest path between the source and the target when we use Djikistra.
+     First we will used the method dijkistraShortPath to store all the paths, then we will choose the best path between all these paths.
+     * **/
 
     public void printDjikistraPath(int sourceIndex,int targetIndex) throws InterruptedException {
         int pathAndDistance[][] = djikistraShortPath(sourceIndex);
@@ -404,14 +413,14 @@ public class CityController {
         else{
             for(int i=0;i<graph.getListOfAllNodes().size();i++)
             {
-                /** print la distance **/
-              //  System.out.print(pathAndDistance[1][i] + "  ");
+                /** print the distance **/
+                //  System.out.print(pathAndDistance[1][i] + "  ");
 
             }
-          //  System.out.println(index);
+            //  System.out.println(index);
             while (index != sourceIndex)
             {
-               // System.out.println(index);
+                // System.out.println(index);
                 index=pathAndDistance[1][index];
                 stackHoldingPath.push(index);
 
@@ -419,11 +428,11 @@ public class CityController {
             }
             //Printing the path
             /** to see the path on the stack **/
-          //  System.out.println("Stack => " + stackHoldingPath);
+            //  System.out.println("Stack => " + stackHoldingPath);
             while (!(stackHoldingPath.isEmpty()))
             {
                 path.add(stackHoldingPath.peek());
-               // System.out.println(stackHoldingPath.pop());
+                // System.out.println(stackHoldingPath.pop());
                 stackHoldingPath.pop();
 
             }
@@ -438,6 +447,9 @@ public class CityController {
 
     }
 
+    /** this method is used to print the shortest path between the source and the target when we use Djikistra.
+     First we will used the method dijkistraShortPathIndexMinPQ to store all the paths, then we will choose the best path between all these paths.
+     * **/
 
     public void printDjikistraPathIndexMinPQ(int sourceIndex,int targetIndex) throws InterruptedException {
         int pathAndDistance[][] = djikistraShortPathIndexMinPQ(sourceIndex);
@@ -477,11 +489,13 @@ public class CityController {
 
     }
 
+    /** this method is used to print information about the movements to do if we want to follow the path between the source and the target.* **/
+
     private void printInformationAboutPath(ArrayList<Integer>path,int sourceIndex,int targetIndex)
     {
         //Current position
-       int currentPositionRow= graph.getListOfAllNodes().get(sourceIndex).getRow();
-       int currentPositionColumn= graph.getListOfAllNodes().get(sourceIndex).getColumn();
+        int currentPositionRow= graph.getListOfAllNodes().get(sourceIndex).getRow();
+        int currentPositionColumn= graph.getListOfAllNodes().get(sourceIndex).getColumn();
 
         for (int i=1;i<path.size();i++)
         {
@@ -500,52 +514,52 @@ public class CityController {
                 {
                     System.out.println("MOVE LEFT  ----");
                 }
-            else
-                //NEXT POSITION UP
-                if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow-1 )
-                {
-                    System.out.println("MOVE UP  ----");
-
-                }
-            else
-                //NEXT POSITION DOWNN
-                if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow +1 )
-                {
-                    System.out.println("MOVE DOWN  ----");
-
-                }
-
-            else
-                // Next position UP RIGTH
-                if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow -1 )
-                {
-                    System.out.println("MOVE UP RIGTH ----");
-
-                }
-            else
-                    // Next position UP LEFT
-                    if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow -1 )
+                else
+                    //NEXT POSITION UP
+                    if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow-1 )
                     {
-                        System.out.println("MOVE UP LEFT  ----");
+                        System.out.println("MOVE UP  ----");
 
                     }
-            else
-                // next position is DOWN RIGTH
-                    if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow + 1 )
-                    {
-                        System.out.println("MOVE DOWN RIGTH  ----");
+                    else
+                        //NEXT POSITION DOWNN
+                        if(nextPositionColumn==currentPositionColumn && nextPositionRow==currentPositionRow +1 )
+                        {
+                            System.out.println("MOVE DOWN  ----");
 
-                    }
-            else
-                //NEXT position is DOWN LEFT
-                    if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow + 1 )
-                    {
-                        System.out.println("MOVE DOWN LEFT  ----");
+                        }
 
-                    }
+                        else
+                            // Next position UP RIGTH
+                            if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow -1 )
+                            {
+                                System.out.println("MOVE UP RIGTH ----");
 
-                    currentPositionColumn=nextPositionColumn;
-                    currentPositionRow=nextPositionRow;
+                            }
+                            else
+                                // Next position UP LEFT
+                                if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow -1 )
+                                {
+                                    System.out.println("MOVE UP LEFT  ----");
+
+                                }
+                                else
+                                    // next position is DOWN RIGTH
+                                    if(nextPositionColumn==currentPositionColumn + 1 && nextPositionRow==currentPositionRow + 1 )
+                                    {
+                                        System.out.println("MOVE DOWN RIGTH  ----");
+
+                                    }
+                                    else
+                                        //NEXT position is DOWN LEFT
+                                        if(nextPositionColumn==currentPositionColumn - 1 && nextPositionRow==currentPositionRow + 1 )
+                                        {
+                                            System.out.println("MOVE DOWN LEFT  ----");
+
+                                        }
+
+            currentPositionColumn=nextPositionColumn;
+            currentPositionRow=nextPositionRow;
 
 
 
@@ -559,21 +573,8 @@ public class CityController {
 
     }
 
+    /**Main to test the methods*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //Just to test the set methods
     public static void main(String[] args) throws InterruptedException {
 
         CityController cityController=new CityController();
@@ -616,7 +617,7 @@ public class CityController {
     /*    //Printing the Path
         System.out.println();
         System.out.println("Printing the path with Index Min Priority Queue");
-        cityController.printDjikistraPathIndexMinPQ(0,19); 
+        cityController.printDjikistraPathIndexMinPQ(0,19);
         */
 
 

@@ -45,9 +45,10 @@ public class Graph {
 
     }
 
-    //The goal of this method is to change Dynamically the state of a Road
-    // Maybe when the algorithm is looking for the ideal path , An accident will happen in a particular Road
-    // So the algorithm must include this to have the ideal PATH
+    /** The goal of this method is to change Dynamically the state of a Road
+     Maybe when the algorithm is looking for the ideal path , An accident will happen in a particular Road
+     So the algorithm must include this to have the ideal PATH */
+
     public void refrechAdjacencyMatirx(){
         int tailleGraphMatrix=adjacencyMatrix[0].length;
         //Adjacency matrix is Symetric Matrix
@@ -57,26 +58,26 @@ public class Graph {
 
             for(int j=indexSymetricMatrix;j<tailleGraphMatrix;j++)
             {
-              if ( adjacencyMatrix[i][j]==1)
-              {
-                  // we generate random number between 1 and 5
-                  Random random = new Random();
-                  int randomNumber=random.nextInt(5) + 1;
-                  adjacencyMatrix[i][j]= randomNumber;
-                  //Undirected graph so
-                  adjacencyMatrix[j][i]= randomNumber;
+                if ( adjacencyMatrix[i][j]==1)
+                {
+                    // we generate random number between 1 and 5
+                    Random random = new Random();
+                    int randomNumber=random.nextInt(5) + 1;
+                    adjacencyMatrix[i][j]= randomNumber;
+                    //Undirected graph so
+                    adjacencyMatrix[j][i]= randomNumber;
 
 
-              }
+                }
 
             }
             indexSymetricMatrix++;
 
         }
 
-
-
     }
+
+    /**method to print the adjency matrix*/
 
     public  void printAdjacencyMatrix(){
         for(int i=0;i<adjacencyMatrix.length;i++)
@@ -90,22 +91,25 @@ public class Graph {
 
     }
 
+    /**method to set the List of all nodes*/
+
     public  void setListOfAllNodes()
     {
         for(int i=0;i<city.getHeight();i++)
-    {
-        for(int j=0;j<city.getWidth();j++)
         {
-            // IF It's not a building then we add it in out GRAPH
-            if (!city.getMatrice()[i][j].isOccupied())
-                listOfAllNodes.add(city.getMatrice()[i][j]);
+            for(int j=0;j<city.getWidth();j++)
+            {
+                // IF It's not a building then we add it in out GRAPH
+                if (!city.getMatrice()[i][j].isOccupied())
+                    listOfAllNodes.add(city.getMatrice()[i][j]);
+            }
+
         }
-
-    }
     }
 
-    //In this methode we will store all relations between nodes ( means we will store edges )
-    // At the begining we will consider our graph unweighted
+    /**In this methode we will store all relations between nodes ( means we will store edges )
+     At the begining we will consider our graph unweighted*/
+
     public void setAdjacencyMatrixt()
     {
         for(int i=0;i<city.getHeight();i++)
@@ -173,8 +177,8 @@ public class Graph {
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
                             // System.out.println(index);
                             adjacencyMatrix[currentIndex][index] = 1;
-                        } 
                         }
+                    }
                     //checking down
                     if (i + 1 < city.getHeight()) {
                         if (!city.getMatrice()[i + 1][j].isOccupied()) {
@@ -245,7 +249,8 @@ public class Graph {
 
     }
 
-    //Main to test
+    /** Main to test */
+
     public static void main(String []args )
     {
 
@@ -253,7 +258,7 @@ public class Graph {
         graph.setListOfAllNodes();
 
         // size should be number of nodes in the matrix without buildings
-       // System.out.println(graph.listOfAllNodes.size());
+        // System.out.println(graph.listOfAllNodes.size());
         //The matrix before Setting adjacency Matrix ( initialized with 0 values)
         //   graph.printAdjacencyMatrix();
         // System.out.println(graph.listOfAllNodes.indexOf(graph.city.getMatrice()[0][2]));
