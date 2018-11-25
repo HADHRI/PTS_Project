@@ -298,6 +298,26 @@ public class CityController {
 
     }
 
+    /** this methode returns the index of vertice with maximum distance*/
+
+    private int getMaximumDist(boolean[] vistedNodes,int[] AdjencyRow)
+    {
+        int min=0;
+        int indexOfMaximum=-1;
+        for (int i=0;i<AdjencyRow.length-1;i++)
+        {
+            if(!vistedNodes[i] && AdjencyRow[i] > min )
+            {
+                indexOfMaximum=i;
+                min=AdjencyRow[i];
+
+
+            }
+        }
+        return  indexOfMaximum;
+
+    }
+
     /** this method is when we want to run Dynamic Djikistra , means that instead of taking the static path
      of djikistra algorithm , An incident will happen ( like an accident , or bus or taxi that changes the cost
      in our graph ) , so our road could change
@@ -573,6 +593,46 @@ public class CityController {
 
     }
 
+    /***
+     * This method allow us to travel into the graph from the source to a random node which have no neighbors.
+     * We always choose the neighbor with the maximum distance.
+     * We will use this method in the A* algorithm to calculate approximate the heuristic (h).
+     * @param source is the index of the Source node
+     * @param graph is the graph of the city
+     * @param visitedNodes is an array that indicate if a node has been already visited
+     */
+
+    public int Breadth_First_Search(int source , Graph graph,boolean [] visitedNodes )
+    {
+        int heuristic=0;/**  It's an approximation of the maximum distance from the source node*/
+        Node SourceNode=graph.getListOfAllNodes().get(source); /** create a copy of the source node*/
+        visitedNodes[source]=true; /**Just to know that the source node is alreay visited*/
+        int indexOfNext=0;
+
+
+        while (indexOfNext!=-1)/** While the current node has neighbors*/
+        {
+            Node current = SourceNode; /** The node where we are actually*/
+            int indexCurrentNode=graph.getListOfAllNodes().indexOf(current);/** Index of the current node*/
+            System.out.println(indexCurrentNode + " ");
+
+            /**Thanks to the method getMaximumDist we get the index of the neighbor which has the maximum distance*/
+            indexOfNext=getMaximumDist(visitedNodes,graph.getAdjacencyMatrix()[indexCurrentNode]);
+
+            if(indexOfNext==-1){break;}/**If the node has only visited neighbors we get out of the while loop*/
+            else
+            {
+                Node next = graph.getListOfAllNodes().get(indexOfNext);
+                visitedNodes[indexOfNext] = true;/** To mark the node as visited */
+                SourceNode=next;/** The neighbor we choose become the current node*/
+
+                heuristic = heuristic + graph.getAdjacencyMatrix()[indexCurrentNode][indexOfNext];/**We update the heuristic*/
+            }
+        }
+
+        return heuristic;
+    }
+
     /**Main to test the methods*/
 
     public static void main(String[] args) throws InterruptedException {
@@ -581,7 +641,19 @@ public class CityController {
 
         System.out.println("This is the city matrix ");
         cityController.graph.getCity().printCityMatrix();
+        System.out.println("-------------------------------------------");
+        System.out.println(" ");
 
+        int numberOfVertices=cityController.graph.getListOfAllNodes().size();
+        boolean  visitedNodes[]=new boolean[numberOfVertices];
+
+        int heuristic= cityController.Breadth_First_Search(0,cityController.graph,visitedNodes);
+
+        System.out.println("-------------------------------------------");
+        System.out.println(" ");
+        System.out.println(" Numbre of nodes :" + numberOfVertices);
+        System.out.println(" ");
+        System.out.println(" Heuristic : " + heuristic);
 
 
         /*System.out.println("this is the end of City Matrix ");
@@ -621,7 +693,7 @@ public class CityController {
         */
 
 
-        cityController.printDynamicDjikistra(0,17,3);
+        //cityController.printDynamicDjikistra(0,17,3);
 
 
 
