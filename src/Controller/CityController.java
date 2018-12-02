@@ -19,7 +19,7 @@ public class CityController {
 
     }
 
-
+/** We have then to adapt City matrix to array list
     public static void setTrafficligth(City city, double RedProportion, double GreenProportion)
     {
 
@@ -150,10 +150,10 @@ public class CityController {
 
             }
         }
-    }
+    } **/
 
     /**this function is used to generated randomly in the city traffic lights, bus, taxi, accident and speed limit*/
-
+/**
     public static void setCity(City city,double RedProportion, double GreenProportion,double BusProportion,double TaxiProportion,double AccidentProportion)
     {
         setTrafficligth(city, RedProportion, GreenProportion);
@@ -161,7 +161,7 @@ public class CityController {
         setTaxi(city,TaxiProportion);
         setAccident(city,AccidentProportion);
         setSpeedlimit(city);
-    }
+    } **/
 
 
     /**this function returns a int table containing 2 lines
@@ -731,14 +731,15 @@ public class CityController {
 
         System.out.println("-------------------------------------------TESTING A STAR ALGORITHM-------------------------------------------");
         Astar astar=new Astar(cityController.graph);
-        astar.run(cityController.graph.getListOfAllNodes().get(0),cityController.graph.getListOfAllNodes().get(18));
+     //   astar.run(cityController.graph.getListOfAllNodes().get(0),cityController.graph.getListOfAllNodes().get(10000));
 
 
         System.out.println("-------------------------------------------TESTING DJIKISTRA ALGORITHM-------------------------------------------");
 
-        cityController.printDjikistraPath(0,18);
+        cityController.printDjikistraPath(0,10000);
+        astar.run(cityController.graph.getListOfAllNodes().get(0),cityController.graph.getListOfAllNodes().get(10000));
 
-    
+
 
 
 

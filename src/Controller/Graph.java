@@ -30,7 +30,7 @@ public class Graph {
     public Graph()
     {
         //Contsruct our City
-        this.city=new City(5,5);
+        this.city=new City(200,200);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
 
 
@@ -100,8 +100,9 @@ public class Graph {
             for(int j=0;j<city.getWidth();j++)
             {
                 // IF It's not a building then we add it in out GRAPH
-                if (!city.getMatrice()[i][j].isOccupied())
-                    listOfAllNodes.add(city.getMatrice()[i][j]);
+                if (!city.getMatrice().get(i).get(j).isOccupied())
+
+                    listOfAllNodes.add(city.getMatrice().get(i).get(j));
             }
 
         }
@@ -118,17 +119,17 @@ public class Graph {
             for(int j=0;j<city.getWidth();j++) {
 
                 // We check only for nodes witch are not buildings
-                if (!city.getMatrice()[i][j].isOccupied()) {
+                if (!city.getMatrice().get(i).get(j).isOccupied()) {
 
                     // we have to check if neighbors are not buildings so we add them
                     //checking Up
                     if (i - 1 >= 0) {
-                        if (!city.getMatrice()[i - 1][j].isOccupied()) {
+                        if (!city.getMatrice().get(i-1).get(j).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i - 1][j]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
                             adjacencyMatrix[currentIndex][index] = 1;
 
 
@@ -138,12 +139,12 @@ public class Graph {
                     }
                     //cheking UP Right
                     if (i - 1 >= 0 && j + 1 < city.getWidth()) {
-                        if (!city.getMatrice()[i - 1][j + 1].isOccupied()) {
+                        if (!city.getMatrice().get(i-1).get(j+1).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i - 1][j + 1]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j+1));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
                             adjacencyMatrix[currentIndex][index] = 1;
 
 
@@ -154,12 +155,12 @@ public class Graph {
 
                     //checking right
                     if (j + 1 < city.getWidth()) {
-                        if (!city.getMatrice()[i][j + 1].isOccupied()) {
+                        if (!city.getMatrice().get(i).get(j+1).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i][j + 1]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j+1));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
 
                             adjacencyMatrix[currentIndex][index] = 1;
 
@@ -169,24 +170,24 @@ public class Graph {
                     }
                     //checking downRight
                     if (i + 1 < city.getHeight() && j + 1 < city.getWidth()) {
-                        if (!city.getMatrice()[i + 1][j + 1].isOccupied()) {
+                        if (!city.getMatrice().get(i+1).get(j+1).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i + 1][j + 1]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j+1));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
                             // System.out.println(index);
                             adjacencyMatrix[currentIndex][index] = 1;
                         }
                     }
                     //checking down
                     if (i + 1 < city.getHeight()) {
-                        if (!city.getMatrice()[i + 1][j].isOccupied()) {
+                        if (!city.getMatrice().get(i+1).get(j).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i + 1][j]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
                             //System.out.println(index);
                             adjacencyMatrix[currentIndex][index] = 1;
 
@@ -196,12 +197,12 @@ public class Graph {
                     }
                     //checking down Left
                     if (i + 1 < city.getHeight() && j - 1 >= 0) {
-                        if (!city.getMatrice()[i + 1][j - 1].isOccupied()) {
+                        if (!city.getMatrice().get(i+1).get(j-1).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i + 1][j - 1]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j-1));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
 
                             adjacencyMatrix[currentIndex][index] = 1;
 
@@ -212,12 +213,12 @@ public class Graph {
 
                     //checking left
                     if (j - 1 >= 0) {
-                        if (!city.getMatrice()[i][j - 1].isOccupied()) {
+                        if (!city.getMatrice().get(i).get(j-1).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i][j - 1]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j-1));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
                             System.out.println(index);
                             adjacencyMatrix[currentIndex][index] = 1;
 
@@ -228,12 +229,12 @@ public class Graph {
 
                     //checking UP LEFT
                     if (i - 1 >= 0 && j - 1 >= 0) {
-                        if (!city.getMatrice()[i - 1][j - 1].isOccupied()) {
+                        if (!city.getMatrice().get(i-1).get(j-1).isOccupied()) {
                             // Je recupere son index à partir de ListDesGraphNode
                             // Puis je le met dans le tableau
                             // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice()[i - 1][j - 1]);
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice()[i][j]);
+                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j-1));
+                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
                             adjacencyMatrix[currentIndex][index] = 1;
 
 

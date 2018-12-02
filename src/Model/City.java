@@ -1,6 +1,7 @@
 package Model;
 //This is one part of the model
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class City {
@@ -9,7 +10,8 @@ public class City {
 
     private int width;
     private int height;
-    private Node[][] matrice;
+    //private Node[][] matrice;
+    private ArrayList<ArrayList<Node>> matrice;
 
     public int getWidth() {
         return width;
@@ -29,10 +31,10 @@ public class City {
 
 
 
-    public Node[][] getMatrice() {
+    public ArrayList<ArrayList<Node>> getMatrice() {
         return matrice;
     }
-    public void setMatrice(Node[][] matrice) {
+    public void setMatrice(ArrayList<ArrayList<Node>> matrice) {
         this.matrice = matrice;
     }
 
@@ -44,7 +46,7 @@ public class City {
         {
             for(int j=0;j<height;j++)
             {
-                System.out.print(matrice[i][j].isOccupied()+" ");
+               // System.out.print(matrice[i][j].isOccupied()+" ");
             }
             System.out.println();
         }
@@ -55,7 +57,16 @@ public class City {
         this.height=nbRows;
         this.width=nbColumns;
 
-        this.matrice=new Node[height][width];
+    //    this.matrice=new Node[height][width];
+        matrice=new ArrayList<ArrayList<Node>>();
+        for(int i=0;i<height;i++)
+        {
+            for(int j=0;j<width;j++)
+            {
+                matrice.add(i,new ArrayList<>());
+            }
+
+        }
 
         // Init All nodes with Default state
         for(int i=0;i<height;i++)
@@ -64,7 +75,11 @@ public class City {
             for(int j=0;j<width;j++)
             {
                 Node node=new Node(i,j);
-                matrice[i][j]=node;
+                //matrice[i][j]=node;
+              //  matrice.get(i).set(j,node);
+                matrice.get(i).add(j,node);
+
+
              // System.out.println(node.isOccupied());
 
             }
@@ -83,8 +98,9 @@ public class City {
             int randomRow = random.nextInt(height); // To generate numbrer between 0 and height - 1
             int randomCol = random.nextInt(width); //  To generate numbrer between 0 and width - 1
 
-         if (!matrice[randomRow][randomCol].isOccupied()) {
-                matrice[randomRow][randomCol].setOccupied(true);
+         if (! matrice.get(randomRow).get(randomCol).isOccupied()) {
+
+                matrice.get(randomRow).get(randomCol).setOccupied(true);
                 numberBuildings+=1;
             }
         }
