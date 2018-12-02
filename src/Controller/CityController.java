@@ -633,6 +633,47 @@ public class CityController {
         return heuristic;
     }
 
+
+
+    private  int estimateDistanceHeuristic(Node n1, Node n2)
+    {
+        int x=Math.abs(n1.getRow() - n2.getRow());
+        int y= Math.abs(n1.getColumn() - n2.getColumn());
+        return x*x + y*y;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+
     /**Main to test the methods*/
 
     public static void main(String[] args) throws InterruptedException {
@@ -647,13 +688,7 @@ public class CityController {
         int numberOfVertices=cityController.graph.getListOfAllNodes().size();
         boolean  visitedNodes[]=new boolean[numberOfVertices];
 
-        int heuristic= cityController.Breadth_First_Search(0,cityController.graph,visitedNodes);
 
-        System.out.println("-------------------------------------------");
-        System.out.println(" ");
-        System.out.println(" Numbre of nodes :" + numberOfVertices);
-        System.out.println(" ");
-        System.out.println(" Heuristic : " + heuristic);
 
 
         /*System.out.println("this is the end of City Matrix ");
@@ -692,9 +727,16 @@ public class CityController {
         cityController.printDjikistraPathIndexMinPQ(0,19);
         */
 
-
         //cityController.printDynamicDjikistra(0,17,3);
 
+        System.out.println("-------------------------------------------TESTING A STAR ALGORITHM-------------------------------------------");
+        Astar astar=new Astar(cityController.graph);
+        astar.run(cityController.graph.getListOfAllNodes().get(0),cityController.graph.getListOfAllNodes().get(18));
+
+
+        System.out.println("-------------------------------------------TESTING DJIKISTRA ALGORITHM-------------------------------------------");
+
+        cityController.printDjikistraPath(0,18);
 
 
 
@@ -708,58 +750,13 @@ public class CityController {
 
 
 
-     /*   City city = new City (100,100);
 
 
 
-        setCity(city,0.1,0.1,0.1,0.1,0.1);
 
-        int compGreenligth=0;
-        int compRedligth=0;
-        int compBus=0;
-        int compTaxi=0;
-        int compAccident=0;
-        int compEmptyNode=0;
 
-        for(int i=0;i<city.getHeight();i++)
-        {
-            for(int j=0;j<city.getWidth();j++)
-            {
-                if(city.getMatrice()[i][j].getMy_traffic_ligth()== Node.Traffic_ligth.RED)//or with RED
-                {
-                    compRedligth+=1;
-                }
-                if(city.getMatrice()[i][j].getMy_traffic_ligth()== Node.Traffic_ligth.GREEN)//or with RED
-                {
-                    compGreenligth+=1;
-                }
-                if(city.getMatrice()[i][j].isBus())//or with RED
-                {
-                    compBus+=1;
-                }
-                if(city.getMatrice()[i][j].isTaxi())//or with RED
-                {
-                    compTaxi+=1;
-                }
-                if(city.getMatrice()[i][j].isAccident())//or with RED
-                {
-                    compAccident+=1;
-                }
-                if(!city.getMatrice()[i][j].isAccident() &&  !city.getMatrice()[i][j].isBus() && !city.getMatrice()[i][j].isTaxi() && city.getMatrice()[i][j].getMy_traffic_ligth()==null)//or with RED
-                {
-                    compEmptyNode+=1;
-                }
-            }
 
-        }
-        System.out.println(compGreenligth);
-        System.out.println(compRedligth);
-        System.out.println(compBus);
-        System.out.println(compTaxi);
-        System.out.println(compAccident);
-        System.out.println(compEmptyNode);
 
-        System.out.println("HELLO WORLD !!");*/
 
 
 

@@ -3,11 +3,61 @@ package Model;
 import java.util.LinkedList;
 
 //This is one part of the model
-public class Node {
+public class Node implements Comparable<Node> {
+
+
+    @Override
+    public int compareTo(Node node) {
+        return Double.compare(heuristicCost + distance, node.heuristicCost + node.distance);
+    }
 
     public enum Traffic_ligth{RED,GREEN};
 
     //----------------------------------Attributes and Properties-------------------------------------------
+
+    /** This attributes are for A* Algorithm**/
+    private Node previous=null; /**  Previous Node to get to the cuurrent **/
+    private Double heuristicCost ; /** H(x) for A* star algotithm **/
+    private  Double distance=Double.MAX_VALUE ; /** represents the distance from the start to the current node
+
+     /** F(x) = g(x) + h(x) where g(x) is the path from the source to the current node
+     **/
+    public Double getFinalCost() {
+        return distance;
+    }
+
+    public Node getPrevious() {
+        return previous;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public Double getHeuristicCost(){
+        return heuristicCost;
+    }
+
+    public void setPrevious(Node previous)
+    {
+        this.previous=previous;
+    }
+
+    public void setHeuristic(Node destination) {
+        this.heuristicCost  = Node.distanceFrom(this, destination);
+    }
+    public void setDistance(double distance)
+    {
+        this.distance=distance;
+    }
+
+    /** Euclidien Distance **/
+    public static Double distanceFrom(Node n1, Node n2) {
+        return Math.sqrt((n1.getRow()-n2.getRow())*(n1.getRow()-n2.getRow()) + (n1.getColumn()-n2.getColumn())*(n1.getColumn()-n2.getColumn()));
+    }
+
+
+
 
     private boolean occupied;
     private boolean taxi;
