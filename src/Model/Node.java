@@ -15,6 +15,15 @@ public class Node implements Comparable<Node> {
 
     //----------------------------------Attributes and Properties-------------------------------------------
 
+    /** this methode is very important , because if we run Astar algorithm 2 times it will use the values
+     * of the first time , that's why we have to refresh all this attributes
+     */
+    public void refreshAstarAttributes(){
+        previous=null;
+        heuristicCost=null;
+        distance=Double.MAX_VALUE;
+
+    }
     /** This attributes are for A* Algorithm**/
     private Node previous=null; /**  Previous Node to get to the cuurrent **/
     private Double heuristicCost ; /** H(x) for A* star algotithm **/

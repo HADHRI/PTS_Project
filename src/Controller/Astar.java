@@ -56,6 +56,17 @@ public class Astar {
 	 * Finds and prints shortest path from start to end using A* search
 	 */
     public void run(Node start, Node end) {
+        for (int i=0; i<graph.getListOfAllNodes().size();i++)
+        {
+            graph.getListOfAllNodes().get(i).refreshAstarAttributes();
+        }
+        /**
+         * For All nodes on the graph , we refresh AstarAlgorithm
+         */
+
+
+
+
         /** Initialize empty set and empty PriorityQueue**/
         searched = new HashSet();
         unsearched = new PriorityQueue();
