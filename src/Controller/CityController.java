@@ -729,14 +729,12 @@ public class CityController {
 
         //cityController.printDynamicDjikistra(0,17,3);
 
-        System.out.println("-------------------------------------------TESTING A STAR ALGORITHM-------------------------------------------");
-        Astar astar=new Astar(cityController.graph);
-     //   astar.run(cityController.graph.getListOfAllNodes().get(0),cityController.graph.getListOfAllNodes().get(10000));
-
-
+        
         System.out.println("-------------------------------------------TESTING DJIKISTRA ALGORITHM-------------------------------------------");
 
         cityController.printDjikistraPath(0,10000);
+        System.out.println("-------------------------------------------TESTING A STAR ALGORITHM-------------------------------------------");
+        Astar astar=new Astar(cityController.graph);
         astar.run(cityController.graph.getListOfAllNodes().get(0),cityController.graph.getListOfAllNodes().get(10000));
 
 
