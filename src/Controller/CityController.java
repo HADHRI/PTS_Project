@@ -729,7 +729,7 @@ public class CityController {
 
         //cityController.printDynamicDjikistra(0,17,3);
 
-        
+
         System.out.println("-------------------------------------------TESTING DJIKISTRA ALGORITHM-------------------------------------------");
 
         cityController.printDjikistraPath(0,10000);

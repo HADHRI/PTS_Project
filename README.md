@@ -18,30 +18,36 @@ Our pathfinding algorithm need to be very efficient in space and time complexity
 
 4) Improvements
 
-At the end of our project, if we have the time, we would like to have a dynamic pathfinding algorithm. For example, if an accident happen on the way which was the best path, then we need to find another path from our current position to the destination.
-We also would like to put few users of the pathfinding algorithm in the same city at the same time.
+To improve our project , we will create the view of our project . So we want to display the Matrix and we want 
+the user see every time the short path to take .  We want also give the possibility to user to put accidents and lights 
+dynamically so we could see the change of the path . 
+We will use JAVA FX For this ( Java library for UI)
 
 5) Current Progress
 
 What is already done:
 
-- Definition of the MVC
+- Definition of the MVC 
 - Implementation of the model (city and node classes)
 - Implementation of the Controller (CityController and graph classes)
 - Implementation of Dijkistra Algorithm
 - Adaptation of Dijkistra Algorithm to our environment
-- Implementation of the view classe
-- Implementation of the Indexed Min Priority Queue classe
+- Implementation of the view class
+- Implementation of the Indexed Min Priority Queue class
 - Implementation of Dijkistra Algorithm with an Indexed Min Priority Queue
 - Implementation of a dynamic Dijkistra Algorithm 
 - Implementation of a method to refresh the adjency matrix
+- Implementation of A star Algorithm 
+- Comparing the A star with Djikistra Algorithm
 
 What we are actually doing:
 
-- Implementation of A* Algorithm
+- Trying to improve A star algorithm 
+Note : When we run our code with 200*200 city matrix , we have noticed that A* algorithm takes 2-3 minutes 
+to display the result . However , Djikistra is more consistent until now . 
 
-What we are planning to do:
+-Create a DEMO Video that present our project
 
-- Create a short Video that present our project
+
 
 
