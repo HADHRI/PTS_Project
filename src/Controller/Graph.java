@@ -30,7 +30,7 @@ public class Graph {
     public Graph()
     {
         //Contsruct our City
-        this.city=new City(200,200);
+        this.city=new City(180,180);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
 
 

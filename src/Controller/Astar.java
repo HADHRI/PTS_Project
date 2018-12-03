@@ -55,7 +55,7 @@ public class Astar {
     /*
 	 * Finds and prints shortest path from start to end using A* search
 	 */
-    public void run(Node start, Node end) {
+    public void run(int  start, int end) {
         for (int i=0; i<graph.getListOfAllNodes().size();i++)
         {
             graph.getListOfAllNodes().get(i).refreshAstarAttributes();
@@ -72,29 +72,29 @@ public class Astar {
         unsearched = new PriorityQueue();
 
         /**Set the current node to @param start**/
-        Node current = start;
+        Node current =  graph.getListOfAllNodes().get(start);
         //Set start node's heuristic values (g(x) and h(x))
         /** set the distance of the start node to zero and set the heuristic ( euclidien distance ) **/
-        start.setDistance(0.0);
-        start.setHeuristic(end);
+        graph.getListOfAllNodes().get(start).setDistance(0.0);
+        graph.getListOfAllNodes().get(start).setHeuristic(graph.getListOfAllNodes().get(end));
 
         /** Add @param start to the queue**/
-        unsearched.add(start);
+        unsearched.add(graph.getListOfAllNodes().get(start));
 
         while (!unsearched.isEmpty()) {
             //Pop the PriorityQueue and set current to the top element;
             current = (Node) unsearched.poll();
             //If the current node is our target, print the path and end
            // System.out.println(current);
-            if (current.equals(end)) {
+            if (current.equals(graph.getListOfAllNodes().get(end))) {
                 /** print path **/
-                printAstarPath(end,start);
+                printAstarPath(graph.getListOfAllNodes().get(end),graph.getListOfAllNodes().get(start));
 
                 return;
             }
             //Move current node to the searched list.
             searched.add(current);
-            updateNeighbor(current, end);
+            updateNeighbor(graph.getListOfAllNodes().indexOf(current), end);
         }
         //We did not find the shortest path.
 
@@ -103,18 +103,18 @@ public class Astar {
 
 
     /**
-     * @param curr        node whose neighbors are to be checked/updated.
-     * @param destination node which heuristics will be calculated from (AKA distance from @param destination)
+     * @param curr         index if node whose neighbors are to be checked/updated.
+     * @param  destination  index of node which heuristics will be calculated from (AKA distance from @param destination)
      */
-    public void updateNeighbor(Node curr, Node destination) {
+    public void updateNeighbor(int curr, int destination) {
         //List neighbors = Graph.getNeighbors(edges, curr);
         /** distance is the current node's distance to start **/
-        Double distance = curr.getDistance();
+        Double distance = graph.getListOfAllNodes().get(curr).getDistance();
 
         /** First we  iterate into neighbours of the current Node **/
         int numberOfVertices = graph.getListOfAllNodes().size();
         for (int j = 1; j < numberOfVertices; j++) {
-            int indexOfCurrentNode = graph.getListOfAllNodes().indexOf(curr);
+            int indexOfCurrentNode = curr;
             /** check if node is a neighbour of curr Node **/
             if (graph.getAdjacencyMatrix()[indexOfCurrentNode][j] != 0) {
                 /** temp is the distance from current node to a neighbor
@@ -128,10 +128,10 @@ public class Astar {
 
                     if (distance + temp < neighbor.getDistance()) {
                         /** Shorter path has been found. Update neighboring node **/
-                    //    System.out.println("update path ");
-                        neighbor.setPrevious(curr);  /** We set the previous Node ! **/
+                    //   System.out.println("update path ");
+                        neighbor.setPrevious(graph.getListOfAllNodes().get(curr));  /** We set the previous Node ! **/
                         neighbor.setDistance(distance + temp);
-                        neighbor.setHeuristic(destination);
+                        neighbor.setHeuristic(graph.getListOfAllNodes().get(destination));
                         //Allow neighbor to be searched through by adding it to the unsearched queue.
                         unsearched.add(neighbor);
                     }
