@@ -42,9 +42,8 @@ What is already done:
 
 What we are actually doing:
 
-- Trying to improve A star algorithm 
-Note : When we run our code with 200*200 city matrix , we have noticed that A* algorithm takes 2-3 minutes 
-to display the result . However , Djikistra is more consistent until now . 
+-Solve a problem with  Java heap space while creating a city of more than 200*200 .
+  (We have put out heap to the max on intellij , Until now we cannot proceed with a city with more than 200*200)
 
 -Create a DEMO Video that present our project
 

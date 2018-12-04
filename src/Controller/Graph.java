@@ -30,7 +30,7 @@ public class Graph {
     public Graph()
     {
         //Contsruct our City
-        this.city=new City(180,180);
+        this.city=new City(240,240);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
 
 
@@ -219,7 +219,7 @@ public class Graph {
                             // l 'index representre a valeur de la colone
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j-1));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-                            System.out.println(index);
+                           // System.out.println(index);
                             adjacencyMatrix[currentIndex][index] = 1;
 
 

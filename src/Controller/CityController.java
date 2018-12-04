@@ -732,10 +732,10 @@ public class CityController {
 
         System.out.println("-------------------------------------------TESTING DJIKISTRA ALGORITHM-------------------------------------------");
 
-        cityController.printDjikistraPath(0,7800);
+        cityController.printDjikistraPath(0,15000);
         System.out.println("-------------------------------------------TESTING A STAR ALGORITHM-------------------------------------------");
         Astar astar=new Astar(cityController.graph);
-        astar.run(0,7800);
+        astar.run(0,15000);
 
 
 
