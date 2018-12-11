@@ -34,12 +34,16 @@ public class Astar {
         }
         while(!path.isEmpty());
 
+        System.out.println(" ");
+        System.out.println(" ");
+        printPath(aStarFinalPath);
+        System.out.println(" ");
+        System.out.println(" ");
+
+
         printInformationAboutPath(aStarFinalPath,graph.getListOfAllNodes().indexOf(start));
 
         System.out.println("Distance of this Path  "+destination.getDistance());
-
-
-
 
 
 
@@ -213,14 +217,56 @@ public class Astar {
             currentPositionRow=nextPositionRow;
 
 
-
-
-
-
-
-
-
         }
+
+    }
+
+    /***
+     * function to know if a node (i,j) is in the path
+     * @param i
+     * @param j
+     * @param path
+     * @return true if the node (i,j) is present in the path
+     */
+    private boolean find(int i,int j, ArrayList<Integer>path){
+        boolean test=false;
+
+        for(int r=0;r<path.size();r++){
+            if(graph.getListOfAllNodes().get(path.get(r)).getRow()==i && graph.getListOfAllNodes().get(path.get(r)).getColumn()==j){
+                test=true;
+            }
+        }
+        return test;
+    }
+
+    /***
+     * function to print the city matrix with the path
+     * @param path
+     */
+    private  void printPath(ArrayList<Integer>path){
+        int n=0;
+
+        for(int i=0;i<graph.getCity().getHeight();i++)
+        {
+            for(int j=0;j<graph.getCity().getHeight();j++)
+            {
+
+                if(graph.getCity().getMatrice().get(i).get(j).isOccupied()){
+                    System.out.print("\033[31m" + "[X]");/**print building in red*/
+
+                }
+                else if(find(i,j,path)) {
+                    System.out.print("\033[30m" + "[#]");/**print the path in white*/
+                    n++;
+                }
+                else{
+                    System.out.print("\033[32m" + "[ ]");/**print roads in yellow*/
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.println("\033[30m" + " ");
 
     }
 }
