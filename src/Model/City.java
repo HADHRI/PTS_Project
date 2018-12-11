@@ -40,19 +40,7 @@ public class City {
 
     //---------------------------------------------Constructor---------------------------------------------------
 
-
-    public  void printCityMatrix(){
-        for(int i=0;i<height;i++)
-        {
-            for(int j=0;j<height;j++)
-            {
-               // System.out.print(matrice[i][j].isOccupied()+" ");
-            }
-            System.out.println();
-        }
-
-    }
-    public City(int nbRows, int nbColumns){
+    public City(int nbRows, int nbColumns, double proportion){
 
         this.height=nbRows;
         this.width=nbColumns;
@@ -75,18 +63,12 @@ public class City {
             for(int j=0;j<width;j++)
             {
                 Node node=new Node(i,j);
-                //matrice[i][j]=node;
-              //  matrice.get(i).set(j,node);
                 matrice.get(i).add(j,node);
-
-
-             // System.out.println(node.isOccupied());
-
             }
 
         }
         // we will put 20 % of  occupied Nodes means with buildings
-        int maxBuildings = (int) ( height*width*0.2);
+        int maxBuildings = (int) ( height*width*proportion);
 
         int numberBuildings=0;
 
@@ -106,14 +88,27 @@ public class City {
         }
     }
 
-
     //---------------------------------------------Methods---------------------------------------------------
 
+    public  void printCityMatrix(){
+        for(int i=0;i<height;i++)
+        {
+            for(int j=0;j<height;j++)
+            {
+                if(matrice.get(i).get(j).isOccupied()){
+                    System.out.print("\033[31m" + "[X]");
 
+                }
+                else{
+                    System.out.print("\033[32m" + "[ ]");
+                }
+            }
+            System.out.println();
+        }
 
+        System.out.println("\033[30m" + " ");
 
-
-
+    }
 
 
 }

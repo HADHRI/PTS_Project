@@ -27,11 +27,11 @@ public class Graph {
         return adjacencyMatrix;
     }
 
-    public Graph()
+    public Graph(int size, double proportion)
     {
         //Contsruct our City
-        this.city=new City(240,240);
-        int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*0.8);
+        this.city=new City(size,size,proportion);
+        int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*(1-proportion));
 
 
         adjacencyMatrix=new int[tailleGraphMatrix+1][tailleGraphMatrix+1];
@@ -250,29 +250,5 @@ public class Graph {
 
     }
 
-    /** Main to test */
-
-    public static void main(String []args )
-    {
-
-        Graph graph=new Graph();
-        graph.setListOfAllNodes();
-
-        // size should be number of nodes in the matrix without buildings
-        // System.out.println(graph.listOfAllNodes.size());
-        //The matrix before Setting adjacency Matrix ( initialized with 0 values)
-        //   graph.printAdjacencyMatrix();
-        // System.out.println(graph.listOfAllNodes.indexOf(graph.city.getMatrice()[0][2]));
-        // printing the city with batiments ( to visualise the city with buildings)
-        graph.city.printCityMatrix();
-        System.out.println("AFTER INSERTING EDGES ");
-        graph.setAdjacencyMatrixt();
-        graph.printAdjacencyMatrix();
-
-
-
-
-
-    }
 
 }

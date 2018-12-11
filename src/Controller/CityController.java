@@ -4,6 +4,8 @@ package Controller;
 import Model.City;
 import Model.Node;
 import Ressources.IndexMinPQ;
+import java.util.Scanner;
+
 
 import java.util.*;
 
@@ -11,8 +13,8 @@ public class CityController {
     public  Graph graph;
 
 
-    public CityController(){
-        graph=new Graph();
+    public CityController(int size, double proportion){
+        graph=new Graph(size,proportion);
         graph.setListOfAllNodes();
         graph.setAdjacencyMatrixt();
         graph.refrechAdjacencyMatirx();
@@ -420,6 +422,8 @@ public class CityController {
     public void printDjikistraPath(int sourceIndex,int targetIndex) throws InterruptedException {
         int pathAndDistance[][] = djikistraShortPath(sourceIndex);
         ArrayList<Integer>path=new ArrayList<>(); //To hold the final path
+        PriorityQueue<Integer>queue=new PriorityQueue<Integer>();
+
 
         // I will use stack to stock the PATH
         Stack<Integer> stackHoldingPath = new Stack<>();
@@ -452,10 +456,17 @@ public class CityController {
             while (!(stackHoldingPath.isEmpty()))
             {
                 path.add(stackHoldingPath.peek());
+                queue.add(stackHoldingPath.peek());
                 // System.out.println(stackHoldingPath.pop());
                 stackHoldingPath.pop();
 
             }
+
+            System.out.println(" ");
+            System.out.println(" ");
+            printPath(path);
+            System.out.println(" ");
+            System.out.println(" ");
 
             printInformationAboutPath(path,sourceIndex,targetIndex);
             System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
@@ -602,7 +613,7 @@ public class CityController {
      * @param visitedNodes is an array that indicate if a node has been already visited
      */
 
-    public int Breadth_First_Search(int source , Graph graph,boolean [] visitedNodes )
+    private int Depth_First_Search(int source , Graph graph,boolean [] visitedNodes )
     {
         int heuristic=0;/**  It's an approximation of the maximum distance from the source node*/
         Node SourceNode=graph.getListOfAllNodes().get(source); /** create a copy of the source node*/
@@ -634,7 +645,6 @@ public class CityController {
     }
 
 
-
     private  int estimateDistanceHeuristic(Node n1, Node n2)
     {
         int x=Math.abs(n1.getRow() - n2.getRow());
@@ -642,124 +652,106 @@ public class CityController {
         return x*x + y*y;
     }
 
+    /***
+     * function to know if a node (i,j) is in the path
+     * @param i
+     * @param j
+     * @param path
+     * @return true if the node (i,j) is present in the path
+     */
+    private boolean find(int i,int j, ArrayList<Integer>path){
+       boolean test=false;
 
+        for(int r=0;r<path.size();r++){
+           if(graph.getListOfAllNodes().get(path.get(r)).getRow()==i && graph.getListOfAllNodes().get(path.get(r)).getColumn()==j){
+               test=true;
+           }
+        }
+       return test;
+    }
 
+    /***
+     * function to print the city matrix with the path
+     * @param path
+     */
+    private  void printPath(ArrayList<Integer>path){
+        int n=0;
 
+        for(int i=0;i<graph.getCity().getHeight();i++)
+        {
+            for(int j=0;j<graph.getCity().getHeight();j++)
+            {
 
+                if(graph.getCity().getMatrice().get(i).get(j).isOccupied()){
+                    System.out.print("\033[31m" + "[X]");/**print building in red*/
 
+                }
+                else if(find(i,j,path)) {
+                    System.out.print("\033[30m" + "[#]");/**print the path in white*/
+                    n++;
+                }
+                else{
+                    System.out.print("\033[32m" + "[ ]");/**print roads in yellow*/
+                }
+            }
+            System.out.println();
+        }
 
+        System.out.println("\033[30m" + " ");
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
+    }
 
     /**Main to test the methods*/
 
     public static void main(String[] args) throws InterruptedException {
 
-        CityController cityController=new CityController();
-
-        System.out.println("This is the city matrix ");
-        cityController.graph.getCity().printCityMatrix();
-        System.out.println("-------------------------------------------");
+        System.out.println("-------------------------------------------CITY MATRIX-------------------------------------------");
+        System.out.println(" ");
         System.out.println(" ");
 
-        int numberOfVertices=cityController.graph.getListOfAllNodes().size();
-        boolean  visitedNodes[]=new boolean[numberOfVertices];
+        Scanner scan = new Scanner(System.in);
 
+        System.out.println(" Enter the size the city matrix n x n (max 200) : ");
+        int matrix_size = scan.nextInt();
 
+        System.out.println(" ");
 
+        System.out.println(" Enter the proportion of buildings in the city (0 - 1) : ");
+        double proportion = scan.nextDouble();
 
-        /*System.out.println("this is the end of City Matrix ");
-        System.out.println("this is the adjacency matrix ");
-     //   cityController.graph.printAdjacencyMatrix();
-        System.out.println("This is the end of adjacency matrix ");
+        CityController cityController=new CityController(matrix_size,proportion);
 
-        int pathAndDistances[][]=cityController.djikistraShortPath(0);
+        System.out.println(" ");
+        cityController.graph.getCity().printCityMatrix();
+        System.out.println(" ");
 
-        System.out.println("Show paths from Source ( A) to all others ");
+        System.out.println("--------------------------------------------------------------------------------------------------");
+        System.out.println(" ");
 
+        System.out.println(" Enter the index of your source (0 - 100) : ");
+        int source = scan.nextInt();
 
-        for(int i=0;i<cityController.graph.getListOfAllNodes().size();i++)
-        {
-            System.out.print(pathAndDistances[1][i] + "  ");
+        System.out.println(" ");
 
-        }
-        System.out.println();
-        System.out.println("Show distances from Source ( A) to all others ");
-        for(int i=0;i<cityController.graph.getListOfAllNodes().size();i++)
-        {
+        System.out.println(" Enter the index of your destination (1 - 100) : ");
+        int destination = scan.nextInt();
 
-            System.out.print(pathAndDistances[0][i] + "  ");
-
-        }*/
-
-        //Printing the Path
-    /*    System.out.println();
-        System.out.println("Printing the path ");
-       cityController.printDjikistraPath(0,19);*/
-
-
-    /*    //Printing the Path
-        System.out.println();
-        System.out.println("Printing the path with Index Min Priority Queue");
-        cityController.printDjikistraPathIndexMinPQ(0,19);
-        */
-
-        //cityController.printDynamicDjikistra(0,17,3);
-
+        System.out.println(" ");
 
         System.out.println("-------------------------------------------TESTING DJIKISTRA ALGORITHM-------------------------------------------");
+        System.out.println(" ");
 
-        cityController.printDjikistraPath(0,15000);
+        cityController.printDjikistraPath(source,destination);
+
+        System.out.println(" ");
+
         System.out.println("-------------------------------------------TESTING A STAR ALGORITHM-------------------------------------------");
+        System.out.println(" ");
+
         Astar astar=new Astar(cityController.graph);
-        astar.run(0,15000);
+        astar.run(source,destination);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        System.out.println(" ");
 
     }
 }
