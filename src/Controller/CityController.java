@@ -675,7 +675,6 @@ public class CityController {
      * @param path
      */
     private  void printPath(ArrayList<Integer>path){
-        int n=0;
 
         for(int i=0;i<graph.getCity().getHeight();i++)
         {
@@ -688,7 +687,6 @@ public class CityController {
                 }
                 else if(find(i,j,path)) {
                     System.out.print("\033[30m" + "[#]");/**print the path in white*/
-                    n++;
                 }
                 else{
                     System.out.print("\033[32m" + "[ ]");/**print roads in yellow*/
@@ -716,24 +714,25 @@ public class CityController {
 
         System.out.println(" ");
 
-        System.out.println(" Enter the proportion of buildings in the city (0 - 1) : ");
-        double proportion = scan.nextDouble();
 
-        CityController cityController=new CityController(matrix_size,proportion);
+        CityController cityController=new CityController(matrix_size,0.2);
 
         System.out.println(" ");
         cityController.graph.getCity().printCityMatrix();
         System.out.println(" ");
+        System.out.println(" ");
+
+
 
         System.out.println("--------------------------------------------------------------------------------------------------");
         System.out.println(" ");
 
-        System.out.println(" Enter the index of your source (0 - 100) : ");
+        System.out.println(" Enter the index of your source (0 - " + cityController.graph.getListOfAllNodes().size() + ") : ");
         int source = scan.nextInt();
 
         System.out.println(" ");
 
-        System.out.println(" Enter the index of your destination (1 - 100) : ");
+        System.out.println(" Enter the index of your destination (0 - " + cityController.graph.getListOfAllNodes().size() + " ) : ");
         int destination = scan.nextInt();
 
         System.out.println(" ");
