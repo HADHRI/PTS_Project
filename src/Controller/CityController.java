@@ -1,7 +1,7 @@
 package Controller;
 //This is the controller
 
-import Model.City;
+
 import Model.Node;
 import Ressources.IndexMinPQ;
 import java.util.Scanner;
@@ -404,6 +404,7 @@ public class CityController {
 
 
 
+
             }
 
         }
@@ -493,27 +494,28 @@ public class CityController {
 
         for(int i=0;i<graph.getListOfAllNodes().size();i++)
         {
-            System.out.print(pathAndDistance[1][i] + "  ");
+          //  System.out.print(pathAndDistance[1][i] + "  ");
 
         }
         System.out.println(index);
         while (index != sourceIndex)
         {
-            System.out.println(index);
+          //  System.out.println(index);
             index=pathAndDistance[1][index];
             stackHoldingPath.push(index);
 
 
         }
         //Printing the path
-        System.out.println("Stack => " + stackHoldingPath);
+      //  System.out.println("Stack => " + stackHoldingPath);
         while (!(stackHoldingPath.isEmpty()))
         {
             path.add(stackHoldingPath.peek());
-            System.out.println(stackHoldingPath.pop());
+            stackHoldingPath.pop();
 
         }
-
+        printPath(path);
+        System.out.println();
         printInformationAboutPath(path,sourceIndex,targetIndex);
         System.out.println("DISTANCE OF THIS PATH IS "+pathAndDistance[0][targetIndex]);
 
@@ -727,20 +729,23 @@ public class CityController {
         System.out.println("--------------------------------------------------------------------------------------------------");
         System.out.println(" ");
 
-        System.out.println(" Enter the index of your source (0 - " + cityController.graph.getListOfAllNodes().size() + ") : ");
+        System.out.println(" Enter the index of your source (0 - " + (cityController.graph.getListOfAllNodes().size()  - 1 ) + ") : ");
         int source = scan.nextInt();
 
         System.out.println(" ");
 
-        System.out.println(" Enter the index of your destination (0 - " + cityController.graph.getListOfAllNodes().size() + " ) : ");
+        System.out.println(" Enter the index of your destination (0 - " + (cityController.graph.getListOfAllNodes().size() -1) + " ) : ");
         int destination = scan.nextInt();
 
         System.out.println(" ");
 
         System.out.println("-------------------------------------------TESTING DJIKISTRA ALGORITHM-------------------------------------------");
         System.out.println(" ");
-
-        cityController.printDjikistraPath(source,destination);
+         /** Normal Djikistra **/
+       // cityController.printDjikistraPath(source,destination);
+        /** Djikistra with MIN INDEX PRIORITY QUEUE **/
+       cityController.printDjikistraPathIndexMinPQ(source,destination);
+       // cityController.printDynamicDjikistra(source,destination,2);
 
         System.out.println(" ");
 
