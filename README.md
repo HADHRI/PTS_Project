@@ -2,6 +2,8 @@
 
 PTS PROJECT : Traffic Simulator
 
+Git Hub IDS : johanndesoyres, HADHRI, Junhui7
+
 1) Objective
 
 The purpose of our project is to build a pathfinding algorithm that find the “best” path between two places in a city. When we say “best”, we don’t only speak about the shortest path. To choose the best path we will consider the number of traffic lights, bus, taxi, etc.
@@ -23,7 +25,12 @@ the user see every time the short path to take .  We want also give the possibil
 dynamically so we could see the change of the path . 
 We will use JAVA FX For this ( Java library for UI)
 
-5) Current Progress
+5) Demo and Presentation Videos
+
+Presentation video : https://youtu.be/e8tmy0bDl5Q
+Demo video : https://www.youtube.com/watch?v=eozzu70o9Vw&feature=youtu.be
+
+6) Current Progress
 
 What is already done:
 
@@ -45,7 +52,6 @@ What we are actually doing:
 -Solve a problem with  Java heap space while creating a city of more than 200*200 .
   (We have put out heap to the max on intellij , Until now we cannot proceed with a city with more than 200*200)
 
--Create a DEMO Video that present our project
 
 
 
