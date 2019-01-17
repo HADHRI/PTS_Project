@@ -3,6 +3,7 @@ package Controller;
 import Model.City;
 import Model.Node;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -13,7 +14,10 @@ public class Graph {
 
     private City city;
     private List<Node> listOfAllNodes=new ArrayList<Node>();
-    private int [][] adjacencyMatrix;
+   // private int [][] adjacencyMatrix;
+
+
+
 
     public City getCity() {
         return city;
@@ -23,9 +27,6 @@ public class Graph {
         return listOfAllNodes;
     }
 
-    public int[][] getAdjacencyMatrix() {
-        return adjacencyMatrix;
-    }
 
     public Graph(int size, double proportion)
     {
@@ -33,60 +34,29 @@ public class Graph {
         this.city=new City(size,size,proportion);
         int tailleGraphMatrix= (int) (city.getHeight()*city.getWidth()*(1-proportion));
 
-
-        adjacencyMatrix=new int[tailleGraphMatrix+1][tailleGraphMatrix+1];
-        for(int i=0;i<tailleGraphMatrix;i++)
-        {
-            for(int j=0;j<tailleGraphMatrix;j++)
-            {
-                adjacencyMatrix[i][j]=0;
-            }
-        }
-
     }
 
-    /** The goal of this method is to change Dynamically the state of a Road
+    /** The goal of this method is to change Dynamically all the costs
      Maybe when the algorithm is looking for the ideal path , An accident will happen in a particular Road
      So the algorithm must include this to have the ideal PATH */
 
-    public void refrechAdjacencyMatirx(){
-        int tailleGraphMatrix=adjacencyMatrix[0].length;
-        //Adjacency matrix is Symetric Matrix
-        int indexSymetricMatrix=0;
-        for(int i=0;i<tailleGraphMatrix;i++)
+
+    public void refreshAllCosts(){
+
+        int NumberOfVertices=listOfAllNodes.size();
+
+        for(int i=0;i<NumberOfVertices;i++)
         {
+            int NumberOfNeighbors = listOfAllNodes.get(i).getNeighbors().size();
+            Node currentNode = listOfAllNodes.get(i);
 
-            for(int j=indexSymetricMatrix;j<tailleGraphMatrix;j++)
+            for(int j=0;j<NumberOfNeighbors;j++)
             {
-                if ( adjacencyMatrix[i][j]==1)
-                {
-                    // we generate random number between 1 and 5
-                    Random random = new Random();
-                    int randomNumber=random.nextInt(5) + 1;
-                    adjacencyMatrix[i][j]= randomNumber;
-                    //Undirected graph so
-                    adjacencyMatrix[j][i]= randomNumber;
-
-
-                }
-
+                Random random = new Random();
+                int randomNumber=random.nextInt(5) + 1;
+                currentNode.getNeighbors().get(j).set(1,randomNumber); /** Here we change the cost of neighbor j with a random number */
             }
-            indexSymetricMatrix++;
 
-        }
-
-    }
-
-    /**method to print the adjency matrix*/
-
-    public  void printAdjacencyMatrix(){
-        for(int i=0;i<adjacencyMatrix.length;i++)
-        {
-            for(int j=0;j<adjacencyMatrix.length;j++)
-            {
-                System.out.print(adjacencyMatrix[i][j]+" ");
-            }
-            System.out.println();
         }
 
     }
@@ -111,7 +81,7 @@ public class Graph {
     /**In this methode we will store all relations between nodes ( means we will store edges )
      At the begining we will consider our graph unweighted*/
 
-    public void setAdjacencyMatrixt()
+    public void setAllNeighbors()
     {
         for(int i=0;i<city.getHeight();i++)
         {
@@ -130,9 +100,8 @@ public class Graph {
                             // l 'index representre a valeur de la colone
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-                            adjacencyMatrix[currentIndex][index] = 1;
 
-
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
                         }
 
 
@@ -145,8 +114,8 @@ public class Graph {
                             // l 'index representre a valeur de la colone
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j+1));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-                            adjacencyMatrix[currentIndex][index] = 1;
 
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
 
                         }
 
@@ -162,8 +131,7 @@ public class Graph {
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j+1));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
 
-                            adjacencyMatrix[currentIndex][index] = 1;
-
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
 
                         }
 
@@ -176,8 +144,9 @@ public class Graph {
                             // l 'index representre a valeur de la colone
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j+1));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-                            // System.out.println(index);
-                            adjacencyMatrix[currentIndex][index] = 1;
+
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
+
                         }
                     }
                     //checking down
@@ -188,10 +157,8 @@ public class Graph {
                             // l 'index representre a valeur de la colone
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-                            //System.out.println(index);
-                            adjacencyMatrix[currentIndex][index] = 1;
 
-
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
                         }
 
                     }
@@ -204,9 +171,7 @@ public class Graph {
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j-1));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
 
-                            adjacencyMatrix[currentIndex][index] = 1;
-
-
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
                         }
 
                     }
@@ -219,9 +184,8 @@ public class Graph {
                             // l 'index representre a valeur de la colone
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j-1));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-                           // System.out.println(index);
-                            adjacencyMatrix[currentIndex][index] = 1;
 
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
 
                         }
 
@@ -235,8 +199,8 @@ public class Graph {
                             // l 'index representre a valeur de la colone
                             int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j-1));
                             int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-                            adjacencyMatrix[currentIndex][index] = 1;
 
+                            listOfAllNodes.get(currentIndex).addNeighbors(index, 1);
 
                         }
 
