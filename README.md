@@ -46,11 +46,12 @@ What is already done:
 - Implementation of a method to refresh the adjency matrix
 - Implementation of A star Algorithm 
 - Comparing the A star with Djikistra Algorithm
+-Solve a problem with  Java heap space while creating a city of more than 200*200 .
 
 What we are actually doing:
 
--Solve a problem with  Java heap space while creating a city of more than 200*200 .
-  (We have put out heap to the max on intellij , Until now we cannot proceed with a city with more than 200*200)
+- Display the city matrix with buildings and roads
+
 
 
 
