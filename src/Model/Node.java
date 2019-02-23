@@ -1,9 +1,27 @@
 package Model;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 //This is one part of the model
 public class Node implements Comparable<Node> {
+
+    private ArrayList<ArrayList<Integer>> neighbors;
+    private boolean occupied;
+    private boolean taxi;
+    private boolean bus;
+    private boolean accident;
+    private boolean intersection;
+    private boolean stop;
+    private int speed_limit;
+    private int row;
+    private int column;
+    private TrafficLight trafficLight;
+    private int indexofgraph;
+    private boolean grass;
+    private boolean tree;
+    private boolean water;
+
+
 
 
     @Override
@@ -11,7 +29,33 @@ public class Node implements Comparable<Node> {
         return Double.compare(heuristicCost + distance, node.heuristicCost + node.distance);
     }
 
-    public enum Traffic_ligth{RED,GREEN};
+    public boolean isTree() {
+        return tree;
+    }
+
+    public void setTree(boolean tree) {
+        this.tree = tree;
+    }
+
+    public boolean isGrass() {
+        return grass;
+    }
+
+    public void setGrass(boolean grass) {
+        this.grass = grass;
+    }
+
+    public boolean isWater() {
+        return water;
+    }
+
+    public void setWater(boolean water) {
+        this.water = water;
+    }
+
+    //public enum Traffic_ligth{RED,GREEN,NONE};
+
+
 
     //----------------------------------Attributes and Properties-------------------------------------------
 
@@ -24,6 +68,9 @@ public class Node implements Comparable<Node> {
         distance=Double.MAX_VALUE;
 
     }
+
+
+
     /** This attributes are for A* Algorithm**/
     private Node previous=null; /**  Previous Node to get to the cuurrent **/
     private Double heuristicCost ; /** H(x) for A* star algotithm **/
@@ -31,9 +78,10 @@ public class Node implements Comparable<Node> {
 
      /** F(x) = g(x) + h(x) where g(x) is the path from the source to the current node
      **/
-    public Double getFinalCost() {
-        return distance;
-    }
+
+
+
+
 
     public Node getPrevious() {
         return previous;
@@ -43,9 +91,6 @@ public class Node implements Comparable<Node> {
         return distance;
     }
 
-    public Double getHeuristicCost(){
-        return heuristicCost;
-    }
 
     public void setPrevious(Node previous)
     {
@@ -59,25 +104,6 @@ public class Node implements Comparable<Node> {
     {
         this.distance=distance;
     }
-
-    /** Euclidien Distance **/
-    public static Double distanceFrom(Node n1, Node n2) {
-        return Math.sqrt((n1.getRow()-n2.getRow())*(n1.getRow()-n2.getRow()) + (n1.getColumn()-n2.getColumn())*(n1.getColumn()-n2.getColumn()));
-    }
-
-
-
-
-    private boolean occupied;
-    private boolean taxi;
-    private boolean bus;
-    private boolean accident;
-    private int speed_limit;
-    private int row;
-    private int column;
-    private LinkedList<Node> neighbors;
-    private Traffic_ligth my_traffic_ligth;
-
 
 
     public boolean isBus() {
@@ -112,7 +138,19 @@ public class Node implements Comparable<Node> {
         this.accident = accident;
     }
 
+    public boolean isIntersection() {
+        return intersection;
+    }
+    public void setIntersection(boolean intersection) {
+        this.intersection = intersection;
+    }
 
+    public boolean isStop() {
+        return stop;
+    }
+    public void setStop(boolean stop) {
+        this.stop = stop;
+    }
 
     public int getSpeed_limit() {
         return speed_limit;
@@ -140,22 +178,29 @@ public class Node implements Comparable<Node> {
     }
 
 
+    public TrafficLight getTrafficLight() {
+        return trafficLight;
+    }
+    public void setTrafficLight(TrafficLight trafficLight) {
+        this.trafficLight = trafficLight;
+    }
 
-    private LinkedList<Node> getNeighbors() {
+
+    public ArrayList<ArrayList<Integer>> getNeighbors() {
         return neighbors;
     }
-    public void setNeighbors(LinkedList<Node> neighbors) {
+    public void setNeighbors(ArrayList<ArrayList<Integer>> neighbors) {
         this.neighbors = neighbors;
     }
 
 
-    public Traffic_ligth getMy_traffic_ligth() {
-        return my_traffic_ligth;
-    }
-    public void setMy_traffic_ligth(Traffic_ligth my_traffic_ligth) {
-        this.my_traffic_ligth = my_traffic_ligth;
+    public void setIndexofgraph(int indexofgraph) {
+        this.indexofgraph = indexofgraph;
     }
 
+    public int getIndexofgraph() {
+        return indexofgraph;
+    }
 
     //---------------------------------------------Constructor---------------------------------------------------
 
@@ -166,16 +211,33 @@ public class Node implements Comparable<Node> {
         this.bus=false;
         this.taxi=false;
         this.accident=false;
+        this.intersection=false;
+        this.stop=false;
         this.speed_limit=-1;
         this.row=i;
         this.column=j;
         this.neighbors=null;
-        this.my_traffic_ligth=null;
+        this.trafficLight =null;
+        this.neighbors=new ArrayList<ArrayList<Integer>>();
+        this.indexofgraph=-1;
     }
 
 
 
     //---------------------------------------------Methods---------------------------------------------------
+
+    /** Euclidien Distance **/
+    public static Double distanceFrom(Node n1, Node n2) {
+        return Math.sqrt((n1.getRow()-n2.getRow())*(n1.getRow()-n2.getRow()) + (n1.getColumn()-n2.getColumn())*(n1.getColumn()-n2.getColumn()));
+    }
+
+    public void addNeighbors (int index, int cost)
+    {
+        ArrayList<Integer> holdCostAndindex=new ArrayList<>();
+        holdCostAndindex.add(index);
+        holdCostAndindex.add(cost);
+        neighbors.add(holdCostAndindex);
+    }
 
 
 }

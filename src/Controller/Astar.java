@@ -10,7 +10,12 @@ public class Astar {
     private Set searched;
     private Queue unsearched;
 
-    public void printAstarPath(Node destination,Node start){
+
+    public Graph getGraph() {
+        return graph;
+    }
+
+    public  ArrayList<Integer> printAstarPath(Node destination, Node start){
 
         ArrayList<Integer>aStarFinalPath=new ArrayList<>(); /** Array list to hold the final Path **/
         Node current = destination;
@@ -43,8 +48,10 @@ public class Astar {
 
         printInformationAboutPath(aStarFinalPath,graph.getListOfAllNodes().indexOf(start));
 
+
         System.out.println("Distance of this Path  "+destination.getDistance());
 
+        return aStarFinalPath;
 
 
 
@@ -59,7 +66,7 @@ public class Astar {
     /*
 	 * Finds and prints shortest path from start to end using A* search
 	 */
-    public void run(int  start, int end) {
+    public ArrayList<Integer> run(int  start, int end) {
         for (int i=0; i<graph.getListOfAllNodes().size();i++)
         {
             graph.getListOfAllNodes().get(i).refreshAstarAttributes();
@@ -92,17 +99,19 @@ public class Astar {
            // System.out.println(current);
             if (current.equals(graph.getListOfAllNodes().get(end))) {
                 /** print path **/
-                printAstarPath(graph.getListOfAllNodes().get(end),graph.getListOfAllNodes().get(start));
+                return (printAstarPath(graph.getListOfAllNodes().get(end),graph.getListOfAllNodes().get(start)));
 
-                return;
+
             }
             //Move current node to the searched list.
             searched.add(current);
-            updateNeighbor(graph.getListOfAllNodes().indexOf(current), end);
+            //System.out.println(current.getColumn() + " " + current.getRow());
+            updateNeighbor(graph.getListOfAllNodes().indexOf(current), end); 
         }
-        //We did not find the shortest path.
+
 
         System.out.println("Shortest path between " + start + " and " + end + " was not found.");
+        return null;
     }
 
 
@@ -110,41 +119,39 @@ public class Astar {
      * @param curr         index if node whose neighbors are to be checked/updated.
      * @param  destination  index of node which heuristics will be calculated from (AKA distance from @param destination)
      */
+
     public void updateNeighbor(int curr, int destination) {
-        //List neighbors = Graph.getNeighbors(edges, curr);
+
         /** distance is the current node's distance to start **/
         Double distance = graph.getListOfAllNodes().get(curr).getDistance();
 
-        /** First we  iterate into neighbours of the current Node **/
-        int numberOfVertices = graph.getListOfAllNodes().size();
-        for (int j = 1; j < numberOfVertices; j++) {
-            int indexOfCurrentNode = curr;
-            /** check if node is a neighbour of curr Node **/
-            if (graph.getAdjacencyMatrix()[indexOfCurrentNode][j] != 0) {
-                /** temp is the distance from current node to a neighbor
-                 * we get this distance from the Adjacency Matrix
-                 * **/
-                int temp = graph.getAdjacencyMatrix()[indexOfCurrentNode][j];
-                /** If searched already contains neighbor, no need to double check. Continue in loop **/
-                Node neighbor = graph.getListOfAllNodes().get(j);
-           //     System.out.println("Neighbour is "+neighbor);
-                if (!searched.contains(neighbor)) {
+        Node currentNode=graph.getListOfAllNodes().get(curr);
 
-                    if (distance + temp < neighbor.getDistance()) {
-                        /** Shorter path has been found. Update neighboring node **/
-                    //   System.out.println("update path ");
-                        neighbor.setPrevious(graph.getListOfAllNodes().get(curr));  /** We set the previous Node ! **/
-                        neighbor.setDistance(distance + temp);
-                        neighbor.setHeuristic(graph.getListOfAllNodes().get(destination));
-                        //Allow neighbor to be searched through by adding it to the unsearched queue.
-                        unsearched.add(neighbor);
-                    }
+        for(int i=0; i<currentNode.getNeighbors().size(); i++)
+        {
+
+            int tempIndex = currentNode.getNeighbors().get(i).get(0); /** Index of the neighbor i int ListOfAllNodes*/
+            int tempCost = currentNode.getNeighbors().get(i).get(1);  /** Cost to go to the neighbor i*/
+
+            Node neighbor = graph.getListOfAllNodes().get(tempIndex);
+
+            /** If searched already contains neighbor, no need to double check. Continue in loop **/
+            if (!searched.contains(neighbor))
+            {
+                if (distance + tempCost < graph.getListOfAllNodes().get(tempIndex).getDistance())
+                {
+                    /** Shorter path has been found. Update neighboring node **/
+                    neighbor.setPrevious(graph.getListOfAllNodes().get(curr));  /** We set the previous Node ! **/
+                    neighbor.setDistance(distance + tempCost);
+                    neighbor.setHeuristic(graph.getListOfAllNodes().get(destination));
+
+                    /**Allow neighbor to be searched through by adding it to the unsearched queue. **/
+                    unsearched.add(neighbor);
                 }
-
             }
+
         }
     }
-
 
     private void printInformationAboutPath(ArrayList<Integer>path,int sourceIndex)
     {
