@@ -6,24 +6,24 @@ Git Hub IDS : johanndesoyres, HADHRI, Junhui7
 
 1) Objective
 
-The purpose of our project is to build a pathfinding algorithm that find the “best” path between two places in a city. When we say “best”, we don’t only speak about the shortest path. To choose the best path we will consider the number of traffic lights, bus, taxi, etc.
+The purpose of our project is to build a pathfinding algorithm that find the “best” path between two places in a city. When we say “best”, we don’t only speak about the shortest path. To choose the best path we will consider the number of traffic lights, bus, taxi, etc. Then this algorithm will be use in a JAVA Swing Interface. 
 
 2) The environment
 
-For our project we choose to have a MVC environment. The model contains the structure of the city which is a matrix of nodes and the structure of the node himself. The Controller contains the CityController which is used to fill the empty city with traffic lights, bus, taxi, etc. In the CityController you can also find the graph generated from the city. The graph contains all the nodes in the city except
-the buildings. Finally, the View is just a representation in the console of our city, graph and results from pathfinding algorithm.
-It’s important to recall that our city is not a representation of a real city. It’s just a city that we randomly built.
+For our project we choose to have a MVC environment. The model contains the structure of the city which is a matrix of nodes and the structure of the node himself. The Controller contains the CityController which is used to fill the empty city with traffic lights, bus, taxi, etc. In the CityController you can also find the graph generated from the city. The graph contains all the nodes in the city except the buildings. Finally, the View is just a representation in the console of our city, graph and results from pathfinding algorithm.
+
+It’s important to recall that our city is a representation of Manathan.
 
 3) The pathfinding algorithm
 
-Our pathfinding algorithm need to be very efficient in space and time complexity. For that, we will adapt the A* algorithm to our environment. But first we will begin with more simple algorithms like Dijkstra or Bidirectional Search. Maybe we will combine all these algorithms. The purpose is just to have an efficient pathfinding algorithm. We will apply this algorithm with the depart, the destination, the graph in input and the best path in output.
+Our pathfinding algorithm need to be very efficient in space and time complexity. For that, we will adapt the A* algorithm to our environment. We will apply this algorithm with the depart, the destination, the graph in input and the best path in output.
 
 4) Improvements
 
 To improve our project , we will create the view of our project . So we want to display the Matrix and we want 
 the user see every time the short path to take .  We want also give the possibility to user to put accidents and lights 
 dynamically so we could see the change of the path . 
-We will use JAVA FX For this ( Java library for UI)
+We will use JAVA Swing For this ( Java library for UI)
 
 5) Demo and Presentation Videos
 
@@ -46,11 +46,19 @@ What is already done:
 - Implementation of a method to refresh the adjency matrix
 - Implementation of A star Algorithm 
 - Comparing the A star with Djikistra Algorithm
+- Solve a problem with  Java heap space while creating a city of more than 200*200 
+- Add Game view, Game manager, Car and Button classes
+- Display the city with JAVA Swing
+- Add function to set the destination dynamically
+- Add button "add a normal car"
+- Add button "add an Accident"
+- Add button "delete an Accident"
+- Add Traffic-light classe to change dynamically the color for all Traffic lights
 
 What we are actually doing:
 
--Solve a problem with  Java heap space while creating a city of more than 200*200 .
-  (We have put out heap to the max on intellij , Until now we cannot proceed with a city with more than 200*200)
+- Display informations about the selected car
+- Add button "add a bot car"
 
 
 
