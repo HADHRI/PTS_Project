@@ -15,14 +15,6 @@ public class CityController {
     private Car car;
 
 
-    public CityController(int size, double proportion){
-        graph=new Graph(size,proportion);
-        graph.setListOfAllNodes();
-        graph.setAllNeighbors();
-        astar=new Astar(graph);
-
-    }
-
     public  CityController(String file){
         graph=new Graph(file);
         graph.setListOfAllNodes();

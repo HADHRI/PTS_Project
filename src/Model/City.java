@@ -42,54 +42,6 @@ public class City {
         this.matrice = matrice;
     }
 
-    public static void setBus( double BusProportion)
-    {
-        //Random Object
-        Random random = new Random();
-
-
-        int maxBus = (int) ( height*width*BusProportion);
-        int numBus=0;
-
-
-        while(numBus<maxBus) {
-
-            int randomRow = random.nextInt(height); // To generate numbrer between 0 and height - 1
-            int randomCol = random.nextInt(width); //  To generate numbrer between 0 and width - 1
-
-            //if the node is not occupied and the node does not already contain a bus
-            if (!matrice.get(randomRow).get(randomCol).isOccupied() && !matrice.get(randomRow).get(randomCol).isBus() && !matrice.get(randomRow).get(randomCol).isTaxi() && !matrice.get(randomRow).get(randomCol).isAccident() && !matrice.get(randomRow).get(randomCol).isStop()
-                    && !matrice.get(randomRow).get(randomCol).isTree() && !matrice.get(randomRow).get(randomCol).isWater() && !matrice.get(randomRow).get(randomCol).isGrass()) {
-                matrice.get(randomRow).get(randomCol).setBus(true);
-                numBus+=1;
-            }
-        }
-    }
-
-    public static void setTaxi(double TaxiProportion)
-    {
-        //Random Object
-        Random random = new Random();
-
-
-        int maxTaxi = (int) ( height*width*TaxiProportion);
-        int numTaxi=0;
-
-
-        while(numTaxi<maxTaxi) {
-
-            int randomRow = random.nextInt(height); // To generate numbrer between 0 and height - 1
-            int randomCol = random.nextInt(width); //  To generate numbrer between 0 and width - 1
-
-            //if the node is not occupied and the node does not already contain a taxi
-            if (!matrice.get(randomRow).get(randomCol).isOccupied() && !matrice.get(randomRow).get(randomCol).isTaxi() && !matrice.get(randomRow).get(randomCol).isBus() && !matrice.get(randomRow).get(randomCol).isAccident() && !matrice.get(randomRow).get(randomCol).isStop()
-                    && !matrice.get(randomRow).get(randomCol).isTree() && !matrice.get(randomRow).get(randomCol).isWater() && !matrice.get(randomRow).get(randomCol).isGrass()) {
-                matrice.get(randomRow).get(randomCol).setTaxi(true);
-                numTaxi+=1;
-            }
-        }
-    }
-
   public static void setAccident( int maxAccident)
     {
         //Random Object
@@ -112,96 +64,12 @@ public class City {
         }
     }
 
-    public static void setStop( int maxStop)
-    {
-        //Random Object
-        Random random = new Random();
-
-        int numStop=0;
-
-
-        while(numStop<maxStop) {
-
-            int randomRow = random.nextInt(height); // To generate numbrer between 0 and height - 1
-            int randomCol = random.nextInt(width); //  To generate numbrer between 0 and width - 1
-
-            //if the node is not occupied and the node does not already contain a accident
-            if (!matrice.get(randomRow).get(randomCol).isOccupied() && !matrice.get(randomRow).get(randomCol).isAccident() && !matrice.get(randomRow).get(randomCol).isBus() && !matrice.get(randomRow).get(randomCol).isTaxi() && !matrice.get(randomRow).get(randomCol).isStop()
-                    && !matrice.get(randomRow).get(randomCol).isTree() && !matrice.get(randomRow).get(randomCol).isWater() && !matrice.get(randomRow).get(randomCol).isGrass()) {
-                matrice.get(randomRow).get(randomCol).setStop(true);
-                numStop+=1;
-            }
-        }
-    }
-
-
-
-
-    /**this function is used to generated randomly in the city traffic lights, bus, taxi, accident and speed limit*/
-
-    public static void setCity(double BusProportion,double TaxiProportion,int maxAccident)
-    {
-
-        setBus(BusProportion);
-        setTaxi(TaxiProportion);
-        setAccident(maxAccident);
-        //setStop(maxStop);
-
-    }
 
     public ArrayList<TrafficLight> getTrafficLights() {
         return trafficLights;
     }
 
     //---------------------------------------------Constructor---------------------------------------------------
-
-    public City(int nbRows, int nbColumns, double proportion){
-
-        this.height=nbRows;
-        this.width=nbColumns;
-
-        //    this.matrice=new Node[height][width];
-        matrice=new ArrayList<ArrayList<Node>>();
-        for(int i=0;i<height;i++)
-        {
-            for(int j=0;j<width;j++)
-            {
-                matrice.add(i,new ArrayList<>());
-            }
-
-        }
-
-        // Init All nodes with Default state
-        for(int i=0;i<height;i++)
-        {
-
-            for(int j=0;j<width;j++)
-            {
-                Node node=new Node(i,j);
-                matrice.get(i).add(j,node);
-            }
-
-        }
-        // we will put 20 % of  occupied Nodes means with buildings
-        int maxBuildings = (int) ( height*width*proportion);
-
-        int numberBuildings=0;
-
-
-        //Random Object
-        Random random = new Random();
-        while(numberBuildings <maxBuildings) {
-
-            int randomRow = random.nextInt(height); // To generate numbrer between 0 and height - 1
-            int randomCol = random.nextInt(width); //  To generate numbrer between 0 and width - 1
-
-            if (! matrice.get(randomRow).get(randomCol).isOccupied()) {
-
-                matrice.get(randomRow).get(randomCol).setOccupied(true);
-                numberBuildings+=1;
-            }
-        }
-    }
 
     public City(String file)
     {
@@ -251,7 +119,7 @@ public class City {
                     else if(matrix[i][j]=='2'){
                         matrice.get(i).get(j).setIntersection(true);
                         randomStop=random.nextInt(50);
-                        if(nbStop<100 && randomStop>=46) {
+                        if(nbStop<100 && randomStop>=35) {
                             matrice.get(i).get(j).setStop(true);
                             nbStop++;
                         }
@@ -273,6 +141,12 @@ public class City {
                         matrice.get(i).get(j).setIntersection(true);
                         matrice.get(i).get(j).setTree(true);
                         matrice.get(i).get(j).setOccupied(true);
+                    }
+                    else if(matrix[i][j]=='X'){
+                        matrice.get(i).get(j).setBus(true);
+                    }
+                    else if(matrix[i][j]=='Z'){
+                        matrice.get(i).get(j).setTaxi(true);
                     }
                     else{
                         matrice.get(i).get(j).setIntersection(true);
@@ -305,7 +179,7 @@ public class City {
 
             }
 
-            setCity(0.04,0.03,4);
+            setAccident(5);
 
             in.close();
         }catch( IOException ioException ) {}

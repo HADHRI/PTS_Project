@@ -26,13 +26,6 @@ public class Graph {
     }
 
 
-    public Graph(int size, double proportion)
-    {
-        //Contsruct our City
-        this.city=new City(size,size,proportion);
-
-    }
-
     public Graph(String file)
     {
         //Contsruct our City
@@ -62,27 +55,27 @@ public class Graph {
                 //currentNode.getNeighbors().get(j).set(1,0);
 
                 if(listOfAllNodes.get(indexofneighbor).isTaxi()){
-                    currentNode.getNeighbors().get(j).set(1,200/4);
+                    currentNode.getNeighbors().get(j).set(1,100/4);
 
                 }
                 if(listOfAllNodes.get(indexofneighbor).getTrafficLight()!=null){
                     if(listOfAllNodes.get(indexofneighbor).getTrafficLight().isState()== true ) {
-                        currentNode.getNeighbors().get(j).set(1, 200/6);
+                        currentNode.getNeighbors().get(j).set(1, 100/6);
                     }
 
                     else{
                         //todo  put the cost of the simple route
-                        currentNode.getNeighbors().get(j).set(1,200/2 );
+                        currentNode.getNeighbors().get(j).set(1,100/2 );
                     }
                 }
                 if(listOfAllNodes.get(indexofneighbor).isBus()){
-                    currentNode.getNeighbors().get(j).set(1,200/3);
+                    currentNode.getNeighbors().get(j).set(1,100/3);
                 }
                 if(listOfAllNodes.get(indexofneighbor).isAccident()){
-                    currentNode.getNeighbors().get(j).set(1,200/1);
+                    currentNode.getNeighbors().get(j).set(1,100/1);
                 }
                 if(listOfAllNodes.get(indexofneighbor).isStop()){
-                    currentNode.getNeighbors().get(j).set(1,200/4);
+                    currentNode.getNeighbors().get(j).set(1,100/4);
                 }
                 if(listOfAllNodes.get(indexofneighbor).getSpeed_limit()==30){
                    // currentNode.getNeighbors().get(j).set(1,currentNode.getNeighbors().get(j).get(1)-2);
