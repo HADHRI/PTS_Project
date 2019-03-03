@@ -2,10 +2,10 @@ package views;
 import Controller.CityController;
 import Model.Car;
 import Model.TrafficLight;
+import javafx.scene.layout.GridPane;
 
 import javax.swing.*;
 import java.awt.*;
-
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
@@ -13,14 +13,33 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
-
 import static javax.imageio.ImageIO.*;
+
+import java.awt.event.*;
+
+import javax.swing.*;
+
+import javax.swing.border.*;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public class GameView extends Display {
 
+    private JPanel carButtons;
+    private JPanel carsName; // Contains cars with the boolean selected or not selected
+    private JPanel carsPath; // contains the path that the car will take
     private JPanel cote;
+    private JPanel carsInfo;
     private JScrollPane js;
     private ArrayList<Car>cars;
+    private JTextArea jtextAreaCarnames;
+    private JTextArea jtextAreaCarpaths;
+    private JScrollPane jspCarnames;
+    private JScrollPane jspCarpaths;
+
 
     Button addNormalCar = new Button("Add Normal Car");
     Button addBotCar = new Button("Add Bot Car");
@@ -59,8 +78,8 @@ public class GameView extends Display {
     {
 
 
-       int height=cityController.getGraph().getCity().getHeight();
-       int width=cityController.getGraph().getCity().getWidth();
+        int height=cityController.getGraph().getCity().getHeight();
+        int width=cityController.getGraph().getCity().getWidth();
 
         JPanel jp = new JPanel();
         jp.setLayout(new GridLayout(height,width));
@@ -71,99 +90,100 @@ public class GameView extends Display {
 
                 Random rand = new Random();
                 int rand1 = rand.nextInt(2);
-              Button jButton = new Button();
-              jButton.setX(y);
-              jButton.setY(x);
+                Button jButton = new Button();
+                jButton.setX(y);
+                jButton.setY(x);
 
-              jButton.addActionListener(new ActionListener(){
+                jButton.addActionListener(new ActionListener(){
 
-                  public void actionPerformed(ActionEvent e) {
-                      for(int i=0;i<cars.size();i++)
-                      {
-
-
-                      // If there is car in the same position as the button
-                      if (cars.get(i).getX()==jButton.getXPositionInMatrix() &&cars.get(i).getY()==jButton.getYPositionInMatrix())
-                      {
-                          cars.get(i).setSelectedForRunningAstar(true);
-
-                      }  
-                      else {
-
-                          /** TODO VERIFIER QUE LA DESTINATION EST ELIGIBLE , No batiment .. **/
-                          // Parcourir les voitures
-                          if (cars.get(i).isSelectedForRunningAstar() && (!cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied())) {
-                              System.out.println("Run A star");
-                              /**
-                               * rerun A star
-                               */
-                              cars.get(i).setAstarPath(null);
-                              /** change 0 and 1000 to real position of x and y in the graph **/
-                              /** use index of Graph here **/
-                              int currentPos = cars.get(i).getAstar().getGraph().getCity().getMatrice().get(cars.get(i).getX()).get(cars.get(i).getY()).getIndexofgraph();
-                              System.out.println("this is ......" + currentPos);
-                              int destPos = cars.get(i).getAstar().getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).getIndexofgraph();
-
-                              cars.get(i).setTimer(0);
-                              /** decrement the number of cars */
-                             if( buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).getNumberOfCars()!=0)
-                              buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setNumberOfCars( buttons.get(cars.get(i).getX()).get(  cars.get(i).getY()).getNumberOfCars()-1);
+                    public void actionPerformed(ActionEvent e) {
+                        for(int i=0;i<cars.size();i++)
+                        {
 
 
-                              cars.get(i).setAstarPath(cars.get(i).getAstar().run(currentPos, destPos));
-                              cars.get(i).getAstarPath().remove(0);
-                              cars.get(i).setSelectedForRunningAstar(false);
+                            // If there is car in the same position as the button
+                            if (cars.get(i).getX()==jButton.getXPositionInMatrix() &&cars.get(i).getY()==jButton.getYPositionInMatrix())
+                            {
+                                cars.get(i).setSelectedForRunningAstar(true);
 
-                          } } }
+                            }
+                            else {
 
-                          /** TODO si le button add Normal car est selectionné tu l'ajoutes à cette position **/
-                          // FOR add Normal car
-                          if(addNormalCar.isAddingNormalCar()&& !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied()){
-                              System.out.println("Adding Normal Car in this position");
-                             Car car = new Car(jButton.getXPositionInMatrix(),jButton.getYPositionInMatrix(),cityController.getAstar(),buttons);
-                             jButton.setNumberOfCars(jButton.getNumberOfCars()+1);
+                                /** TODO VERIFIER QUE LA DESTINATION EST ELIGIBLE , No batiment .. **/
+                                // Parcourir les voitures
+                                if (cars.get(i).isSelectedForRunningAstar() && (!cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied())) {
+                                    System.out.println("Run A star");
+                                    /**
+                                     * rerun A star
+                                     */
+                                    cars.get(i).setAstarPath(null);
+                                    /** change 0 and 1000 to real position of x and y in the graph **/
+                                    /** use index of Graph here **/
+                                    int currentPos = cars.get(i).getAstar().getGraph().getCity().getMatrice().get(cars.get(i).getX()).get(cars.get(i).getY()).getIndexofgraph();
+                                    System.out.println("this is ......" + currentPos);
+                                    int destPos = cars.get(i).getAstar().getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).getIndexofgraph();
 
-                              cars.add( car);
-                              addNormalCar.setAddingNormalCar(false);
-
-                          }
-
-                      // FOR add an accident
-                      if(addanAccident.isAddinganAccident()&& !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied()
-                      && !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isAccident()){
-                          System.out.println("Adding an Accident in this position");
-                          cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).setAccident(true);
-                          setImageWithAccident(jButton);
-                          addanAccident.setAddinganAccident(false);
-                      }
-
-                      if(deleteAnAccident.isDeletinganAccident()&& !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied()
-                              && cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isAccident()){
-                          System.out.println("Deleting an Accident in this position");
-                          cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).setAccident(false);
-                          setImageWithAccident(jButton);
-                          deleteAnAccident.setDeletinganAccident(false);
-                      }
+                                    cars.get(i).setTimer(0);
+                                    /** decrement the number of cars */
+                                    if( buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).getNumberOfCars()!=0)
+                                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setNumberOfCars( buttons.get(cars.get(i).getX()).get(  cars.get(i).getY()).getNumberOfCars()-1);
 
 
-                  }
+                                    cars.get(i).setAstarPath(cars.get(i).getAstar().run(currentPos, destPos));
+                                    cars.get(i).getAstarPath().remove(0);
+                                    cars.get(i).setSelectedForRunningAstar(false);
+
+                                } } }
+
+                        /** TODO si le button add Normal car est selectionné tu l'ajoutes à cette position **/
+                        // FOR add Normal car
+                        if(addNormalCar.isAddingNormalCar()&& !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied()){
+                            System.out.println("Adding Normal Car in this position");
+                            Car car = new Car(jButton.getXPositionInMatrix(),jButton.getYPositionInMatrix(),cityController.getAstar(),buttons);
+                            car.setId(cars.size()+1);
+                            jButton.setNumberOfCars(jButton.getNumberOfCars()+1);
+
+                            cars.add( car);
+                            addNormalCar.setAddingNormalCar(false);
+
+                        }
+
+                        // FOR add an accident
+                        if(addanAccident.isAddinganAccident()&& !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied()
+                                && !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isAccident()){
+                            System.out.println("Adding an Accident in this position");
+                            cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).setAccident(true);
+                            setImageWithAccident(jButton);
+                            addanAccident.setAddinganAccident(false);
+                        }
+
+                        if(deleteAnAccident.isDeletinganAccident()&& !cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied()
+                                && cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isAccident()){
+                            System.out.println("Deleting an Accident in this position");
+                            cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).setAccident(false);
+                            setImageWithAccident(jButton);
+                            deleteAnAccident.setDeletinganAccident(false);
+                        }
 
 
-
-
-            }  );
+                    }
 
 
 
-            /** **/
-            buttons.get(y).add(x,jButton);  // adding buttons to the array
-            jButton.setBounds(x,y,2,2);
 
-            jButton.setPreferredSize(new Dimension(50,50));
+                }  );
+
+
+
+                /** **/
+                buttons.get(y).add(x,jButton);  // adding buttons to the array
+                jButton.setBounds(x,y,2,2);
+
+                jButton.setPreferredSize(new Dimension(50,50));
 
 
                 if(cityController.getGraph().getCity().getMatrice().get(y).get(x).isOccupied() && !cityController.getGraph().getCity().getMatrice().get(y).get(x).isGrass()
-                && !cityController.getGraph().getCity().getMatrice().get(y).get(x).isTree() && !cityController.getGraph().getCity().getMatrice().get(y).get(x).isWater())
+                        && !cityController.getGraph().getCity().getMatrice().get(y).get(x).isTree() && !cityController.getGraph().getCity().getMatrice().get(y).get(x).isWater())
                 {
                     jButton.setIcon(addingImageToAbutton("Building4.png"));
                 }
@@ -179,7 +199,7 @@ public class GameView extends Display {
                     if(nbletter==9) {jButton.setIcon(addingImageToAbutton("A.png"));}
                     if(nbletter==10) {jButton.setIcon(addingImageToAbutton("R.png"));}
                     if(nbletter==11) {jButton.setIcon(addingImageToAbutton("K.png"));}
-                       nbletter++;
+                    nbletter++;
                     cityController.getGraph().getCity().getMatrice().get(y).get(x).isOccupied();
                 }
                 else if(cityController.getGraph().getCity().getMatrice().get(y).get(x).getTrafficLight()!=null){
@@ -237,7 +257,7 @@ public class GameView extends Display {
 
     private void  initButtonsArray()
     {
-       buttons=new ArrayList<>();
+        buttons=new ArrayList<>();
         for(int i=0;i<50;i++)
         {
             for(int j=0;j<50;j++)
@@ -267,24 +287,91 @@ public class GameView extends Display {
         principal.setLayout(new BorderLayout());
         principal.add(js, BorderLayout.CENTER);
 
+
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         /** FOR BUttons**/
-       // addNormalCar.setPreferredSize(new Dimension(150, 40));
+        // addNormalCar.setPreferredSize(new Dimension(150, 40));
         /** **/
-        cote = new JPanel();
-       // cote.setLayout(new BorderLayout());
+        carButtons = new JPanel();
+
+        // carButtons.setLayout(new BorderLayout());
 
         // 3 Buttons ( 3 lines and 1 colmun
-        cote.setLayout(new GridLayout(4,1));
-        cote.setBackground(Color.DARK_GRAY);
-        cote.setPreferredSize(new Dimension(200, height));
+        carButtons.setLayout(new GridLayout(4,1));
+        carButtons.setBackground(Color.DARK_GRAY);
+        carButtons.setPreferredSize(new Dimension(200, height));
         /** Adding Buttons to Cote **/
-        cote.add(addNormalCar);
-        cote.add(addBotCar);
-        cote.add(addanAccident);
-        cote.add(deleteAnAccident);
+        carButtons.add(addNormalCar);
+        carButtons.add(addBotCar);
+        carButtons.add(addanAccident);
+        carButtons.add(deleteAnAccident);
+        //principal.add(carButtons, BorderLayout.EAST);
+        /** Add the panel to hold Cars **/
+        carsInfo = new JPanel();
+        carsInfo.setBackground(Color.red);
+        carsInfo.setLayout(new BorderLayout());
+        carsPath = new JPanel();
+        carsPath.setBackground(Color.red);
+        carsPath.setLayout(new BorderLayout());
+
+        cote = new JPanel();
+        cote.setLayout(new BorderLayout());
+        cote.setBackground(Color.blue);
+        cote.add(carsInfo, BorderLayout.NORTH);
+        cote.add(carsPath, BorderLayout.CENTER);
+        cote.add(carButtons, BorderLayout.SOUTH);
+        cote.setPreferredSize(new Dimension(400, height));
+        carsInfo.setPreferredSize(new Dimension(height - 800, height - 800));
+        carsPath.setPreferredSize(new Dimension(600, 600));
+        carButtons.setPreferredSize(new Dimension(200, 200));
+
+        /** We split carsInfo on two pannel
+         * One panel contains cars in the city with a boolean selected to go
+         * second panel contains the path of the car selected with the time that it takes to reach the endpoint
+         * **/
+        carsName = new JPanel();
+        //carsPath.setBackground(Color.blue);
+        carsName.setBackground(Color.red);
+        carsName.setPreferredSize(new Dimension(height - 200, height - 200));
+        jtextAreaCarnames=new JTextArea(height-200,height-200);
+        jtextAreaCarnames.setEditable(false);
+        jtextAreaCarpaths=new JTextArea(300,300);
+
+        /*
+        EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 10, 10));
+
+        jtextAreaCarpaths=new JTextPane();
+        jtextAreaCarpaths.setBounds(0,500,300,300);
+        jtextAreaCarpaths.setBorder(eb);
+        jtextAreaCarpaths.setMargin(new Insets(5, 5, 5, 5));
+        */
+
+        jtextAreaCarpaths.setEditable(false);
+        carsName.add(jtextAreaCarnames);
+        carsPath.add(jtextAreaCarpaths);
+
+        jspCarnames=new JScrollPane(jtextAreaCarnames);
+        jspCarnames.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jspCarnames.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        jspCarpaths=new JScrollPane(jtextAreaCarpaths);
+        jspCarpaths.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jspCarpaths.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+
+        carsName.setLayout(new GridLayout(1,1));
+
+        carsName.add(jspCarnames);
+        carsPath.add(jspCarpaths);
+        carsInfo.add(carsName, BorderLayout.CENTER);
+
+
         principal.add(cote, BorderLayout.EAST);
+
+
+
+        /** **/
 
         /**Action Listenner for the 4 buttons**/
         addNormalCar.addActionListener(new ActionListener() {
@@ -319,6 +406,9 @@ public class GameView extends Display {
     public void repaint(ArrayList<Car> cars) {
 
 
+        showCars();
+        showCarsPaths();
+
         /** here we iterate on cars and then we show the image in the button with the car position**/
         /** This If , is to not have a lot of refresh into the initial position of the Astar algo**/
 
@@ -340,40 +430,40 @@ public class GameView extends Display {
 
             /** for initial postion of car **/
             //if ((cars.get(i).getLastX()==-1 )&& (cars.get(i).getLastY()==-1))
-           if (!cars.get(i).isAstarIsRunning()) {
+            if (!cars.get(i).isAstarIsRunning()) {
                 cars.get(i).setAstarIsRunning(true);
                 buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
 
 
             }
-             if (buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).getNumberOfCars() == 0) {
+            if (buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).getNumberOfCars() == 0) {
 
-                    if (positionRelatedX == 1) {
-                        if (positionRelatedY == 1) {
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carRD.png"));
-                        } else if (positionRelatedY == -1) {
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carLD.png"));
-                        } else if (positionRelatedY == 0) {
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carD.png"));
-                        }
-                    } else if (positionRelatedX == 0) {
-                        if (positionRelatedY == 1) {
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
-                        } else if (positionRelatedY == -1) { // case Left straight
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carL.png"));
-                        }
-                    } else {
-                        if (positionRelatedY == 1) {
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carRU.png"));
-                        } else if (positionRelatedY == -1) {
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carLU.png"));
-                        } else if (positionRelatedY == 0) {
-                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carU.png"));
-                        } else {
-                            /** For initial postion**/
-                          //   buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
-                        }
+                if (positionRelatedX == 1) {
+                    if (positionRelatedY == 1) {
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carRD.png"));
+                    } else if (positionRelatedY == -1) {
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carLD.png"));
+                    } else if (positionRelatedY == 0) {
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carD.png"));
                     }
+                } else if (positionRelatedX == 0) {
+                    if (positionRelatedY == 1) {
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
+                    } else if (positionRelatedY == -1) { // case Left straight
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carL.png"));
+                    }
+                } else {
+                    if (positionRelatedY == 1) {
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carRU.png"));
+                    } else if (positionRelatedY == -1) {
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carLU.png"));
+                    } else if (positionRelatedY == 0) {
+                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carU.png"));
+                    } else {
+                        /** For initial postion**/
+                        //   buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
+                    }
+                }
 
 
             }
@@ -393,7 +483,7 @@ public class GameView extends Display {
             /** To know if there's a car on the traffic Light  **/
             /** Loop on all cars */
 
-             boolean carExist=false;
+            boolean carExist=false;
 
             for (int j= 0;j < cars.size(); j++) {
 
@@ -513,6 +603,86 @@ public class GameView extends Display {
             jButton.setIcon(addingImageToAbutton("Road.png"));
 
         }
+    }
+
+
+    private void showCars(){
+
+        jtextAreaCarnames.setText("");
+        jtextAreaCarnames.setText("There is "+cars.size() +" Cars in the CITY"+"\n");
+
+
+        for(int i=0;i<cars.size();i++)
+        {
+            // jtextArea.append(student.get(i).getName()+"      "+(student.get(i)).getCapacity()+"\n");
+            jtextAreaCarnames.append(cars.get(i).getId()+"   "+cars.get(i).isSelectedForRunningAstar() +"\n");
+        }
+    }
+
+    private void appendToPane(JTextPane tp, String msg, Color c)
+    {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+
+        int len = tp.getDocument().getLength();
+        tp.setCaretPosition(len);
+        tp.setCharacterAttributes(aset, false);
+        tp.replaceSelection(msg);
+        tp.setText(msg);
+    }
+
+   private void showCarsPaths(){
+        /*
+        String currentNode="";
+       appendToPane(jtextAreaCarpaths,"                                           Path Overview\n",Color.black);
+       appendToPane(jtextAreaCarpaths,"\n",Color.black);
+       appendToPane(jtextAreaCarpaths,"_________________________\n",Color.black);
+       appendToPane(jtextAreaCarpaths,"| Building or Park :               [X]     |\n",Color.black);
+       appendToPane(jtextAreaCarpaths,"| Road :                                  [_]     |\n",Color.black);
+       appendToPane(jtextAreaCarpaths,"| Path :                                    [#]     |\n",Color.black);
+       appendToPane(jtextAreaCarpaths,"|________________________|\n",Color.black);
+       appendToPane(jtextAreaCarpaths,"\n",Color.black);
+       */
+
+       jtextAreaCarpaths.setText("                                           Path Overview\n");
+       jtextAreaCarpaths.append("\n");
+       jtextAreaCarpaths.append("_________________________\n");
+       jtextAreaCarpaths.append("| Building or Park :               [X]     |\n");
+       jtextAreaCarpaths.append("| Road :                                  [_]     |\n");
+       jtextAreaCarpaths.append("| Path :                                    [#]     |\n");
+       jtextAreaCarpaths.append("|________________________|\n");
+       jtextAreaCarpaths.append("\n");
+
+
+
+       for(int n=0;n<cars.size();n++)
+       {
+           if(cars.get(n).isSelectedForRunningAstar() && cars.get(n).getAstarPath()!=null){
+
+               jtextAreaCarpaths.append("                                                  CAR " + cars.get(n).getId() + "\n");
+               jtextAreaCarpaths.append("\n");
+
+               jtextAreaCarpaths.append(cityController.printPath(cars.get(n).getAstarPath()));
+
+                       /*
+                       if(currentNode=="[#]") {
+
+                           //appendToPane(jtextAreaCarpaths,currentNode,Color.red);
+
+                       }
+                       else{
+                           //appendToPane(jtextAreaCarpaths,currentNode,Color.black);
+
+                       }
+
+                   //appendToPane(jtextAreaCarpaths,"\n",Color.black);
+                  */
+
+           }
+       }
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Car {
 
+    protected int id=0;
     protected int lastX=-1 ;
     protected int lastY=-1;
     protected int x=0;
@@ -17,7 +18,18 @@ public class Car {
     protected boolean astarIsRunning=false;
     protected boolean isSelectedForRunningAstar=false;
 
+
     protected ArrayList<ArrayList<Button>>buttons;
+
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 
     public boolean isAstarIsRunning() {
         return astarIsRunning;
@@ -62,6 +74,7 @@ public class Car {
 
     public Car(int startXposition,int startYPosition,Astar astar,ArrayList<ArrayList<Button>>buttons)
     {
+
         this.x= startXposition;
         this.y=startYPosition;
         this.astar=astar;
@@ -83,44 +96,44 @@ public class Car {
 
 
 
-       if (!astarIsRunning)
-       {
+        if (!astarIsRunning)
+        {
 
-           // Running Astar and Have a Pile tha contains the A start  positions
-      //  astarIsRunning=true;
-        /** TODO change the corrdinates of graph to corrdinates in the node */
-         int startIndex=astar.getGraph().getCity().getMatrice().get(startX).get(startY).getIndexofgraph();
-           //System.out.println("hhhhhhhhhhhhhhhhh"+startIndex);
-           int endIndex=astar.getGraph().getCity().getMatrice().get(destX).get(destY).getIndexofgraph();
+            // Running Astar and Have a Pile tha contains the A start  positions
+            //  astarIsRunning=true;
+            /** TODO change the corrdinates of graph to corrdinates in the node */
+            int startIndex=astar.getGraph().getCity().getMatrice().get(startX).get(startY).getIndexofgraph();
+            //System.out.println("hhhhhhhhhhhhhhhhh"+startIndex);
+            int endIndex=astar.getGraph().getCity().getMatrice().get(destX).get(destY).getIndexofgraph();
 
-        astarPath=astar.run(startIndex,endIndex);astarPath.remove(0); // we don't want to have the start position in the array !
+            astarPath=astar.run(startIndex,endIndex);astarPath.remove(0); // we don't want to have the start position in the array !
 
-           System.out.println("caaaaaaaaaaaaaaaaaar"+getLastX() +"  "+getLastY());
+            System.out.println("caaaaaaaaaaaaaaaaaar"+getLastX() +"  "+getLastY());
 
-       }
-       /*** if the array is not empty */
-       // pop from the array if it is not empty and change the position of the car
+        }
+        /*** if the array is not empty */
+        // pop from the array if it is not empty and change the position of the car
         /** change the x and y position and also the lastx and lasty postition**/
 
-         if (astarPath.size()!=0)
-            {
+        if (astarPath.size()!=0)
+        {
 
-                System.out.println(astarPath.get(0));
-                /** Change positions of the car */
-                Node specificNode=astar.getGraph().getListOfAllNodes().get(astarPath.get(0));
-                Button currentButton =buttons.get(x).get(y);
-               // if(currentButton.getNumberOfCars()>=1)
-                currentButton.setNumberOfCars(currentButton.getNumberOfCars()-1);
-                setLastX(x);
-                setLastY(y);
-                setX(specificNode.getRow());
-                setY(specificNode.getColumn());
-                /** Increment number of cars on this button **/
-                currentButton.setNumberOfCars(currentButton.getNumberOfCars()+1);
-                setMaxTimer(getCost());
-                astarPath.remove(0);
+            System.out.println(astarPath.get(0));
+            /** Change positions of the car */
+            Node specificNode=astar.getGraph().getListOfAllNodes().get(astarPath.get(0));
+            Button currentButton =buttons.get(x).get(y);
+            // if(currentButton.getNumberOfCars()>=1)
+            currentButton.setNumberOfCars(currentButton.getNumberOfCars()-1);
+            setLastX(x);
+            setLastY(y);
+            setX(specificNode.getRow());
+            setY(specificNode.getColumn());
+            /** Increment number of cars on this button **/
+            currentButton.setNumberOfCars(currentButton.getNumberOfCars()+1);
+            setMaxTimer(getCost());
+            astarPath.remove(0);
 
-            }
+        }
 
 
 

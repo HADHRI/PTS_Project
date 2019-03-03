@@ -54,11 +54,12 @@ What is already done:
 - Add button "add an Accident"
 - Add button "delete an Accident"
 - Add Traffic-light classe to change dynamically the color for all Traffic lights
+- Add a panel to display a list of cars currently present in the city and to show which one is selected
+- Add a panel to display an overview of the path for the selected car
 
 What we are actually doing:
 
-- Display informations about the selected car
-- Add button "add a bot car"
+- Writing a report of our project
 
 
 

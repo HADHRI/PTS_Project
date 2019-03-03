@@ -78,11 +78,11 @@ public class Graph {
                     currentNode.getNeighbors().get(j).set(1,100/4);
                 }
                 if(listOfAllNodes.get(indexofneighbor).getSpeed_limit()==30){
-                   // currentNode.getNeighbors().get(j).set(1,currentNode.getNeighbors().get(j).get(1)-2);
+                    // currentNode.getNeighbors().get(j).set(1,currentNode.getNeighbors().get(j).get(1)-2);
 
                 }
                 if(listOfAllNodes.get(indexofneighbor).getSpeed_limit()==50){
-                   // currentNode.getNeighbors().get(j).set(1,currentNode.getNeighbors().get(j).get(1)-3);
+                    // currentNode.getNeighbors().get(j).set(1,currentNode.getNeighbors().get(j).get(1)-3);
 
                 }
                 if(listOfAllNodes.get(indexofneighbor).getSpeed_limit()==70){

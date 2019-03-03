@@ -4,6 +4,7 @@ package Controller;
 import Model.Car;
 import Model.Node;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -178,21 +179,46 @@ public class CityController {
      * @return true if the node (i,j) is present in the path
      */
     private boolean find(int i,int j, ArrayList<Integer>path){
-       boolean test=false;
+        boolean test=false;
 
         for(int r=0;r<path.size();r++){
-           if(graph.getListOfAllNodes().get(path.get(r)).getRow()==i && graph.getListOfAllNodes().get(path.get(r)).getColumn()==j){
-               test=true;
-           }
+            if(graph.getListOfAllNodes().get(path.get(r)).getRow()==i && graph.getListOfAllNodes().get(path.get(r)).getColumn()==j){
+                test=true;
+            }
         }
-       return test;
+        return test;
     }
 
     /***
      * function to print the city matrix with the path
      * @param path
      */
-    private  void printPath(ArrayList<Integer>path){
+    public String printPath(ArrayList<Integer>path){
+
+        String result="";
+        for(int i=0;i<graph.getCity().getHeight();i++) {
+            for (int j = 0; j <graph.getCity().getWidth(); j++) {
+
+                if (graph.getCity().getMatrice().get(i).get(j).isOccupied()) {
+                    result += "[X]";
+
+                } else if (find(i, j, path)) {
+                    result += "[#]";
+                } else {
+                    result += "[_]";
+                }
+            }
+            result+="\n";
+        }
+
+        return result;
+
+    }
+
+
+    /*public String printPath(ArrayList<Integer>path){
+
+        String result="";
 
         for(int i=0;i<graph.getCity().getHeight();i++)
         {
@@ -200,22 +226,24 @@ public class CityController {
             {
 
                 if(graph.getCity().getMatrice().get(i).get(j).isOccupied()){
-                    System.out.print("\033[31m" + "[X]");/**print building in red*/
+                    result+="\033[31m" + "[X]";
 
                 }
                 else if(find(i,j,path)) {
-                    System.out.print("\033[30m" + "[#]");/**print the path in white*/
+                    result+="\033[30m" + "[#]";
                 }
                 else{
-                    System.out.print("\033[32m" + "[ ]");/**print roads in yellow*/
+                    result+="\033[32m" + "[ ]";
                 }
             }
-            System.out.println();
+            result+="\n";
         }
 
-        System.out.println("\033[30m" + " ");
+        result+="\033[30m" + " ";
 
-    }
+        return result;
+
+    }*/
 
     /**Main to test the methods*/
 

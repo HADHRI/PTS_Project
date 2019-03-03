@@ -42,7 +42,7 @@ public class City {
         this.matrice = matrice;
     }
 
-  public static void setAccident( int maxAccident)
+    public static void setAccident( int maxAccident)
     {
         //Random Object
         Random random = new Random();
@@ -125,7 +125,7 @@ public class City {
                         }
                     }
                     else if(matrix[i][j]=='7'){
-                            matrice.get(i).get(j).setGrass(true);
+                        matrice.get(i).get(j).setGrass(true);
                         matrice.get(i).get(j).setOccupied(true);
                     }
                     else if(matrix[i][j]=='6'){
@@ -137,7 +137,7 @@ public class City {
                         matrice.get(i).get(j).setOccupied(true);
                     }
                     else if(matrix[i][j]=='C' || matrix[i][j]=='E' || matrix[i][j]=='N' || matrix[i][j]=='T' || matrix[i][j]=='R' || matrix[i][j]=='A'
-                    || matrix[i][j]=='L' || matrix[i][j]=='P' || matrix[i][j]=='A' || matrix[i][j]=='R' || matrix[i][j]=='K'){
+                            || matrix[i][j]=='L' || matrix[i][j]=='P' || matrix[i][j]=='A' || matrix[i][j]=='R' || matrix[i][j]=='K'){
                         matrice.get(i).get(j).setIntersection(true);
                         matrice.get(i).get(j).setTree(true);
                         matrice.get(i).get(j).setOccupied(true);
@@ -162,11 +162,11 @@ public class City {
                         trafficLight.setTimeMax(trafficLight.getTimeMax()+n);
                         if( n  < 25 ){
 
-                          //  fire = Node.Traffic_ligth.GREEN;
+                            //  fire = Node.Traffic_ligth.GREEN;
                             trafficLight.setState(true);
                         }
                         else {
-                           // fire = Node.Traffic_ligth.RED;
+                            // fire = Node.Traffic_ligth.RED;
                             trafficLight.setState(false);
                         }
                         matrice.get(i).get(j).setTrafficLight(trafficLight);
@@ -210,4 +210,3 @@ public class City {
 
 
 }
-
