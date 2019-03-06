@@ -53,8 +53,6 @@ public class Node implements Comparable<Node> {
         this.water = water;
     }
 
-    //public enum Traffic_ligth{RED,GREEN,NONE};
-
 
 
     //----------------------------------Attributes and Properties-------------------------------------------

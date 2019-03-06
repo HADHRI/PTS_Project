@@ -96,7 +96,6 @@ public class Astar {
             //Pop the PriorityQueue and set current to the top element;
             current = (Node) unsearched.poll();
             //If the current node is our target, print the path and end
-           // System.out.println(current);
             if (current.equals(graph.getListOfAllNodes().get(end))) {
                 /** print path **/
                 return (printAstarPath(graph.getListOfAllNodes().get(end),graph.getListOfAllNodes().get(start)));
@@ -105,8 +104,7 @@ public class Astar {
             }
             //Move current node to the searched list.
             searched.add(current);
-            //System.out.println(current.getColumn() + " " + current.getRow());
-            updateNeighbor(graph.getListOfAllNodes().indexOf(current), end); 
+            updateNeighbor(graph.getListOfAllNodes().indexOf(current), end);
         }
 
 

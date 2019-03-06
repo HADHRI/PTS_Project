@@ -8,7 +8,7 @@ public class Button extends JButton {
     private boolean addingNormalCar;
     private boolean addinganAccident;
     private boolean deletinganAccident;
-    private boolean addingBotCar;
+    private boolean showingPath;
     private int numberOfCars=0;
 
     public void setNumberOfCars(int numberOfCars) {
@@ -40,12 +40,12 @@ public class Button extends JButton {
         this.addingNormalCar = addingNormalCar;
     }
 
-    public boolean isAddingBotCar() {
-        return addingBotCar;
+    public boolean isShowingPath() {
+        return showingPath;
     }
 
-    public void setAddingBotCar(boolean addingBotCar) {
-        this.addingBotCar = addingBotCar;
+    public void setShowingPath(boolean showingPath) {
+        this.showingPath = showingPath;
     }
 
     public boolean isAddinganAccident() {

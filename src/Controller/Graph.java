@@ -52,7 +52,6 @@ public class Graph {
             {
 
                 int indexofneighbor=currentNode.getNeighbors().get(j).get(0);
-                //currentNode.getNeighbors().get(j).set(1,0);
 
                 if(listOfAllNodes.get(indexofneighbor).isTaxi()){
                     currentNode.getNeighbors().get(j).set(1,100/4);
@@ -145,21 +144,6 @@ public class Graph {
 
 
                     }
-                    //cheking UP Right
-                    /*if (i - 1 >= 0 && j + 1 < city.getWidth()) {
-                        if (!city.getMatrice().get(i-1).get(j+1).isOccupied()) {
-                            // Je recupere son index à partir de ListDesGraphNode
-                            // Puis je le met dans le tableau
-                            // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j+1));
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-
-                            listOfAllNodes.get(currentIndex).addNeighbors(index, 15);
-
-                        }
-
-
-                    }*/
 
                     //checking right
                     if (j + 1 < city.getWidth()) {
@@ -175,19 +159,7 @@ public class Graph {
                         }
 
                     }
-                    //checking downRight
-                    /*if (i + 1 < city.getHeight() && j + 1 < city.getWidth()) {
-                        if (!city.getMatrice().get(i+1).get(j+1).isOccupied()) {
-                            // Je recupere son index à partir de ListDesGraphNode
-                            // Puis je le met dans le tableau
-                            // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j+1));
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
 
-                            listOfAllNodes.get(currentIndex).addNeighbors(index, 15);
-
-                        }
-                    }*/
                     //checking down
                     if (i + 1 < city.getHeight()) {
                         if (!city.getMatrice().get(i+1).get(j).isOccupied()) {
@@ -201,19 +173,7 @@ public class Graph {
                         }
 
                     }
-                    //checking down Left
-                    /*if (i + 1 < city.getHeight() && j - 1 >= 0) {
-                        if (!city.getMatrice().get(i+1).get(j-1).isOccupied()) {
-                            // Je recupere son index à partir de ListDesGraphNode
-                            // Puis je le met dans le tableau
-                            // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i+1).get(j-1));
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
 
-                            listOfAllNodes.get(currentIndex).addNeighbors(index, 15);
-                        }
-
-                    }*/
 
                     //checking left
                     if (j - 1 >= 0) {
@@ -230,28 +190,9 @@ public class Graph {
 
                     }
 
-                    //checking UP LEFT
-                    /*if (i - 1 >= 0 && j - 1 >= 0) {
-                        if (!city.getMatrice().get(i-1).get(j-1).isOccupied()) {
-                            // Je recupere son index à partir de ListDesGraphNode
-                            // Puis je le met dans le tableau
-                            // l 'index representre a valeur de la colone
-                            int index = listOfAllNodes.indexOf(city.getMatrice().get(i-1).get(j-1));
-                            int currentIndex = listOfAllNodes.indexOf(city.getMatrice().get(i).get(j));
-
-                            listOfAllNodes.get(currentIndex).addNeighbors(index, 15);
-
-                        }
-
-                    }*/
-
-
                 }
             }
         }
 
-
     }
-
-
 }

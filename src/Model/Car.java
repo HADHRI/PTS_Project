@@ -17,6 +17,7 @@ public class Car {
     protected Astar astar;
     protected boolean astarIsRunning=false;
     protected boolean isSelectedForRunningAstar=false;
+    protected boolean SelectedForShowingPath=false;
 
 
     protected ArrayList<ArrayList<Button>>buttons;
@@ -45,6 +46,14 @@ public class Car {
 
     public void setSelectedForRunningAstar(boolean selectedForRunningAstar) {
         isSelectedForRunningAstar = selectedForRunningAstar;
+    }
+
+    public boolean isSelectedForShowingPath() {
+        return SelectedForShowingPath;
+    }
+
+    public void setSelectedForShowingPath(boolean SelectedForShowingPath) {
+        this.SelectedForShowingPath = SelectedForShowingPath;
     }
 
     protected ArrayList<Integer>astarPath; // this array will hold the path while running Astar Path
@@ -103,12 +112,11 @@ public class Car {
             //  astarIsRunning=true;
             /** TODO change the corrdinates of graph to corrdinates in the node */
             int startIndex=astar.getGraph().getCity().getMatrice().get(startX).get(startY).getIndexofgraph();
-            //System.out.println("hhhhhhhhhhhhhhhhh"+startIndex);
             int endIndex=astar.getGraph().getCity().getMatrice().get(destX).get(destY).getIndexofgraph();
 
             astarPath=astar.run(startIndex,endIndex);astarPath.remove(0); // we don't want to have the start position in the array !
 
-            System.out.println("caaaaaaaaaaaaaaaaaar"+getLastX() +"  "+getLastY());
+            System.out.println("car"+getLastX() +"  "+getLastY());
 
         }
         /*** if the array is not empty */
@@ -122,7 +130,6 @@ public class Car {
             /** Change positions of the car */
             Node specificNode=astar.getGraph().getListOfAllNodes().get(astarPath.get(0));
             Button currentButton =buttons.get(x).get(y);
-            // if(currentButton.getNumberOfCars()>=1)
             currentButton.setNumberOfCars(currentButton.getNumberOfCars()-1);
             setLastX(x);
             setLastY(y);

@@ -162,11 +162,9 @@ public class City {
                         trafficLight.setTimeMax(trafficLight.getTimeMax()+n);
                         if( n  < 25 ){
 
-                            //  fire = Node.Traffic_ligth.GREEN;
                             trafficLight.setState(true);
                         }
                         else {
-                            // fire = Node.Traffic_ligth.RED;
                             trafficLight.setState(false);
                         }
                         matrice.get(i).get(j).setTrafficLight(trafficLight);

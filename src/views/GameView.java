@@ -39,12 +39,17 @@ public class GameView extends Display {
     private JTextArea jtextAreaCarpaths;
     private JScrollPane jspCarnames;
     private JScrollPane jspCarpaths;
+    private boolean computing;
 
 
     Button addNormalCar = new Button("Add Normal Car");
-    Button addBotCar = new Button("Add Bot Car");
+    Button ShowPath = new Button("Show path");
     Button addanAccident = new Button("Add an Accident");
     Button deleteAnAccident = new Button("Delete an Accident");
+
+    public boolean isComputing(){return  isComputing();}
+
+    public boolean setComputing(boolean computing){return this.computing=computing;}
 
     private  CityController cityController;
 
@@ -108,9 +113,9 @@ public class GameView extends Display {
 
                             }
                             else {
-
-                                /** TODO VERIFIER QUE LA DESTINATION EST ELIGIBLE , No batiment .. **/
                                 // Parcourir les voitures
+                                setComputing(true);
+
                                 if (cars.get(i).isSelectedForRunningAstar() && (!cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).isOccupied())) {
                                     System.out.println("Run A star");
                                     /**
@@ -133,7 +138,9 @@ public class GameView extends Display {
                                     cars.get(i).getAstarPath().remove(0);
                                     cars.get(i).setSelectedForRunningAstar(false);
 
-                                } } }
+                                }
+                                setComputing(false);
+                            } }
 
                         /** TODO si le button add Normal car est selectionné tu l'ajoutes à cette position **/
                         // FOR add Normal car
@@ -163,6 +170,30 @@ public class GameView extends Display {
                             cityController.getGraph().getCity().getMatrice().get(jButton.getXPositionInMatrix()).get(jButton.getYPositionInMatrix()).setAccident(false);
                             setImageWithAccident(jButton);
                             deleteAnAccident.setDeletinganAccident(false);
+                        }
+
+                        if(ShowPath.isShowingPath()){
+                            int numbersofCars=0;
+
+                            for(int n=0;n<cars.size();n++){
+                                if(cars.get(n).getX()==jButton.getXPositionInMatrix() && cars.get(n).getY()==jButton.getYPositionInMatrix())
+                                {
+                                    cars.get(n).setSelectedForShowingPath(true);
+                                    cars.get(n).setSelectedForRunningAstar(false);
+                                    numbersofCars++;
+                                }
+                                else{
+                                    cars.get(n).setSelectedForShowingPath(false);
+                                }
+                            }
+
+                            if(numbersofCars==1){
+                                showCarsPaths(jButton.getXPositionInMatrix(), jButton.getYPositionInMatrix());
+                            }
+
+                            System.out.println("Showing a path");
+                            ShowPath.setShowingPath(false);
+
                         }
 
 
@@ -303,16 +334,14 @@ public class GameView extends Display {
         carButtons.setPreferredSize(new Dimension(200, height));
         /** Adding Buttons to Cote **/
         carButtons.add(addNormalCar);
-        carButtons.add(addBotCar);
+        carButtons.add(ShowPath);
         carButtons.add(addanAccident);
         carButtons.add(deleteAnAccident);
         //principal.add(carButtons, BorderLayout.EAST);
         /** Add the panel to hold Cars **/
         carsInfo = new JPanel();
-        carsInfo.setBackground(Color.red);
         carsInfo.setLayout(new BorderLayout());
         carsPath = new JPanel();
-        carsPath.setBackground(Color.red);
         carsPath.setLayout(new BorderLayout());
 
         cote = new JPanel();
@@ -323,31 +352,20 @@ public class GameView extends Display {
         cote.add(carButtons, BorderLayout.SOUTH);
         cote.setPreferredSize(new Dimension(400, height));
         carsInfo.setPreferredSize(new Dimension(height - 800, height - 800));
-        carsPath.setPreferredSize(new Dimension(600, 600));
-        carButtons.setPreferredSize(new Dimension(200, 200));
+        carsPath.setPreferredSize(new Dimension(height-500, height-500));
+        carButtons.setPreferredSize(new Dimension(height-850, height-850));
 
         /** We split carsInfo on two pannel
          * One panel contains cars in the city with a boolean selected to go
          * second panel contains the path of the car selected with the time that it takes to reach the endpoint
          * **/
         carsName = new JPanel();
-        //carsPath.setBackground(Color.blue);
-        carsName.setBackground(Color.red);
-        carsName.setPreferredSize(new Dimension(height - 200, height - 200));
-        jtextAreaCarnames=new JTextArea(height-200,height-200);
+        carsName.setPreferredSize(new Dimension(height - 800, height - 800));
+        jtextAreaCarnames=new JTextArea(height-800,height-800);
         jtextAreaCarnames.setEditable(false);
-        jtextAreaCarpaths=new JTextArea(300,300);
-
-        /*
-        EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 10, 10));
-
-        jtextAreaCarpaths=new JTextPane();
-        jtextAreaCarpaths.setBounds(0,500,300,300);
-        jtextAreaCarpaths.setBorder(eb);
-        jtextAreaCarpaths.setMargin(new Insets(5, 5, 5, 5));
-        */
-
+        jtextAreaCarpaths=new JTextArea(height-500,height-500);
         jtextAreaCarpaths.setEditable(false);
+        jtextAreaCarpaths.setBackground(Color.gray);
         carsName.add(jtextAreaCarnames);
         carsPath.add(jtextAreaCarpaths);
 
@@ -386,12 +404,10 @@ public class GameView extends Display {
             }
         });
 
-        /*addBotCar.addActionListener(new ActionListener() {
+        ShowPath.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                addBotCar.setAddingBotCar(true);
-            }
-        });*/
+            public void actionPerformed(ActionEvent e) { ShowPath.setShowingPath(true); }
+        });
 
         deleteAnAccident.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -406,8 +422,10 @@ public class GameView extends Display {
     public void repaint(ArrayList<Car> cars) {
 
 
-        showCars();
-        showCarsPaths();
+        showCars(this.computing);
+
+
+
 
         /** here we iterate on cars and then we show the image in the button with the car position**/
         /** This If , is to not have a lot of refresh into the initial position of the Astar algo**/
@@ -416,6 +434,9 @@ public class GameView extends Display {
         /** Loop to all cars */
         for (int i = 0; i < cars.size(); i++) {
 
+            if(cars.get(i).isSelectedForShowingPath()){
+                showCarsPaths(cars.get(i).getX(),cars.get(i).getY());
+            }
 
             if (cars.get(i).getLastX() >= 0 && cars.get(i).getLastY() >= 0)
 
@@ -423,17 +444,20 @@ public class GameView extends Display {
                 setImage(buttons.get(cars.get(i).getLastX()).get(cars.get(i).getLastY()), cars.get(i));
 
 
-            //buttons.get(car.getX()).get(car.getY()).setIcon(addingImageToAbutton("src/pho7.png"));
             int positionRelatedX = cars.get(i).getX() - cars.get(i).getLastX();
             int positionRelatedY = cars.get(i).getY() - cars.get(i).getLastY();
 
 
             /** for initial postion of car **/
-            //if ((cars.get(i).getLastX()==-1 )&& (cars.get(i).getLastY()==-1))
-            if (!cars.get(i).isAstarIsRunning()) {
+            if ((cars.get(i).getLastX()==-1 )&& (cars.get(i).getLastY()==-1)){
+           // if (!cars.get(i).isAstarIsRunning()) {
                 cars.get(i).setAstarIsRunning(true);
-                buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
-
+                if(cars.get(i).isSelectedForRunningAstar()){
+                    buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carRselect.png"));
+                }
+                else {
+                    buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
+                }
 
             }
             if (buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).getNumberOfCars() == 0) {
@@ -444,13 +468,28 @@ public class GameView extends Display {
                     } else if (positionRelatedY == -1) {
                         buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carLD.png"));
                     } else if (positionRelatedY == 0) {
-                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carD.png"));
+                        if(cars.get(i).isSelectedForRunningAstar()){
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carDselect.png"));
+                        }
+                        else {
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carD.png"));
+                        }
                     }
                 } else if (positionRelatedX == 0) {
                     if (positionRelatedY == 1) {
-                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
+                        if(cars.get(i).isSelectedForRunningAstar()){
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carRselect.png"));
+                        }
+                        else {
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
+                        }
                     } else if (positionRelatedY == -1) { // case Left straight
-                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carL.png"));
+                        if(cars.get(i).isSelectedForRunningAstar()){
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carLselect.png"));
+                        }
+                        else {
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carL.png"));
+                        }
                     }
                 } else {
                     if (positionRelatedY == 1) {
@@ -458,7 +497,12 @@ public class GameView extends Display {
                     } else if (positionRelatedY == -1) {
                         buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carLU.png"));
                     } else if (positionRelatedY == 0) {
-                        buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carU.png"));
+                        if(cars.get(i).isSelectedForRunningAstar()){
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carUselect.png"));
+                        }
+                        else {
+                            buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carU.png"));
+                        }
                     } else {
                         /** For initial postion**/
                         //   buttons.get(cars.get(i).getX()).get(cars.get(i).getY()).setIcon(addingImageToAbutton("carR.png"));
@@ -606,7 +650,10 @@ public class GameView extends Display {
     }
 
 
-    private void showCars(){
+    private void showCars(boolean computing){
+
+        jtextAreaCarnames.setBackground(Color.gray);
+        jtextAreaCarnames.setForeground(Color.white);
 
         jtextAreaCarnames.setText("");
         jtextAreaCarnames.setText("There is "+cars.size() +" Cars in the CITY"+"\n");
@@ -614,75 +661,42 @@ public class GameView extends Display {
 
         for(int i=0;i<cars.size();i++)
         {
-            // jtextArea.append(student.get(i).getName()+"      "+(student.get(i)).getCapacity()+"\n");
-            jtextAreaCarnames.append(cars.get(i).getId()+"   "+cars.get(i).isSelectedForRunningAstar() +"\n");
+            if(computing==true && cars.get(i).isSelectedForRunningAstar()==true){
+                jtextAreaCarnames.append(cars.get(i).getId()+"   "+cars.get(i).isSelectedForRunningAstar() +"   "+"COMPUTING PATH....\n");
+
+            }
+            else{
+                jtextAreaCarnames.append(cars.get(i).getId()+"   "+cars.get(i).isSelectedForRunningAstar() +"\n");
+            }
         }
     }
 
-    private void appendToPane(JTextPane tp, String msg, Color c)
-    {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+   private void showCarsPaths(int i, int j) {
 
-        int len = tp.getDocument().getLength();
-        tp.setCaretPosition(len);
-        tp.setCharacterAttributes(aset, false);
-        tp.replaceSelection(msg);
-        tp.setText(msg);
-    }
+       jtextAreaCarpaths.setBackground(Color.gray);
+       jtextAreaCarpaths.setForeground(Color.white);
 
-   private void showCarsPaths(){
-        /*
-        String currentNode="";
-       appendToPane(jtextAreaCarpaths,"                                           Path Overview\n",Color.black);
-       appendToPane(jtextAreaCarpaths,"\n",Color.black);
-       appendToPane(jtextAreaCarpaths,"_________________________\n",Color.black);
-       appendToPane(jtextAreaCarpaths,"| Building or Park :               [X]     |\n",Color.black);
-       appendToPane(jtextAreaCarpaths,"| Road :                                  [_]     |\n",Color.black);
-       appendToPane(jtextAreaCarpaths,"| Path :                                    [#]     |\n",Color.black);
-       appendToPane(jtextAreaCarpaths,"|________________________|\n",Color.black);
-       appendToPane(jtextAreaCarpaths,"\n",Color.black);
-       */
 
        jtextAreaCarpaths.setText("                                           Path Overview\n");
-       jtextAreaCarpaths.append("\n");
-       jtextAreaCarpaths.append("_________________________\n");
-       jtextAreaCarpaths.append("| Building or Park :               [X]     |\n");
-       jtextAreaCarpaths.append("| Road :                                  [_]     |\n");
-       jtextAreaCarpaths.append("| Path :                                    [#]     |\n");
-       jtextAreaCarpaths.append("|________________________|\n");
-       jtextAreaCarpaths.append("\n");
+           jtextAreaCarpaths.append("\n");
+           jtextAreaCarpaths.append("_________________________\n");
+           jtextAreaCarpaths.append("| Building or Park :               [X]     |\n");
+           jtextAreaCarpaths.append("| Road :                                  [_]     |\n");
+           jtextAreaCarpaths.append("| Path :                                    [#]     |\n");
+           jtextAreaCarpaths.append("|________________________|\n");
+           jtextAreaCarpaths.append("\n");
 
 
+           for (int n = 0; n < cars.size(); n++) {
+               if (cars.get(n).getX() == i && cars.get(n).getY() == j) {
+                   jtextAreaCarpaths.append("                                                  CAR " + cars.get(n).getId() + "\n");
+                   jtextAreaCarpaths.append("\n");
 
-       for(int n=0;n<cars.size();n++)
-       {
-           if(cars.get(n).isSelectedForRunningAstar() && cars.get(n).getAstarPath()!=null){
+                   jtextAreaCarpaths.append(cityController.printPath(cars.get(n).getAstarPath()));
 
-               jtextAreaCarpaths.append("                                                  CAR " + cars.get(n).getId() + "\n");
-               jtextAreaCarpaths.append("\n");
-
-               jtextAreaCarpaths.append(cityController.printPath(cars.get(n).getAstarPath()));
-
-                       /*
-                       if(currentNode=="[#]") {
-
-                           //appendToPane(jtextAreaCarpaths,currentNode,Color.red);
-
-                       }
-                       else{
-                           //appendToPane(jtextAreaCarpaths,currentNode,Color.black);
-
-                       }
-
-                   //appendToPane(jtextAreaCarpaths,"\n",Color.black);
-                  */
-
+               }
            }
        }
-    }
 
 }

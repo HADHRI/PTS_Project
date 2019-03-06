@@ -16,12 +16,6 @@ public class GameManager implements Runnable {
     private boolean running = true;
     private Thread thread;
     private CityController cityController;
-    /** TODO PUT THIS IN GAME VIEW AND HAVE LIST OF CARS FROM THE GAMEVIEW**/
-//    private Car car;  // convert it to an array oF Cars
-
-  /*  public Car getCar() {
-        return car;
-    }*/
 
     public CityController getCityController() {
         return cityController;
@@ -35,7 +29,7 @@ public class GameManager implements Runnable {
 
           /** init Cars **/
 
-   //    car=new Car(0,0,cityController.getAstar());
+
        /** **/
         gameView=new GameView("Traffic Simulator",cityController,cars);
 
@@ -52,10 +46,6 @@ public class GameManager implements Runnable {
 
         if( car.getMaxTimer() <= car.getTimer())
         {
-            /**TODO
-             * change the position of the car with the fhaving the futur position from the A* ALGORITHM
-             * and here we have to put the lastposition for this variables "lastx" and "lasty" before changing
-             */
 
             /** Generate a random destination for the cars*/
 
@@ -82,7 +72,6 @@ public class GameManager implements Runnable {
         /** here we all the Astar methode for all the cars
          * we will recall this method only if there s an accident ( dynamic behavior)
          */
-       // car.getAstar().run(car.getX(),car.getY());
 
     }
 
@@ -96,7 +85,6 @@ public class GameManager implements Runnable {
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
 
         //Preparing the game Loop
         init();
@@ -125,8 +113,6 @@ public class GameManager implements Runnable {
 
 
                 delta--;
-                //TODO : mélanger le tableau de gameObject
-
             }
             try {
                 sleep(8, 3333);

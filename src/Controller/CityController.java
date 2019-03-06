@@ -194,56 +194,42 @@ public class CityController {
      * @param path
      */
     public String printPath(ArrayList<Integer>path){
+        String result = "";
 
-        String result="";
-        for(int i=0;i<graph.getCity().getHeight();i++) {
-            for (int j = 0; j <graph.getCity().getWidth(); j++) {
+        if (path == null) {
+            for (int i = 0; i < graph.getCity().getHeight(); i++) {
+                for (int j = 0; j < graph.getCity().getWidth(); j++) {
 
-                if (graph.getCity().getMatrice().get(i).get(j).isOccupied()) {
-                    result += "[X]";
+                    if (graph.getCity().getMatrice().get(i).get(j).isOccupied()) {
+                        result += "[X]";
 
-                } else if (find(i, j, path)) {
-                    result += "[#]";
-                } else {
-                    result += "[_]";
+                    } else {
+                        result += "[_]";
+                    }
                 }
+                result += "\n";
             }
-            result+="\n";
         }
+        else {
+            for (int i = 0; i < graph.getCity().getHeight(); i++) {
+                for (int j = 0; j < graph.getCity().getWidth(); j++) {
 
+                    if (graph.getCity().getMatrice().get(i).get(j).isOccupied()) {
+                        result += "[X]";
+
+                    } else if (find(i, j, path)) {
+                        result += "[#]";
+                    } else {
+                        result += "[_]";
+                    }
+                }
+                result += "\n";
+            }
+        }
         return result;
 
     }
 
-
-    /*public String printPath(ArrayList<Integer>path){
-
-        String result="";
-
-        for(int i=0;i<graph.getCity().getHeight();i++)
-        {
-            for(int j=0;j<graph.getCity().getHeight();j++)
-            {
-
-                if(graph.getCity().getMatrice().get(i).get(j).isOccupied()){
-                    result+="\033[31m" + "[X]";
-
-                }
-                else if(find(i,j,path)) {
-                    result+="\033[30m" + "[#]";
-                }
-                else{
-                    result+="\033[32m" + "[ ]";
-                }
-            }
-            result+="\n";
-        }
-
-        result+="\033[30m" + " ";
-
-        return result;
-
-    }*/
 
     /**Main to test the methods*/
 
