@@ -276,7 +276,7 @@ public class GameView extends Display {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int w= (int)screenSize.getWidth();
         int h = (int)screenSize.getHeight();
-        js.setPreferredSize(new Dimension(300,300));
+        js.setPreferredSize(new Dimension(width/6,height/6));
 
 
 
@@ -331,7 +331,6 @@ public class GameView extends Display {
         // 3 Buttons ( 3 lines and 1 colmun
         carButtons.setLayout(new GridLayout(4,1));
         carButtons.setBackground(Color.DARK_GRAY);
-        carButtons.setPreferredSize(new Dimension(200, height));
         /** Adding Buttons to Cote **/
         carButtons.add(addNormalCar);
         carButtons.add(ShowPath);
@@ -350,20 +349,20 @@ public class GameView extends Display {
         cote.add(carsInfo, BorderLayout.NORTH);
         cote.add(carsPath, BorderLayout.CENTER);
         cote.add(carButtons, BorderLayout.SOUTH);
-        cote.setPreferredSize(new Dimension(400, height));
-        carsInfo.setPreferredSize(new Dimension(height - 800, height - 800));
-        carsPath.setPreferredSize(new Dimension(height-500, height-500));
-        carButtons.setPreferredSize(new Dimension(height-850, height-850));
+        cote.setPreferredSize(new Dimension(width/5, height));
+        carsInfo.setPreferredSize(new Dimension(width/5, height/5));
+        carsPath.setPreferredSize(new Dimension(width/3, height/3));
+        carButtons.setPreferredSize(new Dimension(width/6, height/6));
 
         /** We split carsInfo on two pannel
          * One panel contains cars in the city with a boolean selected to go
          * second panel contains the path of the car selected with the time that it takes to reach the endpoint
          * **/
         carsName = new JPanel();
-        carsName.setPreferredSize(new Dimension(height - 800, height - 800));
-        jtextAreaCarnames=new JTextArea(height-800,height-800);
+        carsName.setPreferredSize(new Dimension(width/5, height/5));
+        jtextAreaCarnames=new JTextArea(width/5,height/5);
         jtextAreaCarnames.setEditable(false);
-        jtextAreaCarpaths=new JTextArea(height-500,height-500);
+        jtextAreaCarpaths=new JTextArea(width/3,height/3);
         jtextAreaCarpaths.setEditable(false);
         jtextAreaCarpaths.setBackground(Color.gray);
         carsName.add(jtextAreaCarnames);
