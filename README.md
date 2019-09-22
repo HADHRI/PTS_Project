@@ -30,9 +30,7 @@ We will use JAVA Swing For this ( Java library for UI)
 Presentation video : https://youtu.be/e8tmy0bDl5Q
 Demo video : https://www.youtube.com/watch?v=eozzu70o9Vw&feature=youtu.be
 
-6) Current Progress
-
-What is already done:
+6) Progress
 
 - Definition of the MVC 
 - Implementation of the model (city and node classes)
@@ -56,10 +54,9 @@ What is already done:
 - Add Traffic-light classe to change dynamically the color for all Traffic lights
 - Add a panel to display a list of cars currently present in the city and to show which one is selected
 - Add a panel to display an overview of the path for the selected car
-
-What we are actually doing:
-
 - Writing a report of our project
+
+
 
 
 
