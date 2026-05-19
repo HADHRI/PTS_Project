@@ -1,0 +1,62 @@
+---
+id: ARCH-001
+type: documentation_architecture
+version: 1.0
+---
+
+# Documentation architecture
+
+## Layers (dependency order, abstract → concrete)
+
+| Layer | Artifact type | Question answered |
+|-------|---------------|-------------------|
+| L1 | use_case      | For what end? |
+| L2 | scenario      | Under what conditions, what happens? |
+| L3 | business_rule | What invariant must always hold? |
+| L4 | entity        | What data is involved? |
+| L4 | attribute     | What field carries the value? |
+
+## Dependency graph (machine-readable)
+
+use_case
+  └─ realized_by → scenario (1..n)
+       └─ exercises → business_rule (1..n)
+            └─ constrains → attribute (1..n)
+                 └─ belongs_to → entity (1)
+
+## Two directions of traversal
+
+### Writing direction (top → bottom)
+Order in which artifacts are CREATED. Each artifact requires its parent to exist.
+
+1. use_case is written first (from business interview).
+2. scenario is written to make the use_case testable.
+3. business_rule is extracted when a scenario reveals an invariant.
+4. attribute is added when a rule or scenario references a value.
+5. entity is created to host attributes.
+
+RULE: an agent MUST NOT create an artifact at layer N without
+referencing at least one parent at layer N-1.
+
+### Validation direction (bottom → top)
+Order in which IMPACT is propagated when something changes.
+
+1. attribute changes → find all related business_rules
+2. business_rule changes → find all related scenarios
+3. scenario changes → find all related use_cases
+4. use_case changes → notify stakeholders
+
+RULE: every change at any layer MUST trigger a validation pass
+on all artifacts above it in the graph.
+
+## Cross-cutting concerns
+
+Business rules MAY reference attributes from multiple entities.
+These are called "transverse rules" and live in:
+  docs/02-behavior/business-rules/
+NOT inside a single domain folder.
+
+They are linked bidirectionally:
+- The rule lists `related_entities` and `related_attributes` in frontmatter.
+- Each entity lists `governed_by` in its own frontmatter (auto-generated
+  by the pipeline from the inverse lookup).
